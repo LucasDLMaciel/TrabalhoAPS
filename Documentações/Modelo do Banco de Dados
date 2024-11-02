@@ -1,0 +1,44 @@
+Jogo:
+- ID
+- Nome
+- Data_Lancamento
+- Desenvolvedor
+- Descricao
+- Classificacao_Etaria
+- Nota
+
+Usuario:
+- ID
+- Nome
+- Senha
+- Administrador_Flag
+- Data_Nascimento
+
+Comentario:
+- ID
+- ID_Usuario
+- ID_Jogo
+- Nota
+- Data_Comentario
+
+Jogo_Genero:
+- ID
+- ID_Jogo
+- Genero
+
+Usuario_Genero:
+- ID
+- ID_Usuario
+- Genero
+
+Observações:
+- Os atributos de uma classe que usa o extends já são considerados também pelo Matheus como atributos dessa outra classe.
+- Vamos usar um arquivo .txt como "banco de dados", mas seguindo a estrutura padrão de um banco de dados relacional.
+- A interface gráfica utilizada será o Swing.
+- O primeiro administrador será cadastrado diretamente no .txt e os demais serão cadastrados via interface gráfica.
+- Se sobrar tempo, podemos incluir imagens para os jogos.
+
+Casos de uso:
+- Gravar, apagar e buscar dados das entidades
+- Fazer reviews de jogos
+- Pesquisar por jogos que possam ser do interesse do usuário com base no gênero e classificação etária
