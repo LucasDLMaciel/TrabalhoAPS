@@ -9,7 +9,7 @@ Jogo:
 
 Usuario:
 - ID
-- Nome
+- Usuario
 - Senha
 - Administrador_Flag
 - Data_Nascimento
@@ -42,3 +42,5 @@ Casos de uso:
 - Gravar, apagar e buscar dados das entidades
 - Fazer reviews de jogos
 - Pesquisar por jogos que possam ser do interesse do usuário com base no gênero e classificação etária
+
+MODIFICAÇÕES A SEREM FEITAS: Expandir a ideia da nota pra uma tabela separada ligada ao comentário e separada por avaliações de característica diferentes. Ter a possibilidade de gerenciar/cadastrar os gêneros.
