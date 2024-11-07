@@ -1,22 +1,25 @@
-Jogo:
+TrabalhoAPS.Programa.Modelo.Jogo:
 - ID -> Integer
 - Nome -> String
 - Data_Lancamento -> LocalDate
 - Desenvolvedor -> String
 - Descricao -> String
 - Classificacao_Etaria -> String
+- Notas -> ARRAY de TrabalhoAPS.Programa.Modelo.Nota
+- Generos -> ARRAY de TrabalhoAPS.Programa.Modelo.Genero
 
-Usuario:
+TrabalhoAPS.Programa.Modelo.Usuario:
 - ID -> Integer
 - Usuario -> String
 - Senha -> String
 - Administrador_Flag -> Boolean
 - Data_Nascimento -> LocalDate
+- Notas -> ARRAY de TrabalhoAPS.Programa.Modelo.Nota
+- Generos -> ARRAY de TrabalhoAPS.Programa.Modelo.Genero
 
-Nota:
+TrabalhoAPS.Programa.Modelo.Nota:
 - ID -> Integer
-- ID_Usuario -> Integer
-- ID_Jogo -> Integer
+- Jogo -> INSTÂNCIA de TrabalhoAPS.Programa.Modelo.Jogo
 - Nota_Trilha_Sonora -> Integer
 - Nota_Graficos -> Integer
 - Nota_Historia -> Integer
@@ -24,17 +27,6 @@ Nota:
 - Comentario -> String
 - Data_Nota -> LocalDate
 
-Genero:
+TrabalhoAPS.Programa.Modelo.Genero:
 - ID -> Integer
 - Genero -> String
-
-JogoGenero:
-- ID -> Integer
-- ID_Jogo -> Integer
-- ID_Genero -> Integer
-
-UsuarioGenero:
-- ID -> Integer
-- ID_Usuario -> Integer
-- ID_Jogo -> Integer
-- ID_Genero -> Integer
