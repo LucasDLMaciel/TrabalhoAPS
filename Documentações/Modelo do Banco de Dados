@@ -1,24 +1,24 @@
-Jogo:
+TrabalhoAPS.Programa.Modelo.Jogo:
 - ID
 - Nome
 - Data_Lancamento
 - Desenvolvedor
 - Descricao
 - Classificacao_Etaria
-- Nota
+- TrabalhoAPS.Programa.Modelo.Nota
 
-Usuario:
+TrabalhoAPS.Programa.Modelo.Usuario:
 - ID
-- Usuario
+- TrabalhoAPS.Programa.Modelo.Usuario
 - Senha
 - Administrador_Flag
 - Data_Nascimento
 
-Comentario:
+TrabalhoAPS.Programa.Modelo.Comentario:
 - ID
 - ID_Usuario
 - ID_Jogo
-- Nota
+- TrabalhoAPS.Programa.Modelo.Nota
 - Data_Comentario
 
 Jogo_Genero:
