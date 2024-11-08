@@ -1,6 +1,6 @@
 package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Nota extends ID{
+public class Nota extends Entidade {
     private double trilhaSonora;
     private double arte;
     private double jogabilidade;

@@ -1,6 +1,6 @@
 package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Usuario extends ID {
+public class Usuario extends Entidade {
     private String nome;
     private String senha;
     private boolean administradorFlag;

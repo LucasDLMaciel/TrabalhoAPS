@@ -2,12 +2,12 @@ package TrabalhoAPS.GDB.GDB.Modelo;
 
 import java.util.List;
 
-public class Jogo extends ID{
+public class Jogo extends Entidade {
     private String nome;
-    private String dataLancamento;
+    private LocalDate dataLancamento;
     private String desenvolvedor;
     private String descricao;
-    private String faixaEtaria;
+    private String classificacaoEtaria;
     private List<Nota> notas;
 
     public Jogo(){
@@ -16,7 +16,7 @@ public class Jogo extends ID{
         dataLancamento = null;
         desenvolvedor = null;
         descricao = null;
-        faixaEtaria = null;
+        classificacaoEtaria = null;
     }
 
     public String getNome() {
@@ -56,11 +56,11 @@ public class Jogo extends ID{
     }
 
     public String getFaxaEtaria() {
-        return faixaEtaria;
+        return classificacaoEtaria;
     }
 
-    public void setFaixaEtaria(String faixaEtaria) {
-        this.faixaEtaria = faixaEtaria;
+    public void setClassificacaoEtaria(String classificacaoEtaria) {
+        this.classificacaoEtaria = classificacaoEtaria;
     }
 
     public List<Nota> getNotas() {

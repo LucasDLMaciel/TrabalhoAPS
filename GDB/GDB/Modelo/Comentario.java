@@ -1,6 +1,6 @@
 package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Comentario extends ID{
+public class Comentario extends Entidade {
     private Integer idUsuario;
     private Integer idJogo;
     private String comentario;

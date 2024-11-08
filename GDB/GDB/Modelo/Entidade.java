@@ -1,6 +1,6 @@
-package TrabalhoAPS.Programa.GDB.Modelo;
+package TrabalhoAPS.GDB.GDB.Modelo;
 
-abstract class ID {
+abstract class Entidade {
     private Integer id;
 
     public int getId() {
