@@ -1,4 +1,4 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
 public class Usuario extends Entidade {
     private String nome;

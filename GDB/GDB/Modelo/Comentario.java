@@ -1,4 +1,4 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
 public class Comentario extends Entidade {
     private Integer idUsuario;

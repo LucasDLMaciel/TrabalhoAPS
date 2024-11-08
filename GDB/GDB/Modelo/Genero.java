@@ -1,5 +1,5 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
-public class Genero extends ID {
+public class Genero extends Entidade {
     private String genero;
 }

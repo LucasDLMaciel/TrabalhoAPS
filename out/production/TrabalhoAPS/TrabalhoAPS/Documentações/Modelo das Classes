@@ -1,0 +1,32 @@
+TrabalhoAPS.Programa.Modelo.Jogo:
+- ID -> Integer
+- Nome -> String
+- Data_Lancamento -> LocalDate
+- Desenvolvedor -> String
+- Descricao -> String
+- Classificacao_Etaria -> String
+- Notas -> ARRAY de TrabalhoAPS.Programa.Modelo.Nota
+- Generos -> ARRAY de TrabalhoAPS.Programa.Modelo.Genero
+
+TrabalhoAPS.Programa.Modelo.Usuario:
+- ID -> Integer
+- Usuario -> String
+- Senha -> String
+- Administrador_Flag -> Boolean
+- Data_Nascimento -> LocalDate
+- Notas -> ARRAY de TrabalhoAPS.Programa.Modelo.Nota
+- Generos -> ARRAY de TrabalhoAPS.Programa.Modelo.Genero
+
+TrabalhoAPS.Programa.Modelo.Nota:
+- ID -> Integer
+- Jogo -> INSTÂNCIA de TrabalhoAPS.Programa.Modelo.Jogo
+- Nota_Trilha_Sonora -> Integer
+- Nota_Graficos -> Integer
+- Nota_Historia -> Integer
+- Nota_Jogabilidade -> Integer
+- Comentario -> String
+- Data_Nota -> LocalDate
+
+TrabalhoAPS.Programa.Modelo.Genero:
+- ID -> Integer
+- Genero -> String

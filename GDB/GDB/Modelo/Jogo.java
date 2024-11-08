@@ -1,5 +1,6 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Jogo extends Entidade {
@@ -31,11 +32,11 @@ public class Jogo extends Entidade {
         this.notas = notas;
     }
 
-    public String getDataLancamento() {
+    public LocalDate getDataLancamento() {
         return dataLancamento;
     }
 
-    public void setDataLancamento(String dataLancamento) {
+    public void setDataLancamento(LocalDate dataLancamento) {
         this.dataLancamento = dataLancamento;
     }
 

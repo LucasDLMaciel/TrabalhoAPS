@@ -1,4 +1,4 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
 abstract class Entidade {
     private Integer id;
