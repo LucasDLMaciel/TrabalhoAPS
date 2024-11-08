@@ -1,27 +1,19 @@
-package TrabalhoAPS.Programa.Modelo;
+package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Usuario {
-    private Integer ID;
+public class Usuario extends ID {
     private String nome;
     private String senha;
     private boolean administradorFlag;
     private String dataNascimento;
 
     public Usuario(){
-        ID = null;
+        this.setId(0);
         nome = null;
         senha = null;
         administradorFlag = false;
         dataNascimento = null;
     }
 
-    public Integer getID() {
-        return ID;
-    }
-
-    public void setID(Integer ID) {
-        this.ID = ID;
-    }
 
     public String getNome() {
         return nome;
