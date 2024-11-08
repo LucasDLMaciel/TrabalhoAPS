@@ -1,6 +1,6 @@
-package TrabalhoAPS.Programa.Modelo;
+package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Comentario {
+public class Comentario extends ID{
     private Integer idUsuario;
     private Integer idJogo;
     private String comentario;
@@ -8,6 +8,7 @@ public class Comentario {
     private Integer dataComentario;
 
     public Comentario() {
+        this.setId(0);
         idUsuario = null;
         idJogo = null;
         comentario = null;

@@ -1,11 +1,12 @@
-package TrabalhoAPS.Programa.Modelo;
+package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Nota {
+public class Nota extends ID{
     private double trilhaSonora;
     private double arte;
     private double jogabilidade;
 
     public Nota() {
+        this.setId(0);
         this.trilhaSonora = 0;
         this.arte = 0;
         this.jogabilidade = 0;

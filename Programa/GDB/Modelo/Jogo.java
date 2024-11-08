@@ -1,29 +1,22 @@
-package TrabalhoAPS.Programa.Modelo;
+package TrabalhoAPS.GDB.GDB.Modelo;
 
-public class Jogo {
-    private Integer ID;
+import java.util.List;
+
+public class Jogo extends ID{
     private String nome;
     private String dataLancamento;
     private String desenvolvedor;
     private String descricao;
     private String faixaEtaria;
-    private Nota notas;
+    private List<Nota> notas;
 
     public Jogo(){
-        ID = null;
+        this.setId(0);
         nome = null;
         dataLancamento = null;
         desenvolvedor = null;
         descricao = null;
         faixaEtaria = null;
-    }
-
-    public Integer getID() {
-        return ID;
-    }
-
-    public void setID(Integer ID) {
-        this.ID = ID;
     }
 
     public String getNome() {
@@ -34,7 +27,7 @@ public class Jogo {
         this.nome = nome;
     }
 
-    public void setNotas(Nota notas) {
+    public void setNotas(List<Nota> notas) {
         this.notas = notas;
     }
 
@@ -70,7 +63,7 @@ public class Jogo {
         this.faixaEtaria = faixaEtaria;
     }
 
-    public Nota getNotas() {
+    public List<Nota> getNotas() {
         return notas;
     }
 
