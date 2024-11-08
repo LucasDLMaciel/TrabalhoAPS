@@ -1,7 +1,7 @@
-package TrabalhoAPS.GDB.GDB.Modelo;
+package TrabalhoAPS.Programa.GDB.Modelo;
 
 abstract class ID {
-    private int id;
+    private Integer id;
 
     public int getId() {
         return id;
