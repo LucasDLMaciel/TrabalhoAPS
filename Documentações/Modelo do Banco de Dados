@@ -36,5 +36,4 @@ JogoGenero:
 UsuarioGenero:
 - ID -> Integer
 - ID_Usuario -> Integer
-- ID_Jogo -> Integer
 - ID_Genero -> Integer
