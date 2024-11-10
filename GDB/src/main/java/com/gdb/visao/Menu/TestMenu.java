@@ -1,7 +1,6 @@
 package com.gdb.visao.Menu;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Font;
 import javax.swing.JFrame;

@@ -7,15 +7,16 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 
-public class TestLoginRegistro extends JFrame {
+public class TestTodosUsuarios extends JFrame {
 
-    public TestLoginRegistro() {
+    public TestTodosUsuarios() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
 
-        add(new Login());
+        //add(new Login());
+        add(new GerenciarUsuarios());
     }
 
     public static void main(String[] args) {
@@ -23,6 +24,6 @@ public class TestLoginRegistro extends JFrame {
         FlatLaf.registerCustomDefaultsSource("login.themes");
         FlatMacDarkLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        EventQueue.invokeLater(() -> new TestLoginRegistro().setVisible(true));
+        EventQueue.invokeLater(() -> new TestTodosUsuarios().setVisible(true));
     }
 }
