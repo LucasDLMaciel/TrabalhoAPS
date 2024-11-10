@@ -1,7 +1,9 @@
 package com.gdb.modelo;
+
 import java.time.LocalDate;
 
 public class Usuario extends Entidade {
+
     private String usuario;
     private String senha;
     private Boolean administradorFlag;
@@ -48,7 +50,17 @@ public class Usuario extends Entidade {
     }
 
     public static Usuario cadastrarUsuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
-        // Adicionar verificação se dos atributos
+        // TODO Verificar se já existe usuário com esse nome de usuário
         return new Usuario(usuario, senha, administradorFlag, dataNascimento);
     }
+
+    public void visualizarUsuario() {
+        System.out.println(this.getId());
+        System.out.println(this.getUsuario());
+        System.out.println(this.getSenha());
+        System.out.println(this.getAdministradorFlag());
+        System.out.println(this.getDataNascimento());
+    }
+
+    // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }
