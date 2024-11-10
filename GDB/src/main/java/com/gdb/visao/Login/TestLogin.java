@@ -10,9 +10,12 @@ public class TestLogin extends JFrame {
 
     public TestLogin() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(new Dimension(1366, 768));
+
+        setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         setLayout(new MigLayout("al center center"));
+        getContentPane().setBackground(new Color(239, 239, 239));
+
         add(new Login());
     }
 
