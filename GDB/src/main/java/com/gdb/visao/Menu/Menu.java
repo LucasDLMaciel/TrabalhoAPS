@@ -1,6 +1,9 @@
 package com.gdb.visao.Menu;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.visao.login_registro.Login;
+import com.gdb.visao.login_registro.Registro;
 import com.gdb.visao.login_registro.TestLoginRegistro;
 
 import java.awt.*;
@@ -12,6 +15,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.ColorModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -56,11 +60,13 @@ public class Menu extends JFrame {
         this.Buscar = new JTextField();
         this.Sair_Botao = new JButton("Sair");
         this.MenuPainel = new JPanel();
-        this.MenuPainel.setLayout((LayoutManager)null);
+        this.MenuPainel.setLayout((LayoutManager) null);
         this.Login_Botao = new JButton("Login");
         this.todosButton = new JButton("Todos");
         this.recomendadosButton = new JButton("Recomendados");
+
         this.atulizarPosObjetos();
+
         this.jogo1.setBackground(Color.red);
         this.jogo2.setBackground(Color.blue);
         this.jogo3.setBackground(Color.green);
@@ -89,6 +95,8 @@ public class Menu extends JFrame {
         this.MenuPainel.add(this.recomendadosButton);
         this.MenuPainel.add(this.database);
         this.setContentPane(this.MenuPainel);
+
+        Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
         FlatSVGIcon iconFrame = new FlatSVGIcon("login/icon/logo.svg", 0.067F);
         this.setIconImage(iconFrame.getImage());
         this.setTitle("Menu");
@@ -103,10 +111,12 @@ public class Menu extends JFrame {
         this.add(this.desc2);
         this.add(this.desc3);
         this.add(this.desc4);
+
         this.Sair_Botao.setCursor(new Cursor(12));
         this.Login_Botao.setCursor(new Cursor(12));
         this.todosButton.setCursor(new Cursor(12));
         this.recomendadosButton.setCursor(new Cursor(12));
+
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 Menu.this.atulizarPosObjetos();
@@ -133,7 +143,7 @@ public class Menu extends JFrame {
             }
 
             public void focusLost(FocusEvent e) {
-                if (Menu.this.Buscar.getText().equals("")) {
+                if (Menu.this.Buscar.getText().isEmpty()) {
                     Menu.this.Buscar.setText("Buscar");
                 }
 
@@ -209,6 +219,10 @@ public class Menu extends JFrame {
         this.desc3.setBounds(this.jogo3.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
         this.jogo4.setBounds(this.jogo3.getX() + this.jogo1.getWidth() + 150, this.jogo1.getY(), 200, 200);
         if (this.jogo4.getX() + this.jogo4.getWidth() > this.getWidth()) {
+            jogo2.setBounds(this.jogo1.getX() + this.jogo1.getWidth() + 130, this.jogo1.getY(), 200, 200);
+            this.desc2.setBounds(this.jogo2.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
+            this.jogo3.setBounds(this.jogo2.getX() + this.jogo1.getWidth() + 150, this.jogo1.getY(), 200, 200);
+            this.desc3.setBounds(this.jogo3.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
             this.jogo4.setBounds(this.getWidth() - this.jogo4.getWidth() - 15, this.jogo1.getY(), 200, 200);
             this.jogo1.setBounds(0, this.jogo1.getY(), this.jogo1.getWidth(), this.jogo1.getHeight());
         }
