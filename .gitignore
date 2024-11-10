@@ -1,7 +1,6 @@
 # IntelliJ IDEA
-*.iml
 **/.idea/
-out/
+**/target/
 
 # Backups
 *.vpp.bak*
