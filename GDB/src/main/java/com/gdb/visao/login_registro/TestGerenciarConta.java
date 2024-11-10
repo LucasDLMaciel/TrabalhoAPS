@@ -1,29 +1,29 @@
-package com.gdb.visao.Login;
+package com.gdb.visao.login_registro;
+
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import net.miginfocom.swing.MigLayout;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class TestLogin extends JFrame {
+public class TestGerenciarConta extends JFrame {
 
-    public TestLogin() {
+    public TestGerenciarConta() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
-        setLayout(new MigLayout("al center center"));
-        getContentPane().setBackground(new Color(239, 239, 239));
 
-        add(new Login());
+        //add(new Login());
+        add(new GerenciarConta(true));
     }
 
     public static void main(String[] args) {
         FlatRobotoFont.install();
         FlatLaf.registerCustomDefaultsSource("login.themes");
-        FlatMacLightLaf.setup();
+        FlatMacDarkLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        EventQueue.invokeLater(() -> new TestLogin().setVisible(true));
+        EventQueue.invokeLater(() -> new TestGerenciarConta().setVisible(true));
     }
 }

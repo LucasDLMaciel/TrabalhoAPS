@@ -51,6 +51,12 @@
             <artifactId>miglayout-swing</artifactId>
             <version>11.4.2</version>
         </dependency>
+        <!-- https://search.maven.org/artifact/io.github.dj-raven/swing-datetime-picker/1.4.0/jar -->
+        <dependency>
+            <groupId>io.github.dj-raven</groupId>
+            <artifactId>swing-datetime-picker</artifactId>
+            <version>1.4.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

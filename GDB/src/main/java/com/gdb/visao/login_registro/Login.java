@@ -1,4 +1,4 @@
-package com.gdb.visao.Login;
+package com.gdb.visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -16,8 +16,7 @@ public class Login extends JPanel {
 
     private void init(){
 
-        setLayout(new MigLayout("wrap, gapy 4", "[fill,300]"));
-        setBackground(new Color(239, 239, 239));
+        setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
         add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.065f)));
 
 
@@ -41,6 +40,7 @@ public class Login extends JPanel {
         add(senhaLabel, "gapy 10 2");
 
         JPasswordField senhaText = new JPasswordField();
+        botaoRevelarSenha(senhaText);
         senhaText.putClientProperty(FlatClientProperties.STYLE,"iconTextGap: 10");
         senhaText.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira sua senha");
         senhaText.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON,new FlatSVGIcon("login/icon/senha.svg", 0.04f));
@@ -52,8 +52,12 @@ public class Login extends JPanel {
                 return true;
             }
         };
+
+        //FAZER LOGICA DE BUSCAR USUARIO NOS DADOS
         loginButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
         add(loginButton, "gapy 10 5");
+
+        add(criarSeparador(), "gapy 5 10");
 
         JLabel semConta = new JLabel(" Não tem conta?");
         semConta.putClientProperty(FlatClientProperties.STYLE,"foreground:$Label.disabledForeground;");
@@ -62,6 +66,19 @@ public class Login extends JPanel {
         JButton criarConta = criarBotaoSemBorda("Criar Conta");
         add(criarConta, "gapx n push");
 
+        // Dentro da classe Login
+        criarConta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Substitui o painel de login pelo painel de registro
+                Registro registro = new Registro(true);
+                Container container = getParent();
+                container.removeAll();
+                container.add(registro);
+                container.revalidate();
+                container.repaint();
+            }
+        });
 
     }
 
@@ -75,5 +92,34 @@ public class Login extends JPanel {
         JButton botao = new JButton(text);
         botao.putClientProperty(FlatClientProperties.STYLE,"foreground:$Component.accentColor;" + "margin:1,5,1,5;" + "borderWidth:0;" + "focusWidth:0;" + "innerFocusWidth:0;" + "background:null;");
         return botao;
+    }
+
+    private void botaoRevelarSenha(JPasswordField txt) {
+        FlatSVGIcon iconeOlho = new FlatSVGIcon("login/icon/olho.svg", 0.03f);
+        FlatSVGIcon iconOlhoFechado = new FlatSVGIcon("login/icon/olhoFechado.svg", 0.03f);
+
+        JToolBar toolBar = new JToolBar();
+        toolBar.putClientProperty(FlatClientProperties.STYLE,"margin:0,0,0,5;");
+        JButton button = new JButton(iconeOlho);
+
+        button.addActionListener(new ActionListener() {
+
+            private char echoSenha = txt.getEchoChar();
+            private boolean show;
+
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                show = !show;
+                if (show) {
+                    button.setIcon(iconOlhoFechado);
+                    txt.setEchoChar((char) 0);
+                } else {
+                    button.setIcon(iconeOlho);
+                    txt.setEchoChar(echoSenha);
+                }
+            }
+        });
+        toolBar.add(button);
+        txt.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, toolBar);
     }
 }
