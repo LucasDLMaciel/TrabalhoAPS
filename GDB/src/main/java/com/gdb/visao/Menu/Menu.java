@@ -75,18 +75,14 @@ public class Menu extends JFrame {
         this.desc2.setForeground(Color.black);
         this.desc3.setForeground(Color.black);
         this.desc4.setForeground(Color.black);
-        this.jogo1.setBorderPainted(false);
-        this.jogo2.setBorderPainted(false);
-        this.jogo3.setBorderPainted(false);
-        this.jogo4.setBorderPainted(false);
-        this.todosButton.setFocusPainted(false);
-        this.recomendadosButton.setFocusPainted(false);
-        this.Sair_Botao.setFocusPainted(false);
-        this.Login_Botao.setFocusPainted(false);
         this.Buscar.setText("Buscar");
+        Color corTodos = todosButton.getBackground();
+        Color corRecomendado = recomendadosButton.getBackground();
         this.Buscar.setFocusable(false);
-        this.database.setFocusPainted(false);
-        this.database.setBorderPainted(false);
+        Login_Botao.setFocusable(false);
+        Sair_Botao.setFocusable(false);
+        todosButton.setFocusable(true);
+        todosButton.setBackground(new Color(200,200,200));
         this.database.setContentAreaFilled(false);
         this.MenuPainel.add(this.Buscar);
         this.MenuPainel.add(this.Sair_Botao);
@@ -97,6 +93,16 @@ public class Menu extends JFrame {
         this.setContentPane(this.MenuPainel);
 
         Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
+        this.database.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        jogo1.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        jogo2.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        jogo3.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        jogo4.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        Buscar.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        Sair_Botao.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        Login_Botao.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        todosButton.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
+        recomendadosButton.putClientProperty(FlatClientProperties.STYLE, "foreground: #FFFFFF");
         FlatSVGIcon iconFrame = new FlatSVGIcon("login/icon/logo.svg", 0.067F);
         this.setIconImage(iconFrame.getImage());
         this.setTitle("Menu");
@@ -116,6 +122,7 @@ public class Menu extends JFrame {
         this.Login_Botao.setCursor(new Cursor(12));
         this.todosButton.setCursor(new Cursor(12));
         this.recomendadosButton.setCursor(new Cursor(12));
+        this.database.setCursor(new Cursor(12));
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -151,6 +158,7 @@ public class Menu extends JFrame {
         });
         this.Sair_Botao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Sair_Botao.setFocusable(true);
                 if (JOptionPane.showConfirmDialog(Menu.this, "Você tem certeza que quer sair da aplicação?", "Sair", 0) == 0) {
                     System.exit(0);
                 }
@@ -159,13 +167,12 @@ public class Menu extends JFrame {
         });
         this.Login_Botao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Login_Botao.setFocusable(true);
                 JOptionPane.showMessageDialog(Menu.this, "Você está sendo redirecionado para a tela de login");
                 EventQueue.invokeLater(() -> new TestLoginRegistro().setVisible(true));
                 MenuPainel.setVisible(false);
             }
         });
-        Color corTodos = todosButton.getBackground();
-        Color corRecomendado = recomendadosButton.getBackground();
         this.todosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selecionado = true;
