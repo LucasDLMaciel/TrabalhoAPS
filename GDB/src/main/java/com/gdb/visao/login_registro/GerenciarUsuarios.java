@@ -5,6 +5,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,11 +18,22 @@ public class GerenciarUsuarios extends JPanel {
     }
 
     private void init() {
-        setLayout(new MigLayout("wrap, fill, insets 20", "[fill]"));
+        setLayout(new MigLayout("wrap, fill, insets 20"));
 
         JLabel tituloLabel = new JLabel("Gerenciar Usuários");
         tituloLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
-        add(tituloLabel, "align center, wrap");
+        add(tituloLabel, "split 2");
+
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
+
+        add(voltarButton, "gapleft push");
+
+        voltarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
 
         String[] colunas = {"Usuário", "Senha", "Data de Nascimento", "Gêneros Favoritos", "Administrador"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
@@ -47,7 +59,7 @@ public class GerenciarUsuarios extends JPanel {
             }
         };
 
-        botaoRemover.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF;" + "background:#ff0000");
+        botaoRemover.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF;" + "background:#CC0000");
 
         botaoAdicionar.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
 
