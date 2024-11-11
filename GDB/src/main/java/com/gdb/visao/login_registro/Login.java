@@ -12,6 +12,7 @@ import com.gdb.visao.Menu.Menu;
 
 
 public class Login extends JPanel {
+
     public Login() {
         init();
     }
