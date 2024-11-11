@@ -7,12 +7,60 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.lang.reflect.Field;
+public final class Arquivo {
 
-import java.util.Arrays;
+    /**
+     * Lê as linhas de um arquivo CSV, ignorando o cabeçalho.
+     *
+     * @param arquivoPath O caminho do arquivo CSV a ser manipulado.
+     * @return Um List&lt;String&gt; contendo as linhas lidas, excluindo o cabeçalho.
+     */
+    static List<String[]> lerArquivo(Path arquivoPath) {
+        List<String[]> linhas = new ArrayList<>();
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoPath.toString()))) {
+            reader.readNext();  // Pula o cabeçalho
+            String[] linha;
+            while ((linha = reader.readNext()) != null) {
+                linhas.add(linha);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao ler o arquivo '"
+                    + arquivoPath.getFileName().toString()
+                    + "': "
+                    + e.getMessage());
+            System.exit(1);
+        }
+        return linhas;
+    }
 
-public class Arquivo {
+    /**
+     * Cria um novo arquivo com os dados atualizados.
+     *
+     * @param arquivoPath O caminho do arquivo CSV a ser manipulado.
+     * @param elementos Lista de elementos que será escrita no arquivo.
+     */
+    static void substituirArquivo(Path arquivoPath, List<?> elementos) {
+        String[] cabecalho = Arquivo.pegarCabecalhoArquivo(arquivoPath);
+        try (CSVWriter writer = new CSVWriter(new FileWriter(arquivoPath.toString(), false),
+                ';',
+                CSVWriter.NO_QUOTE_CHARACTER,
+                '\\',
+                "\n")) {
+            writer.writeNext(cabecalho);
+            for (Object elemento : elementos) {
+                writer.writeNext(Global.obterAtributosClasse(elemento));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao substituir o arquivo '"
+                    + arquivoPath.getFileName()
+                    + "': "
+                    + e.getMessage());
+            System.exit(1);
+        }
+    }
 
     /**
      * Obtém o caminho do arquivo CSV associado à classe fornecida.
@@ -20,12 +68,12 @@ public class Arquivo {
      * @param classe A classe usada para determinar o caminho do arquivo CSV.
      * @return O caminho do arquivo CSV correspondente à classe fornecida.
      */
-    public static Path obterCaminhoArquivo(Class<?> classe) {
+    static Path obterCaminhoArquivo(Class<?> classe) {
         Path caminhoArquivo = null;
         if (classe.equals(Usuario.class)) {
             return Paths.get("src", "main", "resources", "data", "usuario.csv");
         } else {
-            System.out.println("Erro inesperado ocorreu ao obter o caminho do arquivo da classe " + classe + " !");
+            System.out.println("Erro ao obter o caminho do arquivo da classe '" + classe + "'!");
             System.exit(1);
         }
         return caminhoArquivo;
@@ -37,7 +85,7 @@ public class Arquivo {
      * @param arquivoPath O caminho do arquivo CSV a ser manipulado.
      * @return A quantidade de linhas do arquivo, excluindo o cabeçalho.
      */
-    public static int contarLinhasArquivo(Path arquivoPath) {
+    static int contarLinhasArquivo(Path arquivoPath) {
         int linhasContadas = 0;
         try (CSVReader reader = new CSVReader(new FileReader(arquivoPath.toString()))) {
             reader.readNext();  // Pula o cabeçalho
@@ -45,58 +93,27 @@ public class Arquivo {
                 linhasContadas++;
             }
         } catch (Exception e) {
-            System.out.println("Erro ao manipular o arquivo " + arquivoPath.getFileName().toString() + ": " + e.getMessage());
+            System.out.println("Erro ao contar as linhas do arquivo '"
+                    + arquivoPath.getFileName().toString()
+                    + "': "
+                    + e.getMessage());
             System.exit(1);
         }
         return linhasContadas;
     }
 
-    public static void salvarNovaLinhaArquivo(Path arquivoPath, Object classe) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(arquivoPath.toString(), true),
-                ';',
-                CSVWriter.NO_QUOTE_CHARACTER,
-                '\\',
-                "\n")) {
-            String[] atributos = Arquivo.obterAtributosClasse(classe);
-            writer.writeNext(atributos);
+    static String[] pegarCabecalhoArquivo(Path arquivoPath) {
+        String[] cabecalho = null;
+        try (CSVReader reader = new CSVReader(new FileReader(arquivoPath.toString()))) {
+            cabecalho = reader.readNext();
         } catch (Exception e) {
-            System.out.println("Erro ao salvar o usuário em Usuario.csv: " + e.getMessage());
+            System.out.println("Erro ao ler o cabeçalho do arquivo '"
+                    + arquivoPath.getFileName().toString()
+                    + "': "
+                    + e.getMessage());
             System.exit(1);
         }
-    }
-
-    public static String[] obterAtributosClasse(Object classe) throws IllegalAccessException {
-        String[] atributosSuperClasseArrayString = null;
-
-        Class<?> superClasse = classe.getClass().getSuperclass();
-        if (superClasse != null) {
-            Field[] camposSuperClasse = superClasse.getDeclaredFields();
-            atributosSuperClasseArrayString = new String[camposSuperClasse.length];
-            for (int i = 0; i < camposSuperClasse.length; i++) {
-                camposSuperClasse[i].setAccessible(true);  // Garante acesso aos campos privados
-                atributosSuperClasseArrayString[i] = String.valueOf(camposSuperClasse[i].get(classe));  // Obtém o valor do campo
-            }
-        }
-
-        Field[] camposClasse = classe.getClass().getDeclaredFields();
-        String[] atributosClasseArrayString = new String[camposClasse.length];
-        for (int i = 0; i < camposClasse.length; i++) {
-            camposClasse[i].setAccessible(true);  // Garante acesso aos campos privados
-            atributosClasseArrayString[i] = String.valueOf(camposClasse[i].get(classe));  // Obtém o valor do campo
-        }
-
-        if (atributosSuperClasseArrayString != null) {
-            String[] atributos = Arrays.copyOf(atributosSuperClasseArrayString,
-                    atributosSuperClasseArrayString.length + atributosClasseArrayString.length);
-            System.arraycopy(atributosClasseArrayString,
-                    0,
-                    atributos,
-                    atributosSuperClasseArrayString.length,
-                    atributosClasseArrayString.length);
-            return atributos;
-        }
-
-        return atributosClasseArrayString;
+        return cabecalho;
     }
 
 }

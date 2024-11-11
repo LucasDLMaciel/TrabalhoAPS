@@ -1,7 +1,10 @@
-package com.gdb.visao.login_registro;
+package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.visao.Menu.Menu;
+import com.gdb.visao.login_registro.Login;
+import com.gdb.visao.login_registro.MultiplaEscolha;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
@@ -12,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Registro extends JPanel {
+public class GerenciarConta extends JPanel {
     private JTextField usuarioText;
     private JPasswordField senhaText;
     private JFormattedTextField dataNascimentoField;
@@ -20,7 +23,7 @@ public class Registro extends JPanel {
     private JCheckBox adminCheckBox;
     private boolean darkTheme;
 
-    public Registro(boolean isAdminLogado, boolean darkTheme) {
+    public GerenciarConta(boolean isAdminLogado, boolean darkTheme) {
         this.darkTheme = darkTheme;
         init(isAdminLogado);
     }
@@ -29,7 +32,7 @@ public class Registro extends JPanel {
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
         add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
-        JLabel registroLabel = new JLabel("Registro", JLabel.CENTER);
+        JLabel registroLabel = new JLabel("Gerenciar Conta", JLabel.CENTER);
         registroLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(registroLabel);
 
@@ -80,6 +83,9 @@ public class Registro extends JPanel {
         generos.add("Plataforma");
 
         List<String> generosFav = new ArrayList<>();
+        generosFav.add("Terror");
+        generosFav.add("Aventura");
+        generosFav.add("Plataforma");
 
         generoBox = new MultiplaEscolha(generos, generosFav);
         generoBox.putClientProperty(FlatClientProperties.STYLE,"");
@@ -92,33 +98,48 @@ public class Registro extends JPanel {
             add(adminCheckBox, "gapy 10");
         }
 
-        JButton registerButton = new JButton("Registrar") {
+        // FAZER LOGICA DE PEGAR INFORMACOES E ALTERA-LAS
+        JButton salvarButton = new JButton("Salvar Alterações") {
             @Override
             public boolean isDefaultButton() {
                 return true;
             }
         };
-        registerButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
-        add(registerButton, "gapy 10 5");
 
-        // FAZER LOGICA PRA SALVAR USUARIO
-        registerButton.addActionListener(new ActionListener() {
+        salvarButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
+        add(salvarButton, "gapy 10 5");
+
+        JButton voltarButton = new JButton("Voltar");
+        add(voltarButton, "gapy 10 5");
+
+        // ActionListener para voltar ao menu
+        voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registrarUsuario();
+                // Substitui o painel de login pelo painel do menu
+                com.gdb.visao.Menu.Menu menu = new Menu(darkTheme);
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
             }
         });
 
+
         add(criarSeparador(), "gapy 5 10");
 
-        JLabel semConta = new JLabel(" Já tem uma conta?");
-        semConta.putClientProperty(FlatClientProperties.STYLE,"foreground:$Label.disabledForeground;");
-        add(semConta, "split 2, gapx push n");
+        JButton sairDaConta = criarBotaoSemBorda("Sair da conta");
+        sairDaConta.putClientProperty(FlatClientProperties.STYLE, "");
+        add(sairDaConta, "split 2, gapx push n");
 
-        JButton criarConta = criarBotaoSemBorda("Fazer login");
-        add(criarConta, "gapx n push");
+        JButton excluirConta = criarBotaoSemBorda("Excluir conta");
+        excluirConta.setForeground(Color.RED);
+        add(excluirConta, "gapx n push");
 
-        criarConta.addActionListener(new ActionListener() {
+
+
+        sairDaConta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de registro pelo painel de login
@@ -131,30 +152,6 @@ public class Registro extends JPanel {
             }
         });
     }
-
-    private void registrarUsuario() {
-        String usuario = usuarioText.getText().trim();
-        String senha = new String(senhaText.getPassword()).trim();
-        String dataNascimento = dataNascimentoField.getText().trim();
-        List<String> generosSelecionados = generoBox.getSelecionados();
-        // Verifica se todos os campos obrigatórios estão preenchidos
-        if (usuario.isEmpty() || senha.isEmpty() || dataNascimento.contains("-")) {
-            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Exibe as informações se todos os campos estão preenchidos
-        JOptionPane.showMessageDialog(this,
-                "Usuário: " + usuario + "\n" +
-                        "Senha: " + senha + "\n" +
-                        "Data de Nascimento: " + dataNascimento + "\n" +
-                        "Gêneros favoritos: " + generosSelecionados + "\n" +
-                        "Administrador: " + (adminCheckBox.isSelected() ? "Sim" : "Não"),
-                "Dados de Registro",
-                JOptionPane.INFORMATION_MESSAGE);
-        //FAZER LOGICA DE SALVAR INFORMAÇÕES
-    }
-
 
     private JSeparator criarSeparador() {
         return new JSeparator();
@@ -193,4 +190,5 @@ public class Registro extends JPanel {
         toolBar.add(button);
         txt.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, toolBar);
     }
+
 }
