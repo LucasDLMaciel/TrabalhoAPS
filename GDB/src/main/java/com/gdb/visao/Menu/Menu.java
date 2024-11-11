@@ -96,7 +96,7 @@ public class Menu extends JPanel {
         this.Login_Botao = new JButton("Login");
         this.todosButton = new JButton("Todos");
         this.recomendadosButton = new JButton("Recomendados");
-        this.toggleThemeButton = new JButton("Alternar Tema");
+        this.toggleThemeButton = new JButton(new FlatSVGIcon("Menu/luaSol.svg", 1f));
 
         this.atulizarPosObjetos();
 
