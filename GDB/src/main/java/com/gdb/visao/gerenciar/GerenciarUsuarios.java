@@ -1,6 +1,7 @@
-package com.gdb.visao.login_registro;
+package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.gdb.visao.Menu.Menu;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -25,13 +26,20 @@ public class GerenciarUsuarios extends JPanel {
         add(tituloLabel, "split 2");
 
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
+        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        add(voltarButton, "gap left push");
 
-        add(voltarButton, "gapleft push");
-
+        // ActionListener para voltar ao menu
         voltarButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                // Substitui o painel de login pelo painel do menu
+                Menu menu = new Menu();
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
             }
         });
 
@@ -39,7 +47,14 @@ public class GerenciarUsuarios extends JPanel {
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                return columnIndex == 4 ? Boolean.class : String.class;
+                switch (columnIndex) {
+                    case 0:
+                        return Integer.class; // ID como inteiro
+                    case 4:
+                        return Boolean.class; // Administrador como booleano (checkbox)
+                    default:
+                        return String.class; // Outras colunas como String
+                }
             }
         };
         tabelaUsuarios = new JTable(modeloTabela);

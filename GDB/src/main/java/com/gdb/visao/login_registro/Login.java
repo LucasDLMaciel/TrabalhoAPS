@@ -94,7 +94,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel de registro
-                Registro registro = new Registro(true);
+                Registro registro = new Registro(false);
                 Container container = getParent();
                 container.removeAll();
                 container.add(registro);

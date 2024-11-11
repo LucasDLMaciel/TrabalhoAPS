@@ -1,4 +1,4 @@
-package com.gdb.visao.login_registro;
+package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
@@ -7,16 +7,15 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 
-public class TestGerenciarConta extends JFrame {
+public class TestGerenciarGenero extends JFrame {
 
-    public TestGerenciarConta() {
+    public TestGerenciarGenero() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
 
-        //add(new Login());
-        add(new GerenciarConta(true));
+        add(new GerenciarGenero());
     }
 
     public static void main(String[] args) {
@@ -24,6 +23,6 @@ public class TestGerenciarConta extends JFrame {
         FlatLaf.registerCustomDefaultsSource("login.themes");
         FlatMacDarkLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        EventQueue.invokeLater(() -> new TestGerenciarConta().setVisible(true));
+        EventQueue.invokeLater(() -> new TestGerenciarGenero().setVisible(true));
     }
 }

@@ -1,4 +1,4 @@
-package com.gdb.visao.login_registro;
+package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
@@ -7,9 +7,9 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 
-public class TestTodosUsuarios extends JFrame {
+public class TestGerenciarUsuarios extends JFrame {
 
-    public TestTodosUsuarios() {
+    public TestGerenciarUsuarios() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setSize(new Dimension(1280, 720));
@@ -24,6 +24,6 @@ public class TestTodosUsuarios extends JFrame {
         FlatLaf.registerCustomDefaultsSource("login.themes");
         FlatMacDarkLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        EventQueue.invokeLater(() -> new TestTodosUsuarios().setVisible(true));
+        EventQueue.invokeLater(() -> new TestGerenciarUsuarios().setVisible(true));
     }
 }

@@ -1,7 +1,10 @@
-package com.gdb.visao.login_registro;
+package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.visao.Menu.Menu;
+import com.gdb.visao.login_registro.Login;
+import com.gdb.visao.login_registro.MultiplaEscolha;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
@@ -25,7 +28,7 @@ public class GerenciarConta extends JPanel {
 
     private void init(boolean isAdminLogado) {
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
-        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.065f)));
+        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
         JLabel registroLabel = new JLabel("Gerenciar Conta", JLabel.CENTER);
         registroLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
@@ -103,6 +106,24 @@ public class GerenciarConta extends JPanel {
 
         salvarButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
         add(salvarButton, "gapy 10 5");
+
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        add(voltarButton, "gapy 10 5");
+
+        // ActionListener para voltar ao menu
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Substitui o painel de login pelo painel do menu
+                com.gdb.visao.Menu.Menu menu = new Menu();
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
+            }
+        });
 
 
         add(criarSeparador(), "gapy 5 10");
