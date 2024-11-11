@@ -1,6 +1,7 @@
 package com.gdb.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Usuario extends Entidade {
@@ -65,12 +66,12 @@ public final class Usuario extends Entidade {
     }
 
     /**
-     * Cria uma nova instância de usuário.
+     * Cria um novo usuário.
      */
     public static Usuario cadastrarUsuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
         List<Usuario> usuarios = Global.getUsuarios();
         // Verifica se o usuário já existe na lista de usuários
-        if (usuarioExiste(usuarios, usuario)) {
+        if (Usuario.usuarioExiste(usuarios, usuario)) {
             System.out.println("Erro! O usuário já existe!");
             System.exit(1);
         }
@@ -82,7 +83,25 @@ public final class Usuario extends Entidade {
     }
 
     /**
-     * Retira um usuário de {@link Global#usuarios}, atualiza seus índices e
+     * Instancia os usuários que já existem no arquivo CSV.
+     */
+    static List<Usuario> instanciarUsuarios(List<String[]> usuariosListaString) {
+        List<Usuario> usuarios = new ArrayList<>();
+        for (String[] usuario : usuariosListaString) {
+            usuario = usuario[0].split(";");
+            usuarios.add(new Usuario(
+                    Integer.parseInt(usuario[0]),
+                    usuario[1],
+                    usuario[2],
+                    Boolean.parseBoolean(usuario[3]),
+                    LocalDate.parse(usuario[4])
+            ));
+        }
+        return usuarios;
+    }
+
+    /**
+     * Remove um usuário de {@link Global#usuarios}, atualiza seus índices e
      * cria um novo arquivo CSV com os elementos atuais de {@link Global#usuarios}.
      */
     public void deletarUsuario() {
@@ -103,7 +122,7 @@ public final class Usuario extends Entidade {
      * @param usuarioString O usuário que será verificado.
      * @return Um Boolean que indica se o valor existe na lista ou não.
      */
-    static Boolean usuarioExiste(List<Usuario> usuarios, String usuarioString) {
+    private static Boolean usuarioExiste(List<Usuario> usuarios, String usuarioString) {
         for (Usuario usuario : usuarios) {
             if (usuario.getUsuario().equals(usuarioString)) {
                 return true;
@@ -112,6 +131,22 @@ public final class Usuario extends Entidade {
         return false;
     }
 
-    // TODO LOGIN DO USUÁRIO
-    // TODO FAZER O UPDATE DO USUÁRIO
+    /**
+     * Realiza o login do usuário.
+     *
+     * @param usuarioString O usuário.
+     * @param senha   A senha.
+     * @return O usuário logado.
+     */
+    public static Usuario fazerLogin(String usuarioString, String senha) throws Exception {
+        List<Usuario> usuarios = Global.getUsuarios();
+        for (Usuario usuario : usuarios) {
+            if (usuario.getUsuario().equals(usuarioString) && usuario.getSenha().equals(senha)) {
+                return usuario;
+            }
+        }
+        throw new Exception("Erro! O usuário não existe!");
+    }
+
+    // TODO FAZER O UPDATE DO USUÁRIO (CASO O MATHEUS PEÇA)
 }

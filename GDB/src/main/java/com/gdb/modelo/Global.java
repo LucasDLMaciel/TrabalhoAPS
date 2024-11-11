@@ -2,8 +2,6 @@ package com.gdb.modelo;
 
 import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,18 +27,7 @@ public final class Global {
     private static List<Usuario> carregarUsuarios() {
         Path arquivoPath = Arquivo.obterCaminhoArquivo(Usuario.class);
         List<String[]> usuariosListaString = Arquivo.lerArquivo(arquivoPath);
-        List<Usuario> usuarios = new ArrayList<>();
-        for (String[] usuario : usuariosListaString) {
-            usuario = usuario[0].split(";");
-            usuarios.add(new Usuario(
-                    Integer.parseInt(usuario[0]),
-                    usuario[1],
-                    usuario[2],
-                    Boolean.parseBoolean(usuario[3]),
-                    LocalDate.parse(usuario[4])
-            ));
-        }
-        return usuarios;
+        return Usuario.instanciarUsuarios(usuariosListaString);
     }
 
     /**
