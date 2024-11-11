@@ -135,7 +135,6 @@ public class Registro extends JPanel {
         String senha = new String(senhaText.getPassword()).trim();
         String dataNascimento = dataNascimentoField.getText().trim();
         List<String> generosSelecionados = generoBox.getSelecionados();
-
         // Verifica se todos os campos obrigatórios estão preenchidos
         if (usuario.isEmpty() || senha.isEmpty() || dataNascimento.contains("-")) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
@@ -151,7 +150,6 @@ public class Registro extends JPanel {
                         "Administrador: " + (adminCheckBox.isSelected() ? "Sim" : "Não"),
                 "Dados de Registro",
                 JOptionPane.INFORMATION_MESSAGE);
-
         //FAZER LOGICA DE SALVAR INFORMAÇÕES
     }
 

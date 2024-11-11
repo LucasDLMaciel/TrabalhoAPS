@@ -2,6 +2,7 @@ package com.gdb.visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.visao.login_registro.GerenciarConta;
 import com.gdb.visao.login_registro.Login;
 import com.gdb.visao.login_registro.Registro;
 import com.gdb.visao.login_registro.TestLoginRegistro;
@@ -32,6 +33,8 @@ public class Menu extends JPanel {
     private JLabel desc2;
     private JLabel desc3;
     private JLabel desc4;
+    private JButton gerenciarConta;
+    private boolean logado = false;
     private boolean selecionado;
 
     public Menu() {
@@ -41,6 +44,8 @@ public class Menu extends JPanel {
     private void init() {
         this.setPreferredSize(new Dimension(1280, 720));
         this.selecionado = true;
+        this.gerenciarConta = new JButton(new FlatSVGIcon("login/icon/usuario.svg", 0.035f));
+        gerenciarConta.setText("Conta");
         this.database = new JButton(new FlatSVGIcon("Menu/database.svg", 0.067F));
         this.desc1 = new JLabel("Descrição jogo 1");
         this.desc2 = new JLabel("Descrição jogo 2");
@@ -68,14 +73,10 @@ public class Menu extends JPanel {
         this.desc2.setForeground(Color.black);
         this.desc3.setForeground(Color.black);
         this.desc4.setForeground(Color.black);
-        this.jogo1.setBorderPainted(false);
-        this.jogo2.setBorderPainted(false);
-        this.jogo3.setBorderPainted(false);
-        this.jogo4.setBorderPainted(false);
-        this.todosButton.setFocusPainted(false);
-        this.recomendadosButton.setFocusPainted(false);
-        this.Sair_Botao.setFocusPainted(false);
-        this.Login_Botao.setFocusPainted(false);
+        todosButton.setFocusable(true);
+        Sair_Botao.setFocusable(false);
+        Login_Botao.setFocusable(false);
+        gerenciarConta.setFocusable(false);
         this.Buscar.setText("Buscar");
         this.Buscar.setFocusable(false);
         this.database.setFocusPainted(false);
@@ -83,9 +84,11 @@ public class Menu extends JPanel {
         this.database.setContentAreaFilled(false);
 
         // Adiciona componentes ao painel
+        if (logado) {
+          add(this.gerenciarConta);
+        } else this.add(this.Login_Botao);
         this.add(this.Buscar);
         this.add(this.Sair_Botao);
-        this.add(this.Login_Botao);
         this.add(this.todosButton);
         this.add(this.recomendadosButton);
         this.add(this.database);
@@ -99,12 +102,14 @@ public class Menu extends JPanel {
         this.add(this.desc4);
 
         Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
+        this.gerenciarConta.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, null);
 
         // Configurações dos botões
         this.Sair_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.Login_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.todosButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.recomendadosButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        database.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -149,6 +154,17 @@ public class Menu extends JPanel {
             }
         });
 
+        gerenciarConta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GerenciarConta conta = new GerenciarConta(false);
+                Container container = Menu.this.getParent();
+                container.removeAll();
+                container.add(conta);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
         Login_Botao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,6 +181,7 @@ public class Menu extends JPanel {
         // Função dos botões de categoria
         Color corTodos = todosButton.getBackground();
         Color corRecomendado = recomendadosButton.getBackground();
+        todosButton.setBackground(new Color(200, 200, 200));
         this.todosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selecionado = true;
@@ -205,7 +222,8 @@ public class Menu extends JPanel {
     private void atulizarPosObjetos() {
         this.Sair_Botao.setSize(60, 30);
         this.database.setBounds(this.getWidth() / 2 - 45, 50, 90, 90);
-        this.Sair_Botao.setBounds(this.getWidth() - this.Sair_Botao.getWidth() - 15, 0, 60, 30);
+        this.Sair_Botao.setBounds(this.getWidth() - this.Sair_Botao.getWidth(), 0, 60, 30);
+        this.gerenciarConta.setBounds(this.Sair_Botao.getX() - 85,0,85,30);
         this.Buscar.setBounds(0, 0, 0, 30);
         this.Login_Botao.setBounds(this.Sair_Botao.getX() - 70, 0, 70, 30);
         this.todosButton.setBounds(this.Buscar.getX(), this.Buscar.getHeight(), 70, 30);
@@ -214,9 +232,9 @@ public class Menu extends JPanel {
         this.desc1.setBounds(this.jogo1.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
         this.jogo4.setBounds(this.getWidth() - 300, this.jogo1.getY(), 200, 200);
         this.desc4.setBounds(this.jogo4.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
-        this.jogo2.setBounds(this.jogo1.getX() + this.jogo1.getWidth() + this.getWidth()/12, this.jogo1.getY(), 200, 200);
+        this.jogo2.setBounds(this.jogo1.getX() + this.jogo1.getWidth()+90, this.jogo1.getY(), 200, 200);
         this.desc2.setBounds(this.jogo2.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
-        this.jogo3.setBounds(this.jogo4.getX() - this.jogo4.getWidth() - this.getWidth()/12, this.jogo1.getY(), 200, 200);
+        this.jogo3.setBounds(this.jogo4.getX() - this.jogo4.getWidth()-90, this.jogo1.getY(), 200, 200);
         this.desc3.setBounds(this.jogo3.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
         this.recomendadosButton.setBounds(this.todosButton.getX() + this.todosButton.getWidth(), this.todosButton.getY(), this.todosButton.getWidth() + 60, 30);
         this.Buscar.setSize(this.todosButton.getWidth() + this.recomendadosButton.getWidth(), this.Buscar.getHeight());
