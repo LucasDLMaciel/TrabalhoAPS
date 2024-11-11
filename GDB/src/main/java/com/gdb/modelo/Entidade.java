@@ -6,20 +6,26 @@ class Entidade {
 
     private Integer id;
 
+    /**
+     * Construtor de uma instância que não existe no arquivo CSV.
+     */
     protected Entidade() {
-        this.setId(this.cadastrarEntidade());
+        this.setId(this.descobrirNovoId());
     }
 
-    private void setId(Integer id) {
+    /**
+     * Construtor de uma instância que já existe no arquivo CSV.
+     */
+    protected Entidade(Integer id) {
+        this.setId(id);
+    }
+
+    void setId(Integer id) {
         this.id = id;
     }
 
     protected Integer getId() {
         return id;
-    }
-
-    private Integer cadastrarEntidade() {
-        return descobrirNovoId();
     }
 
     /**
