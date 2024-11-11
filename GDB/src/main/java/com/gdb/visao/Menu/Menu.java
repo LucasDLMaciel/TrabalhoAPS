@@ -60,16 +60,16 @@ public class Menu extends JPanel {
     }
 
     private void toggleTheme() {
-        // Alterna entre os temas Dark e Light
+        // Alterna o tema e redefine o estilo
         if (darkTheme) {
             FlatMacLightLaf.setup();
         } else {
             FlatMacDarkLaf.setup();
         }
-        darkTheme = !darkTheme; // Atualiza o estado do tema
+        darkTheme = !darkTheme;
 
-        // Atualiza a aparência de todos os componentes
-        SwingUtilities.updateComponentTreeUI(this);
+        // Atualiza o tema para todos os componentes
+        SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
     }
 
     private void init() {
