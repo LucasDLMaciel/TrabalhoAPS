@@ -2,8 +2,10 @@ package com.gdb.visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.gdb.visao.login_registro.GerenciarConta;
+import com.gdb.visao.gerenciar.GerenciarGenero;
+import com.gdb.visao.gerenciar.GerenciarUsuarios;
 import com.gdb.visao.login_registro.Login;
+import com.gdb.visao.gerenciar.GerenciarConta;
 import com.gdb.visao.login_registro.Registro;
 import com.gdb.visao.login_registro.TestLoginRegistro;
 
@@ -34,8 +36,19 @@ public class Menu extends JPanel {
     private JLabel desc3;
     private JLabel desc4;
     private JButton gerenciarConta;
-    private boolean logado = false;
+    private boolean logado = true;
+    private boolean admin = true;
     private boolean selecionado;
+    private JButton gerenciarGenero;
+    private JButton gerenciarUsuarios;
+
+    public boolean getlogado(){
+        return logado;
+    }
+
+    public void setlogado(boolean logado){
+        this.logado = logado;
+    }
 
     public Menu() {
         this.init();
@@ -45,8 +58,12 @@ public class Menu extends JPanel {
         this.setPreferredSize(new Dimension(1280, 720));
         this.selecionado = true;
         this.gerenciarConta = new JButton(new FlatSVGIcon("login/icon/usuario.svg", 0.035f));
-        gerenciarConta.setText("Conta");
+        this.gerenciarUsuarios = new JButton();
+        this.gerenciarGenero = new JButton();
         this.database = new JButton(new FlatSVGIcon("Menu/database.svg", 0.067F));
+        gerenciarGenero.setText("Gerenciar gêneros");
+        gerenciarUsuarios.setText("Gerenciar usuarios");
+        gerenciarConta.setText("Conta");
         this.desc1 = new JLabel("Descrição jogo 1");
         this.desc2 = new JLabel("Descrição jogo 2");
         this.desc3 = new JLabel("Descrição jogo 3");
@@ -73,20 +90,26 @@ public class Menu extends JPanel {
         this.desc2.setForeground(Color.black);
         this.desc3.setForeground(Color.black);
         this.desc4.setForeground(Color.black);
+        gerenciarUsuarios.setBackground(new Color(109, 1, 235));
+        gerenciarGenero.setBackground(new Color(109, 1, 235));
+        gerenciarUsuarios.setFocusable(false);
+        gerenciarGenero.setFocusable(false);
         todosButton.setFocusable(true);
         Sair_Botao.setFocusable(false);
         Login_Botao.setFocusable(false);
         gerenciarConta.setFocusable(false);
         this.Buscar.setText("Buscar");
         this.Buscar.setFocusable(false);
-        this.database.setFocusPainted(false);
-        this.database.setBorderPainted(false);
         this.database.setContentAreaFilled(false);
 
         // Adiciona componentes ao painel
         if (logado) {
           add(this.gerenciarConta);
         } else this.add(this.Login_Botao);
+        if (logado && admin){
+            add(this.gerenciarUsuarios);
+            add(this.gerenciarGenero);
+        }
         this.add(this.Buscar);
         this.add(this.Sair_Botao);
         this.add(this.todosButton);
@@ -101,14 +124,19 @@ public class Menu extends JPanel {
         this.add(this.desc3);
         this.add(this.desc4);
 
+        gerenciarUsuarios.putClientProperty(FlatClientProperties.STYLE, "");
+        gerenciarGenero.putClientProperty(FlatClientProperties.STYLE, "");
         Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
         this.gerenciarConta.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, null);
-
+        gerenciarConta.putClientProperty(FlatClientProperties.STYLE, "");
         // Configurações dos botões
         this.Sair_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.Login_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.todosButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.recomendadosButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.gerenciarConta.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gerenciarUsuarios.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gerenciarGenero.setCursor(new Cursor(Cursor.HAND_CURSOR));
         database.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         this.addComponentListener(new ComponentAdapter() {
@@ -154,6 +182,30 @@ public class Menu extends JPanel {
             }
         });
 
+        gerenciarGenero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GerenciarGenero gerenciarGenero1 = new GerenciarGenero();
+                Container container = Menu.this.getParent();
+                container.removeAll();
+                container.add(gerenciarGenero1);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+        gerenciarUsuarios.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GerenciarUsuarios gerenciarUsuarios1 = new GerenciarUsuarios();
+                Container container = Menu.this.getParent();
+                container.removeAll();
+                container.add(gerenciarUsuarios1);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
         gerenciarConta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GerenciarConta conta = new GerenciarConta(false);
@@ -181,12 +233,12 @@ public class Menu extends JPanel {
         // Função dos botões de categoria
         Color corTodos = todosButton.getBackground();
         Color corRecomendado = recomendadosButton.getBackground();
-        todosButton.setBackground(new Color(200, 200, 200));
+        todosButton.setBackground(new Color(149, 149, 149));
         this.todosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selecionado = true;
                 recomendadosButton.setBackground(corRecomendado);
-                todosButton.setBackground(new Color(200, 200, 200));
+                todosButton.setBackground(new Color(149, 149, 149));
                 Menu.this.selecionado = true;
                 Menu.this.jogo1.setVisible(true);
                 Menu.this.jogo4.setVisible(true);
@@ -198,7 +250,7 @@ public class Menu extends JPanel {
         this.recomendadosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 todosButton.setBackground(corTodos);
-                recomendadosButton.setBackground(new Color(200, 200, 200));
+                recomendadosButton.setBackground(new Color(149, 149, 149));
                 Menu.this.jogo1.setVisible(false);
                 Menu.this.jogo4.setVisible(false);
                 Menu.this.desc1.setVisible(false);
@@ -227,6 +279,8 @@ public class Menu extends JPanel {
         this.Buscar.setBounds(0, 0, 0, 30);
         this.Login_Botao.setBounds(this.Sair_Botao.getX() - 70, 0, 70, 30);
         this.todosButton.setBounds(this.Buscar.getX(), this.Buscar.getHeight(), 70, 30);
+        gerenciarUsuarios.setBounds(recomendadosButton.getWidth()+recomendadosButton.getX(), 0, 140, 30);
+        gerenciarGenero.setBounds(gerenciarUsuarios.getWidth()+gerenciarUsuarios.getX(), 0, 140, 30);
         this.jogo1.setSize(200, 200);
         this.jogo1.setBounds(100, 300, 200, 200);
         this.desc1.setBounds(this.jogo1.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
