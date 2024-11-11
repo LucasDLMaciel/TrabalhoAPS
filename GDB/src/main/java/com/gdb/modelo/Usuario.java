@@ -1,6 +1,8 @@
 package com.gdb.modelo;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Usuario extends Entidade {
 
@@ -50,17 +52,29 @@ public class Usuario extends Entidade {
     }
 
     public static Usuario cadastrarUsuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
-        // TODO Verificar se já existe usuário com esse nome de usuário
-        return new Usuario(usuario, senha, administradorFlag, dataNascimento);
+        Path arquivoPath = Arquivo.obterCaminhoArquivo(Usuario.class);
+        // Verifica se o nome de usuário já existe no arquivo
+        if (Arquivo.valorExisteArquivo(arquivoPath, "usuario", usuario)) {
+            System.out.println("Erro! O usuário já existe!");
+            System.exit(1);
+        }
+        // Cria e salva o usuário no arquivo
+        Usuario usuarioInstancia = new Usuario(usuario, senha, administradorFlag, dataNascimento);
+        Arquivo.escreverArquivo(arquivoPath, usuarioInstancia);
+        return usuarioInstancia;
     }
 
-    public void visualizarUsuario() {
-        System.out.println(this.getId());
-        System.out.println(this.getUsuario());
-        System.out.println(this.getSenha());
-        System.out.println(this.getAdministradorFlag());
-        System.out.println(this.getDataNascimento());
+    public static List<String[]> lerArquivoUsuarios() {
+        Path arquivoPath = Arquivo.obterCaminhoArquivo(Usuario.class);
+        return Arquivo.lerArquivo(arquivoPath);
     }
 
+    public void deletarUsuario() {
+        Path arquivoPath = Arquivo.obterCaminhoArquivo(Usuario.class);
+        Arquivo.deletarArquivo(arquivoPath, super.getId());
+    }
+
+    // TODO LOGIN DO USUÁRIO
+    // TODO FAZER O UPDATE DO USUÁRIO
     // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }
