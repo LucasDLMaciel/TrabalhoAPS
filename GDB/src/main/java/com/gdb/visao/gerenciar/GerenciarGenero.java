@@ -28,7 +28,6 @@ public class GerenciarGenero extends JPanel {
         add(tituloLabel, "split 2");
 
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         add(voltarButton, "gapy 10 5");
 
         // ActionListener para voltar ao menu

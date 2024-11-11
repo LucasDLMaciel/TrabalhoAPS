@@ -73,7 +73,6 @@ public class Login extends JPanel {
 
         // Botão para voltar ao menu
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         add(voltarButton, "gapy 10 5");
 
         // ActionListener para voltar ao menu

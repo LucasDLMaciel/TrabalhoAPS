@@ -110,7 +110,6 @@ public class GerenciarConta extends JPanel {
         add(salvarButton, "gapy 10 5");
 
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         add(voltarButton, "gapy 10 5");
 
         // ActionListener para voltar ao menu
