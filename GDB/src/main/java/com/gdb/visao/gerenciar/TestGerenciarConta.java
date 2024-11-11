@@ -16,7 +16,7 @@ public class TestGerenciarConta extends JFrame {
         setLocationRelativeTo(null);
 
         //add(new Login());
-        add(new GerenciarConta(true));
+        add(new GerenciarConta(true, true));
     }
 
     public static void main(String[] args) {

@@ -13,8 +13,10 @@ import java.awt.event.ActionListener;
 public class GerenciarGenero extends JPanel {
     private JTable tabelaUsuarios;
     private DefaultTableModel modeloTabela;
+    private boolean darkTheme;
 
-    public GerenciarGenero() {
+    public GerenciarGenero(boolean darkTheme) {
+        this.darkTheme = darkTheme;
         init();
     }
 
@@ -34,7 +36,7 @@ public class GerenciarGenero extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel do menu
-                Menu menu = new Menu();
+                Menu menu = new Menu(darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);

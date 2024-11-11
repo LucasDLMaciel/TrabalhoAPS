@@ -12,8 +12,9 @@ import com.gdb.visao.Menu.Menu;
 
 
 public class Login extends JPanel {
-
-    public Login() {
+    private boolean darkTheme;
+    public Login(boolean darkTheme) {
+        this.darkTheme = darkTheme;
         init();
     }
 
@@ -80,7 +81,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel do menu
-                Menu menu = new Menu();
+                Menu menu = new Menu(darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);
@@ -95,7 +96,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel de registro
-                Registro registro = new Registro(false);
+                Registro registro = new Registro(false, darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(registro);

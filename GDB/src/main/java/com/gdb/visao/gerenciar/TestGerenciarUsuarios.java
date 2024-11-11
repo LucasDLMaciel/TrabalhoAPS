@@ -16,7 +16,7 @@ public class TestGerenciarUsuarios extends JFrame {
         setLocationRelativeTo(null);
 
         //add(new Login());
-        add(new GerenciarUsuarios());
+        add(new GerenciarUsuarios(true));
     }
 
     public static void main(String[] args) {

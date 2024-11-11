@@ -18,8 +18,10 @@ public class Registro extends JPanel {
     private JFormattedTextField dataNascimentoField;
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
+    private boolean darkTheme;
 
-    public Registro(boolean isAdminLogado) {
+    public Registro(boolean isAdminLogado, boolean darkTheme) {
+        this.darkTheme = darkTheme;
         init(isAdminLogado);
     }
 
@@ -120,7 +122,7 @@ public class Registro extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de registro pelo painel de login
-                Login login = new Login();
+                Login login = new Login(darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(login);

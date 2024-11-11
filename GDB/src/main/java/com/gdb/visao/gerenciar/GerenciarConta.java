@@ -21,8 +21,10 @@ public class GerenciarConta extends JPanel {
     private JFormattedTextField dataNascimentoField;
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
+    private boolean darkTheme;
 
-    public GerenciarConta(boolean isAdminLogado) {
+    public GerenciarConta(boolean isAdminLogado, boolean darkTheme) {
+        this.darkTheme = darkTheme;
         init(isAdminLogado);
     }
 
@@ -116,7 +118,7 @@ public class GerenciarConta extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel do menu
-                com.gdb.visao.Menu.Menu menu = new Menu();
+                com.gdb.visao.Menu.Menu menu = new Menu(darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);
@@ -142,7 +144,7 @@ public class GerenciarConta extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de registro pelo painel de login
-                Login login = new Login();
+                Login login = new Login(darkTheme);
                 Container container = getParent();
                 container.removeAll();
                 container.add(login);

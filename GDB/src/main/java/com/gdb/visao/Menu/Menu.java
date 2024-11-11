@@ -2,8 +2,10 @@ package com.gdb.visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.gdb.visao.login_registro.GerenciarConta;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.gdb.visao.login_registro.Login;
+import com.gdb.visao.gerenciar.GerenciarConta;
 import com.gdb.visao.login_registro.Registro;
 import com.gdb.visao.login_registro.TestLoginRegistro;
 
@@ -24,6 +26,7 @@ public class Menu extends JPanel {
     private JButton Login_Botao;
     private JButton todosButton;
     private JButton recomendadosButton;
+    JButton toggleThemeButton;
     private JButton database;
     private JButton jogo1;
     private JButton jogo2;
@@ -34,11 +37,26 @@ public class Menu extends JPanel {
     private JLabel desc3;
     private JLabel desc4;
     private JButton gerenciarConta;
-    private boolean logado = false;
+    private boolean logado = true;
     private boolean selecionado;
+    private boolean darkTheme;
 
-    public Menu() {
+    public Menu(boolean darkTheme) {
+        this.darkTheme = darkTheme;
         this.init();
+    }
+
+    private void toggleTheme() {
+        // Alterna entre os temas Dark e Light
+        if (darkTheme) {
+            FlatMacLightLaf.setup();
+        } else {
+            FlatMacDarkLaf.setup();
+        }
+        darkTheme = !darkTheme; // Atualiza o estado do tema
+
+        // Atualiza a aparência de todos os componentes
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     private void init() {
@@ -61,6 +79,7 @@ public class Menu extends JPanel {
         this.Login_Botao = new JButton("Login");
         this.todosButton = new JButton("Todos");
         this.recomendadosButton = new JButton("Recomendados");
+        this.toggleThemeButton = new JButton("Alternar Tema");
 
         this.atulizarPosObjetos();
 
@@ -91,6 +110,7 @@ public class Menu extends JPanel {
         this.add(this.Sair_Botao);
         this.add(this.todosButton);
         this.add(this.recomendadosButton);
+        this.add(this.toggleThemeButton);
         this.add(this.database);
         this.add(this.jogo1);
         this.add(this.jogo2);
@@ -100,6 +120,9 @@ public class Menu extends JPanel {
         this.add(this.desc2);
         this.add(this.desc3);
         this.add(this.desc4);
+
+        toggleThemeButton.addActionListener(e -> toggleTheme());
+
 
         Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
         this.gerenciarConta.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, null);
@@ -156,7 +179,7 @@ public class Menu extends JPanel {
 
         gerenciarConta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GerenciarConta conta = new GerenciarConta(false);
+                GerenciarConta conta = new GerenciarConta(false, darkTheme);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(conta);
@@ -169,7 +192,7 @@ public class Menu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel do menu pelo painel de login
-                Login login = new Login();
+                Login login = new Login(darkTheme);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(login);
@@ -195,6 +218,7 @@ public class Menu extends JPanel {
                 Menu.this.atulizarPosObjetos();
             }
         });
+
         this.recomendadosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 todosButton.setBackground(corTodos);
@@ -220,6 +244,7 @@ public class Menu extends JPanel {
     }
 
     private void atulizarPosObjetos() {
+        this.toggleThemeButton.setBounds(this.getWidth() - 40, this.getHeight() - 40, 40, 40);
         this.Sair_Botao.setSize(60, 30);
         this.database.setBounds(this.getWidth() / 2 - 45, 50, 90, 90);
         this.Sair_Botao.setBounds(this.getWidth() - this.Sair_Botao.getWidth(), 0, 60, 30);
