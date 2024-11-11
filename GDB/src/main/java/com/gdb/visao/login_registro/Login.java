@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.gdb.visao.Menu.Menu;
+
 
 public class Login extends JPanel {
     public Login() {
@@ -17,7 +19,7 @@ public class Login extends JPanel {
     private void init(){
 
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
-        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.065f)));
+        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
 
         JLabel loginLabel = new JLabel("Login", JLabel.CENTER);
@@ -66,6 +68,27 @@ public class Login extends JPanel {
         JButton criarConta = criarBotaoSemBorda("Criar Conta");
         add(criarConta, "gapx n push");
 
+
+        // Botão para voltar ao menu
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        add(voltarButton, "gapy 10 5");
+
+        // ActionListener para voltar ao menu
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Substitui o painel de login pelo painel do menu
+                Menu menu = new Menu();
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+
         // Dentro da classe Login
         criarConta.addActionListener(new ActionListener() {
             @Override
@@ -81,6 +104,8 @@ public class Login extends JPanel {
         });
 
     }
+
+
 
     private JSeparator criarSeparador() {
         JSeparator separador = new JSeparator();

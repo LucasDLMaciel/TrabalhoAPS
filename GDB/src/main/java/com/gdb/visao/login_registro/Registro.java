@@ -25,7 +25,7 @@ public class Registro extends JPanel {
 
     private void init(boolean isAdminLogado) {
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
-        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.065f)));
+        add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
         JLabel registroLabel = new JLabel("Registro", JLabel.CENTER);
         registroLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");

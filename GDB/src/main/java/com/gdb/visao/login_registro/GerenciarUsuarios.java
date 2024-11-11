@@ -18,9 +18,9 @@ public class GerenciarUsuarios extends JPanel {
     }
 
     private void init() {
-        setLayout(new MigLayout("wrap, fill, insets 20"));
+        setLayout(new MigLayout("wrap, fill, insets 20, al center center"));
 
-        JLabel tituloLabel = new JLabel("Gerenciar Usuários");
+        JLabel tituloLabel = new JLabel("Tabela de Usuários", JLabel.CENTER);
         tituloLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(tituloLabel, "split 2");
 
@@ -35,7 +35,7 @@ public class GerenciarUsuarios extends JPanel {
             }
         });
 
-        String[] colunas = {"Usuário", "Senha", "Data de Nascimento", "Gêneros Favoritos", "Administrador"};
+        String[] colunas = {"ID", "Usuário", "Senha", "Data de Nascimento", "Gêneros Favoritos", "Administrador"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {

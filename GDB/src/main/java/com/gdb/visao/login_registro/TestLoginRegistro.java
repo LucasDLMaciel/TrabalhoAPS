@@ -22,7 +22,7 @@ public class TestLoginRegistro extends JFrame {
     public static void main(String[] args) {
         FlatRobotoFont.install();
         FlatLaf.registerCustomDefaultsSource("login.themes");
-        FlatMacLightLaf.setup();
+        FlatMacDarkLaf.setup();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         EventQueue.invokeLater(() -> new TestLoginRegistro().setVisible(true));
     }
