@@ -1,6 +1,8 @@
 package com.gdb.modelo;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class Usuario extends Entidade {
 
@@ -21,33 +23,33 @@ public class Usuario extends Entidade {
         this.usuario = usuario;
     }
 
-    private String getUsuario() {
+    public String getUsuario() {
         return usuario;
-    }
+    } // !!!!!!!!!!!!!!!!!!!!!!! PRIVATE
 
     private void setSenha(String senha) {
         this.senha = senha;
     }
 
-    private String getSenha() {
+    public String getSenha() {
         return senha;
-    }
+    } // !!!!!!!!!!!!!!!!!!!!!! PRIVATE
 
     private void setAdministradorFlag(Boolean administradorFlag) {
         this.administradorFlag = administradorFlag;
     }
 
-    private Boolean getAdministradorFlag() {
+    public Boolean getAdministradorFlag() {
         return administradorFlag;
-    }
+    }  // !!!!!!!!!!! PRIVATE
 
     private void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    private LocalDate getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
-    }
+    } // !!!!!!!!!! PRIVATE
 
     public static Usuario cadastrarUsuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
         // TODO Verificar se já existe usuário com esse nome de usuário
@@ -61,6 +63,24 @@ public class Usuario extends Entidade {
         System.out.println(this.getAdministradorFlag());
         System.out.println(this.getDataNascimento());
     }
+
+    public static Usuario fromCSV(String csvLine) {
+        String[] values = csvLine.split(",");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dataNascimento = LocalDate.parse(values[3], formatter);
+        return new Usuario(values[0], values[1], Boolean.parseBoolean(values[2]), dataNascimento);
+    }
+
+    public String toCSV() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return String.join(",",
+                usuario,
+                senha,
+                administradorFlag.toString(),
+                dataNascimento.format(formatter)
+        );
+    }
+
 
     // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }

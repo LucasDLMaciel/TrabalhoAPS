@@ -1,6 +1,7 @@
 package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.gdb.controle.UsuarioControle;
 import com.gdb.visao.Menu.Menu;
 import net.miginfocom.swing.MigLayout;
 
@@ -9,6 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.gdb.modelo.Usuario;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GerenciarUsuarios extends JPanel {
     private JTable tabelaUsuarios;
@@ -17,7 +21,8 @@ public class GerenciarUsuarios extends JPanel {
 
     public GerenciarUsuarios(boolean darkTheme) {
         this.darkTheme = darkTheme;
-        init();
+        init(); // inicializa a janela
+        listarUsuarios(); // pedro: mostra os dados salvos de usuarios na tela.
     }
 
     private void init() {
@@ -26,7 +31,6 @@ public class GerenciarUsuarios extends JPanel {
         JLabel tituloLabel = new JLabel("Tabela de Usuários", JLabel.CENTER);
         tituloLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(tituloLabel, "split 2");
-
         JButton voltarButton = new JButton("Voltar");
         add(voltarButton, "gap left push");
 
@@ -167,6 +171,25 @@ public class GerenciarUsuarios extends JPanel {
         if (confirmacao == JOptionPane.YES_OPTION) {
             modeloTabela.removeRow(linhaSelecionada);
             // Aqui você pode remover o usuário do banco de dados ou de outro armazenamento persistente
+        }
+    }
+
+    private void listarUsuarios() {
+        //chama o controle pra trazer os dados
+        List<Usuario> usuarios = UsuarioControle.ListaUsuariosForAdmin();
+
+        // limpa a tabela antes de adicionar novos dados
+        //modeloTabela.setRowCount(0);
+
+        // adiciona cada usuario na tabela
+        for (Usuario usuario : usuarios) {
+            modeloTabela.addRow(new Object[]{
+                    modeloTabela.getRowCount() + 1,  // ID (auto incrementado)
+                    usuario.getUsuario(),            // Nome do usuário
+                    usuario.getSenha(),              // Senha do usuário
+                    usuario.getDataNascimento(),    // Data de nascimento
+                    usuario.getAdministradorFlag()     // Se é administrador (true/false)
+            });
         }
     }
 }
