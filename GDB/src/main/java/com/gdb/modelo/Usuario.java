@@ -3,6 +3,7 @@ package com.gdb.modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public final class Usuario extends Entidade {
 
@@ -160,4 +161,22 @@ public final class Usuario extends Entidade {
     }
 
     // TODO FAZER O UPDATE DO USUÁRIO (CASO O MATHEUS PEÇA)
+    public static Usuario fromCSV(String csvLine) {
+        String[] values = csvLine.split(",");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dataNascimento = LocalDate.parse(values[3], formatter);
+        return new Usuario(values[0], values[1], Boolean.parseBoolean(values[2]), dataNascimento);
+    }
+
+    public String toCSV() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return String.join(",",
+                usuario,
+                senha,
+                administradorFlag.toString(),
+                dataNascimento.format(formatter)
+        );
+    }
+
+    // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }

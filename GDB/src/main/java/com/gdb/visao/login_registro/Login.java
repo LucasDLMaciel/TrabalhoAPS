@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.gdb.visao.Menu.Menu;
+import com.gdb.controle.UsuarioControle;
 
 
 public class Login extends JPanel {
@@ -56,6 +57,34 @@ public class Login extends JPanel {
                 return true;
             }
         };
+
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JTextField campoUsuario = new JTextField();
+                JPasswordField campoSenha = new JPasswordField();
+
+                // Pega o nome de usuário do campo de texto
+                String nome_de_usuario = campoUsuario.getText(); // campoUsuario é o JTextField onde o usuário digita o nome
+
+                // Pega a senha do campo de senha (converte para String)
+                String senha = new String(campoSenha.getPassword()); // campoSenha é o JPasswordField onde o usuário digita a senha
+
+                boolean loginValido = UsuarioControle.validarLogin(nome_de_usuario, senha);
+
+                if (loginValido) {
+                    // Se o login for válido, realizar a ação de login (por exemplo, abrir um novo painel)
+                    JOptionPane.showMessageDialog(null, "Login bem-sucedido!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    // Aqui você pode redirecionar para outra tela ou painel
+                } else {
+                    // Se o login falhar, exibir mensagem de erro
+                    JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
 
         //FAZER LOGICA DE BUSCAR USUARIO NOS DADOS
         loginButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
