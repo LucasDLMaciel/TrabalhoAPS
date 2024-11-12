@@ -47,7 +47,7 @@ public final class Arquivo {
         try (CSVWriter writer = new CSVWriter(new FileWriter(arquivoPath.toString(), false),
                 ';',
                 CSVWriter.NO_QUOTE_CHARACTER,
-                '\\',
+                CSVWriter.NO_ESCAPE_CHARACTER,
                 "\n")) {
             writer.writeNext(cabecalho);
             for (Object elemento : elementos) {
@@ -77,29 +77,6 @@ public final class Arquivo {
             System.exit(1);
         }
         return caminhoArquivo;
-    }
-
-    /**
-     * Conta a quantidade de linhas de um arquivo CSV, ignorando o cabeçalho.
-     *
-     * @param arquivoPath O caminho do arquivo CSV a ser manipulado.
-     * @return A quantidade de linhas do arquivo, excluindo o cabeçalho.
-     */
-    static int contarLinhasArquivo(Path arquivoPath) {
-        int linhasContadas = 0;
-        try (CSVReader reader = new CSVReader(new FileReader(arquivoPath.toString()))) {
-            reader.readNext();  // Pula o cabeçalho
-            while (reader.readNext() != null) {
-                linhasContadas++;
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao contar as linhas do arquivo '"
-                    + arquivoPath.getFileName().toString()
-                    + "': "
-                    + e.getMessage());
-            System.exit(1);
-        }
-        return linhasContadas;
     }
 
     static String[] pegarCabecalhoArquivo(Path arquivoPath) {

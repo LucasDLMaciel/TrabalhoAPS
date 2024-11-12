@@ -7,6 +7,12 @@ import com.gdb.visao.login_registro.Login;
 import com.gdb.visao.login_registro.MultiplaEscolha;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import com.gdb.modelo.Usuario;
+import com.gdb.controle.UsuarioControle;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,6 +105,7 @@ public class GerenciarConta extends JPanel {
         }
 
         // FAZER LOGICA DE PEGAR INFORMACOES E ALTERA-LAS
+
         JButton salvarButton = new JButton("Salvar Alterações") {
             @Override
             public boolean isDefaultButton() {
@@ -106,8 +113,53 @@ public class GerenciarConta extends JPanel {
             }
         };
 
-        salvarButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
+// Configuração do evento de clique para o botão salvarButton
+        salvarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String usuario = usuarioText.getText();
+                String senha = new String(senhaText.getPassword());
+
+                // Converter dataNascimento para LocalDate
+                String dataNascimentoString = dataNascimentoField.getText();
+                LocalDate dataNascimento = null;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // define a regra que deve ser seguida
+
+                try {
+                    dataNascimento = LocalDate.parse(dataNascimentoString, formatter); // converte de string pra LocalDate
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(null, "Formato de data inválido. Use dd/MM/yyyy.");
+                    return; // Interrompe a execução se houver erro
+                }
+
+                // Obter gêneros favoritos selecionados
+                List<String> generosFavoritos = generoBox.getSelecionados();
+
+                // Verifica se o usuário é administrador
+                boolean isAdmin = adminCheckBox.isSelected();
+
+                // Cria um novo usuário com os dados informados
+                Usuario novoUsuario = Usuario.cadastrarUsuario(usuario, senha, isAdmin, dataNascimento);
+
+                // Salva o usuário no arquivo CSV
+                UsuarioControle.salvarUsuario(novoUsuario);
+
+                // Exibe uma mensagem de sucesso
+                JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
+
+                // Limpa os campos após o cadastro
+                usuarioText.setText("");
+                senhaText.setText("");
+                dataNascimentoField.setText("");
+                generoBox.clearSelection();
+                adminCheckBox.setSelected(false);
+            }
+        });
+
+// Configuração do estilo do botão e adição à interface
+        salvarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         add(salvarButton, "gapy 10 5");
+
 
         JButton voltarButton = new JButton("Voltar");
         add(voltarButton, "gapy 10 5");

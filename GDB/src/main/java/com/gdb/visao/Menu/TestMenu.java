@@ -11,7 +11,7 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-public class TestMenu extends JFrame {
+public class  TestMenu extends JFrame {
     public TestMenu() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -85,4 +85,11 @@ public class MultiplaEscolha extends JPanel {
 
         return selecionados;
     }
+
+    public void clearSelection() {
+        for (JCheckBox checkBox : checkboxes) {
+            checkBox.setSelected(false);
+        }
+    }
+
 }

@@ -1,8 +1,6 @@
 package com.gdb.modelo;
 
-import java.nio.file.Path;
-
-class Entidade {
+public abstract class Entidade {
 
     private Integer id;
 
@@ -10,33 +8,31 @@ class Entidade {
      * Construtor de uma instância que não existe no arquivo CSV.
      */
     protected Entidade() {
-        this.setId(this.descobrirNovoId());
+        this.setId(descobrirNovoId());
     }
 
     /**
      * Construtor de uma instância que já existe no arquivo CSV.
+     *
+     * @param id O id do usuário.
      */
     protected Entidade(Integer id) {
         this.setId(id);
     }
 
-    void setId(Integer id) {
+    protected void setId(Integer id) {
         this.id = id;
     }
 
-    protected Integer getId() {
-        return id;
+    public Integer getId() {
+        return this.id;
     }
 
     /**
-     * Obtém o próximo id disponível para cadastro de uma nova entidade no arquivo CSV.
+     * Calcula o próximo id disponível para uma nova entidade.
      *
-     * @return O próximo id disponível, o qual é a quantidade total de linhas no arquivo mais um, excluindo o cabeçalho.
+     * @return O próximo id disponível para a nova entidade.
      */
-    private Integer descobrirNovoId() {
-        Path arquivoPath = Arquivo.obterCaminhoArquivo(this.getClass());
-        int linhasContadas = Arquivo.contarLinhasArquivo(arquivoPath);
-        return linhasContadas + 1;
-    }
+    protected abstract Integer descobrirNovoId();
 
 }
