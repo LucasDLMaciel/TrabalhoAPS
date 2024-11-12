@@ -71,6 +71,7 @@ public final class Usuario extends Entidade {
     public static Usuario cadastrarUsuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
         List<Usuario> usuarios = Global.getUsuarios();
         // Verifica se o usuário já existe na lista de usuários
+        // TODO ENTENDER COMO SE CONECTA COM O FRONT E TRATAR CORRETAMENTE
         if (Usuario.usuarioExiste(usuarios, usuario)) {
             System.out.println("Erro! O usuário já existe!");
             System.exit(1);
@@ -135,7 +136,7 @@ public final class Usuario extends Entidade {
      * Realiza o login do usuário.
      *
      * @param usuarioString O usuário.
-     * @param senha   A senha.
+     * @param senha         A senha.
      * @return O usuário logado.
      */
     public static Usuario fazerLogin(String usuarioString, String senha) throws Exception {
@@ -146,6 +147,16 @@ public final class Usuario extends Entidade {
             }
         }
         throw new Exception("Erro! O usuário não existe!");
+    }
+
+    /**
+     * Calcula o próximo id disponível para um novo usuário.
+     *
+     * @return O próximo id disponível para o novo usuário.
+     */
+    @Override
+    protected Integer descobrirNovoId() {
+        return Global.getUsuarios().size() + 1;
     }
 
     // TODO FAZER O UPDATE DO USUÁRIO (CASO O MATHEUS PEÇA)
