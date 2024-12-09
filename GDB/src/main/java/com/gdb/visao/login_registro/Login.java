@@ -2,6 +2,7 @@ package com.gdb.visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.controle.UsuarioControle;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -9,13 +10,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.gdb.visao.Menu.Menu;
-import com.gdb.controle.UsuarioControle;
 
 
 public class Login extends JPanel {
     private boolean darkTheme;
-    public Login(boolean darkTheme) {
+    private Integer idUsuario = 0;
+    public Login(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
+        this.idUsuario = idUsuario;
         init();
     }
 
@@ -61,28 +63,29 @@ public class Login extends JPanel {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String nome_de_usuario = usuarioText.getText();
+                String senha = new String(senhaText.getPassword());
 
-                JTextField campoUsuario = new JTextField();
-                JPasswordField campoSenha = new JPasswordField();
+                UsuarioControle registroService = new UsuarioControle();
+                idUsuario = registroService.validarLogin(nome_de_usuario, senha);
 
-                // Pega o nome de usuário do campo de texto
-                String nome_de_usuario = campoUsuario.getText(); // campoUsuario é o JTextField onde o usuário digita o nome
-
-                // Pega a senha do campo de senha (converte para String)
-                String senha = new String(campoSenha.getPassword()); // campoSenha é o JPasswordField onde o usuário digita a senha
-
-                boolean loginValido = UsuarioControle.validarLogin(nome_de_usuario, senha);
-
-                if (loginValido) {
-                    // Se o login for válido, realizar a ação de login (por exemplo, abrir um novo painel)
+                if (idUsuario != 0) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                    // Aqui você pode redirecionar para outra tela ou painel
+
+                    // Substitui o painel de login pelo painel do menu
+                    Menu menu = new Menu(darkTheme, idUsuario);
+                    Container container = getParent();
+                    container.removeAll();
+                    container.add(menu);
+                    container.revalidate();
+                    container.repaint();
                 } else {
-                    // Se o login falhar, exibir mensagem de erro
                     JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
+
 
 
 
@@ -109,7 +112,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel do menu
-                Menu menu = new Menu(darkTheme);
+                Menu menu = new Menu(darkTheme, idUsuario);
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);
@@ -124,7 +127,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel de registro
-                Registro registro = new Registro(false, darkTheme);
+                Registro registro = new Registro(darkTheme, idUsuario);
                 Container container = getParent();
                 container.removeAll();
                 container.add(registro);

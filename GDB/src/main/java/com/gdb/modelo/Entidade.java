@@ -8,7 +8,7 @@ public abstract class Entidade {
      * Construtor de uma instância que não existe no arquivo CSV.
      */
     protected Entidade() {
-        this.setId(descobrirNovoId());
+        this.setId(100);
     }
 
     /**
@@ -33,6 +33,8 @@ public abstract class Entidade {
      *
      * @return O próximo id disponível para a nova entidade.
      */
-    protected abstract Integer descobrirNovoId();
+    protected Integer descobrirNovoId(){
+        return this.getId() + 1;
+    }
 
 }

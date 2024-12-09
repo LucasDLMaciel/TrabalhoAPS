@@ -20,7 +20,7 @@ public class  TestMenu extends JFrame {
         setResizable(false);
         FlatSVGIcon iconFrame = new FlatSVGIcon("login/icon/logo.svg", 0.067F);
         this.setIconImage(iconFrame.getImage());
-        add(new Menu(true));
+        add(new Menu(true, 0));
     }
 
     public static void main(String[] args) {

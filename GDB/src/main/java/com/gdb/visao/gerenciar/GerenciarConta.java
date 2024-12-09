@@ -2,6 +2,10 @@ package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.controle.GeneroControle;
+import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
+import com.gdb.modelo.Usuario;
 import com.gdb.visao.Menu.Menu;
 import com.gdb.visao.login_registro.Login;
 import com.gdb.visao.login_registro.MultiplaEscolha;
@@ -10,8 +14,6 @@ import raven.datetime.component.date.DatePicker;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import com.gdb.modelo.Usuario;
-import com.gdb.controle.UsuarioControle;
 
 
 import javax.swing.*;
@@ -28,13 +30,21 @@ public class GerenciarConta extends JPanel {
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
     private boolean darkTheme;
+    private Integer idUsuario = 0;
 
-    public GerenciarConta(boolean isAdminLogado, boolean darkTheme) {
+    // Adicione um controlador de usuário para buscar e atualizar dados do usuário
+    private UsuarioControle usuarioControle; // Supondo que exista um controlador para manipular usuários
+    private GeneroControle generoControle;
+
+    public GerenciarConta(boolean darkTheme, Integer idUsuario) {
+        this.idUsuario = idUsuario;  // Armazena o id do usuário logado
         this.darkTheme = darkTheme;
-        init(isAdminLogado);
+        usuarioControle = new UsuarioControle();  // Inicialize o controlador ou faça como necessário
+        generoControle = new GeneroControle();
+        init();  // Inicializa os componentes da tela
     }
 
-    private void init(boolean isAdminLogado) {
+    private void init() {
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
         add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
@@ -42,12 +52,18 @@ public class GerenciarConta extends JPanel {
         registroLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(registroLabel);
 
+        // Inicialize os campos de texto antes de usá-los
+        usuarioText = new JTextField();
+        senhaText = new JPasswordField();
+        dataNascimentoField = new JFormattedTextField();
+        generoBox = new MultiplaEscolha(new ArrayList<>(), new ArrayList<>());
+        adminCheckBox = new JCheckBox("Administrador");
+
         JLabel usuarioLabel = new JLabel(" Usuário");
         usuarioLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(criarSeparador(), "gapy 5");
         add(usuarioLabel, "gapy 5");
 
-        usuarioText = new JTextField();
         usuarioText.putClientProperty(FlatClientProperties.STYLE,"iconTextGap: 10");
         usuarioText.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira o nome de Usuário");
         usuarioText.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON,new FlatSVGIcon("login/icon/usuario.svg", 0.04f));
@@ -56,9 +72,6 @@ public class GerenciarConta extends JPanel {
         JLabel senhaLabel = new JLabel(" Senha");
         senhaLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(senhaLabel, "gapy 10 2");
-
-        senhaText = new JPasswordField();
-        botaoRevelarSenha(senhaText);
 
         senhaText.putClientProperty(FlatClientProperties.STYLE,"iconTextGap: 10");
         senhaText.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Insira sua senha");
@@ -69,7 +82,6 @@ public class GerenciarConta extends JPanel {
         dataNascimentoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(dataNascimentoLabel, "gapy 10 2");
 
-        dataNascimentoField = new JFormattedTextField();
         DatePicker seletorData = new DatePicker();
         seletorData.setEditor(dataNascimentoField);
         dataNascimentoField.setBorder(BorderFactory.createCompoundBorder(
@@ -81,31 +93,25 @@ public class GerenciarConta extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<String> generos = new ArrayList<>();
-        generos.add("Terror");
-        generos.add("Aventura");
-        generos.add("Survival");
-        generos.add("História");
-        generos.add("Plataforma");
+        List<String> generos = generoControle.getGeneros();
 
-        List<String> generosFav = new ArrayList<>();
-        generosFav.add("Terror");
-        generosFav.add("Aventura");
-        generosFav.add("Plataforma");
+        Usuario usuario1 = usuarioControle.buscarUsuarioPorId(idUsuario);  // Busca o usuário pelo ID
+        List<String> generosFav = usuario1.getGenerosFavoritos();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
         generoBox.putClientProperty(FlatClientProperties.STYLE,"");
         add(generoBox, "gapx 23 23, width 300, align center");
 
-        adminCheckBox = new JCheckBox("Administrador");
         adminCheckBox.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
-        adminCheckBox.setVisible(isAdminLogado);
-        if(isAdminLogado) {
-            add(adminCheckBox, "gapy 10");
+
+        if (usuario1 != null) {
+            usuarioText.setText(usuario1.getUsuario());  // Preenche o campo de usuário
+            senhaText.setText(usuario1.getSenha());  // Preenche o campo de senha
+            dataNascimentoField.setText(usuario1.getDataNascimento().toString());  // Preenche a data de nascimento
+            adminCheckBox.setSelected(usuario1.isAdministrador());  // Marca ou desmarca o checkbox de administrador
         }
 
-        // FAZER LOGICA DE PEGAR INFORMACOES E ALTERA-LAS
-
+        // Botão para salvar alterações
         JButton salvarButton = new JButton("Salvar Alterações") {
             @Override
             public boolean isDefaultButton() {
@@ -113,10 +119,15 @@ public class GerenciarConta extends JPanel {
             }
         };
 
-// Configuração do evento de clique para o botão salvarButton
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Validar se os campos estão preenchidos
+                if (usuarioText.getText().isEmpty() || senhaText.getPassword().length == 0 || dataNascimentoField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.");
+                    return; // Interrompe a execução se algum campo estiver vazio
+                }
+
                 String usuario = usuarioText.getText();
                 String senha = new String(senhaText.getPassword());
 
@@ -126,7 +137,7 @@ public class GerenciarConta extends JPanel {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // define a regra que deve ser seguida
 
                 try {
-                    dataNascimento = LocalDate.parse(dataNascimentoString, formatter); // converte de string pra LocalDate
+                    dataNascimento = LocalDate.parse(dataNascimentoString, formatter); // converte de string para LocalDate
                 } catch (DateTimeParseException ex) {
                     JOptionPane.showMessageDialog(null, "Formato de data inválido. Use dd/MM/yyyy.");
                     return; // Interrompe a execução se houver erro
@@ -138,38 +149,24 @@ public class GerenciarConta extends JPanel {
                 // Verifica se o usuário é administrador
                 boolean isAdmin = adminCheckBox.isSelected();
 
-                // Cria um novo usuário com os dados informados
-                Usuario novoUsuario = Usuario.cadastrarUsuario(usuario, senha, isAdmin, dataNascimento);
+                // Atualizar usuário no banco de dados
+                usuarioControle.atualizarUsuario(idUsuario, usuario, senha, dataNascimentoString, generosFavoritos, isAdmin);
 
-                // Salva o usuário no arquivo CSV
-                UsuarioControle.salvarUsuario(novoUsuario);
-
-                // Exibe uma mensagem de sucesso
                 JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
-
-                // Limpa os campos após o cadastro
-                usuarioText.setText("");
-                senhaText.setText("");
-                dataNascimentoField.setText("");
-                generoBox.clearSelection();
-                adminCheckBox.setSelected(false);
             }
         });
 
-// Configuração do estilo do botão e adição à interface
         salvarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         add(salvarButton, "gapy 10 5");
 
-
+        // Botão Voltar
         JButton voltarButton = new JButton("Voltar");
         add(voltarButton, "gapy 10 5");
 
-        // ActionListener para voltar ao menu
         voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Substitui o painel de login pelo painel do menu
-                com.gdb.visao.Menu.Menu menu = new Menu(darkTheme);
+                Menu menu = new Menu(darkTheme, idUsuario);  // Passando o idUsuario para a próxima tela
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);
@@ -178,32 +175,34 @@ public class GerenciarConta extends JPanel {
             }
         });
 
-
-        add(criarSeparador(), "gapy 5 10");
-
-        JButton sairDaConta = criarBotaoSemBorda("Sair da conta");
-        sairDaConta.putClientProperty(FlatClientProperties.STYLE, "");
-        add(sairDaConta, "split 2, gapx push n");
-
-        JButton excluirConta = criarBotaoSemBorda("Excluir conta");
+        // Botão Excluir Conta
+        JButton excluirConta = new JButton("Excluir Conta");
         excluirConta.setForeground(Color.RED);
         add(excluirConta, "gapx n push");
 
-
-
-        sairDaConta.addActionListener(new ActionListener() {
+        excluirConta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Substitui o painel de registro pelo painel de login
-                Login login = new Login(darkTheme);
-                Container container = getParent();
-                container.removeAll();
-                container.add(login);
-                container.revalidate();
-                container.repaint();
+                int resposta = JOptionPane.showConfirmDialog(null,
+                        "Tem certeza que deseja excluir sua conta?",
+                        "Confirmar Exclusão",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    usuarioControle.excluirUsuarioPorId(idUsuario);
+                    JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
+                    // Redireciona para a tela de login após exclusão
+                    Login login = new Login(darkTheme, 0);
+                    Container container = getParent();
+                    container.removeAll();
+                    container.add(login);
+                    container.revalidate();
+                    container.repaint();
+                }
             }
         });
     }
+
 
     private JSeparator criarSeparador() {
         return new JSeparator();
@@ -242,5 +241,4 @@ public class GerenciarConta extends JPanel {
         toolBar.add(button);
         txt.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, toolBar);
     }
-
 }

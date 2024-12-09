@@ -1,22 +1,30 @@
 package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.gdb.modelo.Genero;
+import com.gdb.controle.GeneroControle;
 import com.gdb.visao.Menu.Menu;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class GerenciarGenero extends JPanel {
-    private JTable tabelaUsuarios;
+    private JTable tabelaGeneros;
     private DefaultTableModel modeloTabela;
     private boolean darkTheme;
+    private Integer idUsuario = 0;
+    private GeneroControle generoControle;
 
-    public GerenciarGenero(boolean darkTheme) {
+    public GerenciarGenero(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
+        this.idUsuario = idUsuario;
+        this.generoControle = new GeneroControle(); // Inicializa o controle de gêneros
         init();
     }
 
@@ -35,7 +43,7 @@ public class GerenciarGenero extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel do menu
-                Menu menu = new Menu(darkTheme);
+                Menu menu = new Menu(darkTheme, idUsuario);
                 Container container = getParent();
                 container.removeAll();
                 container.add(menu);
@@ -56,27 +64,30 @@ public class GerenciarGenero extends JPanel {
                 }
             }
         };
-        tabelaUsuarios = new JTable(modeloTabela);
-        tabelaUsuarios.setRowHeight(30);
 
-        JScrollPane scrollPane = new JScrollPane(tabelaUsuarios);
+        tabelaGeneros = new JTable(modeloTabela);
+        tabelaGeneros.setRowHeight(30);
+
+        tabelaGeneros.getTableHeader().setReorderingAllowed(false);
+
+
+        // Centralizar o conteúdo das células
+        DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();
+        centralizado.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Aplicar o renderizador centralizado a todas as colunas
+        for (int i = 0; i < tabelaGeneros.getColumnCount(); i++) {
+            tabelaGeneros.getColumnModel().getColumn(i).setCellRenderer(centralizado);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(tabelaGeneros);
         add(scrollPane, "");
 
-        JButton botaoEditar = new JButton("Editar Usuário");
-        JButton botaoRemover = new JButton("Remover Usuário");
-
-
-        JButton botaoAdicionar = new JButton("Adicionar Usuário"){
-            @Override
-            public boolean isDefaultButton(){
-                return true;
-            }
-        };
+        JButton botaoAdicionar = new JButton("Adicionar Gênero");
+        JButton botaoEditar = new JButton("Salvar Alterações");
+        JButton botaoRemover = new JButton("Remover Gênero");
 
         botaoRemover.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF;" + "background:#CC0000");
-
-        botaoAdicionar.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
-
 
         JPanel panelBotoes = new JPanel(new MigLayout("insets 0", "[grow][grow][grow]"));
         panelBotoes.add(botaoAdicionar, "grow");
@@ -84,87 +95,94 @@ public class GerenciarGenero extends JPanel {
         panelBotoes.add(botaoRemover, "grow");
         add(panelBotoes, "grow");
 
-//        botaoAdicionar.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                adicionarUsuario();
-//            }
-//        });
-//
-//        botaoEditar.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                editarUsuario();
-//            }
-//        });
+        botaoAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adicionarGenero();
+            }
+        });
+
+        botaoEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                salvarAlteracoes();
+            }
+        });
 
         botaoRemover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removerUsuario();
+                removerGenero();
             }
         });
+
+        // Carregar os gêneros na tabela ao inicializar
+        carregarGeneros();
     }
 
-//    private void adicionarUsuario() {
-//        Registro registro = new Registro();
-//        int resultado = JOptionPane.showConfirmDialog(this, registro, "Adicionar Usuário", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-//
-//        if (resultado == JOptionPane.OK_OPTION) {
-//            String usuario = registro.getUsuario();
-//            String senha = registro.getSenha();
-//            String dataNascimento = registro.getDataNascimento();
-//            String generos = String.join(", ", registro.getGenerosSelecionados());
-//            boolean isAdmin = registro.isAdmin();
-//
-//            modeloTabela.addRow(new Object[]{usuario, senha, dataNascimento, generos, isAdmin});
-//            // Aqui você pode salvar as informações no banco de dados ou em outro armazenamento persistente
-//        }
-//    }
 
-//    private void editarUsuario() {
-//        int linhaSelecionada = tabelaUsuarios.getSelectedRow();
-//        if (linhaSelecionada == -1) {
-//            JOptionPane.showMessageDialog(this, "Selecione um usuário para editar.", "Erro", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//
-//        String usuario = (String) modeloTabela.getValueAt(linhaSelecionada, 0);
-//        String senha = (String) modeloTabela.getValueAt(linhaSelecionada, 1);
-//        String dataNascimento = (String) modeloTabela.getValueAt(linhaSelecionada, 2);
-//        String generos = (String) modeloTabela.getValueAt(linhaSelecionada, 3);
-//        boolean isAdmin = (boolean) modeloTabela.getValueAt(linhaSelecionada, 4);
-//
-//        Registro registro = new Registro();
-//        registro.setUsuario(usuario);
-//        registro.setSenha(senha);
-//        registro.setDataNascimento(dataNascimento);
-//        registro.setGenerosSelecionados(generos.split(", "));
-//        registro.setAdmin(isAdmin);
-//
-//        int resultado = JOptionPane.showConfirmDialog(this, registro, "Editar Usuário", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-//
-//        if (resultado == JOptionPane.OK_OPTION) {
-//            modeloTabela.setValueAt(registro.getUsuario(), linhaSelecionada, 0);
-//            modeloTabela.setValueAt(registro.getSenha(), linhaSelecionada, 1);
-//            modeloTabela.setValueAt(registro.getDataNascimento(), linhaSelecionada, 2);
-//            modeloTabela.setValueAt(String.join(", ", registro.getGenerosSelecionados()), linhaSelecionada, 3);
-//            modeloTabela.setValueAt(registro.isAdmin(), linhaSelecionada, 4);
-//            // Aqui você pode atualizar as informações no banco de dados ou em outro armazenamento persistente
-//        }
-//    }
+    private void carregarGeneros() {
+        List<Genero> generos = generoControle.lerRegistros();
+        modeloTabela.setRowCount(0); // Limpa a tabela antes de adicionar os novos dados
+        for (Genero genero : generos) {
+            modeloTabela.addRow(new Object[]{genero.getId(), genero.getGenero()});
+        }
+    }
 
-    private void removerUsuario() {
-        int linhaSelecionada = tabelaUsuarios.getSelectedRow();
+    private void adicionarGenero() {
+        String genero = JOptionPane.showInputDialog(this, "Digite o nome do novo gênero:");
+        if (genero != null && !genero.trim().isEmpty()) {
+            try {
+                generoControle.salvarGenero(genero);
+                carregarGeneros(); // Recarrega a tabela após adicionar o gênero
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void salvarAlteracoes() {
+        try {
+            int totalLinhas = modeloTabela.getRowCount();
+
+            for (int i = 0; i < totalLinhas; i++) {
+                int idGenero = (int) modeloTabela.getValueAt(i, 0);
+                String novoGenero = (String) modeloTabela.getValueAt(i, 1);
+
+                // Valida cada gênero antes de salvar
+                if (novoGenero == null || novoGenero.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "O nome do gênero na linha " + (i + 1) + " não pode estar vazio.",
+                            "Erro", JOptionPane.ERROR_MESSAGE);
+                    carregarGeneros(); // Reverte as alterações para valores válidos
+                    return;
+                }
+
+                // Atualiza o gênero no controle
+                generoControle.atualizarGenero(idGenero, novoGenero);
+            }
+
+            JOptionPane.showMessageDialog(this, "Todas as alterações foram salvas com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro ao salvar alterações", JOptionPane.ERROR_MESSAGE);
+            carregarGeneros(); // Reverte alterações em caso de erro
+        }
+    }
+
+
+    private void removerGenero() {
+        int linhaSelecionada = tabelaGeneros.getSelectedRow();
         if (linhaSelecionada == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione um usuário para remover.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Selecione um gênero para remover.", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        int confirmacao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja remover este usuário?", "Confirmar Remoção", JOptionPane.YES_NO_OPTION);
+        int idGenero = (int) modeloTabela.getValueAt(linhaSelecionada, 0);
+        int confirmacao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja remover este gênero?", "Confirmar Remoção", JOptionPane.YES_NO_OPTION);
         if (confirmacao == JOptionPane.YES_OPTION) {
-            modeloTabela.removeRow(linhaSelecionada);
-            // Aqui você pode remover o usuário do banco de dados ou de outro armazenamento persistente
+            generoControle.excluirGeneroPorId(idGenero);
+            carregarGeneros(); // Recarrega a tabela após excluir o gênero
         }
     }
 }

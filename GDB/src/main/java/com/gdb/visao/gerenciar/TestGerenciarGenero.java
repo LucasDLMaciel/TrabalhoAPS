@@ -15,7 +15,7 @@ public class TestGerenciarGenero extends JFrame {
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
 
-        add(new GerenciarGenero(true));
+        add(new GerenciarGenero(true, 0));
     }
 
     public static void main(String[] args) {

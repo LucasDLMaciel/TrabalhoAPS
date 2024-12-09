@@ -3,6 +3,7 @@ package com.gdb.visao.login_registro;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -91,5 +92,24 @@ public class MultiplaEscolha extends JPanel {
             checkBox.setSelected(false);
         }
     }
+
+    public void setSelecionados(List<String> generosFavoritos) {
+        // Itera sobre todos os itens e seleciona os que estão na lista de favoritos
+        for (int i = 0; i < this.getComponentCount(); i++) {
+            // Aqui assumimos que você tenha um componente como um JCheckBox ou similar para cada item
+            Component component = this.getComponent(i);
+
+            if (component instanceof JCheckBox) {
+                JCheckBox checkBox = (JCheckBox) component;
+                // Se o item está na lista de favoritos, marca a checkbox como selecionada
+                if (generosFavoritos.contains(checkBox.getText())) {
+                    checkBox.setSelected(true);
+                } else {
+                    checkBox.setSelected(false);
+                }
+            }
+        }
+    }
+
 
 }

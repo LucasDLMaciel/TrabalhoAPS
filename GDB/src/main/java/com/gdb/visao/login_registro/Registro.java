@@ -2,6 +2,8 @@ package com.gdb.visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.controle.GeneroControle;
+import com.gdb.controle.UsuarioControle;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
@@ -19,13 +21,16 @@ public class Registro extends JPanel {
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
     private boolean darkTheme;
+    private Integer idUsuario = 0;
+    private GeneroControle generoControle = new GeneroControle();
 
-    public Registro(boolean isAdminLogado, boolean darkTheme) {
+    public Registro(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
-        init(isAdminLogado);
+        this.idUsuario = idUsuario;
+        init();
     }
 
-    private void init(boolean isAdminLogado) {
+    private void init() {
         setLayout(new MigLayout("wrap, gapy 4, al center center", "[fill,300]"));
         add(new JLabel(new FlatSVGIcon("login/icon/logo.svg", 0.5f)));
 
@@ -63,21 +68,14 @@ public class Registro extends JPanel {
         dataNascimentoField = new JFormattedTextField();
         DatePicker seletorData = new DatePicker();
         seletorData.setEditor(dataNascimentoField);
-        dataNascimentoField.setBorder(BorderFactory.createCompoundBorder(
-                dataNascimentoField.getBorder(),
-                BorderFactory.createEmptyBorder(0, 8, 0, 0)));
+        dataNascimentoField.setBorder(BorderFactory.createCompoundBorder(dataNascimentoField.getBorder(), BorderFactory.createEmptyBorder(0, 8, 0, 0)));
         add(dataNascimentoField);
 
         JLabel generoLabel = new JLabel(" Gêneros favoritos", JLabel.CENTER);
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<String> generos = new ArrayList<>();
-        generos.add("Terror");
-        generos.add("Aventura");
-        generos.add("Survival");
-        generos.add("História");
-        generos.add("Plataforma");
+        List<String> generos = generoControle.getGeneros();
 
         List<String> generosFav = new ArrayList<>();
 
@@ -87,10 +85,7 @@ public class Registro extends JPanel {
 
         adminCheckBox = new JCheckBox("Administrador");
         adminCheckBox.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
-        adminCheckBox.setVisible(isAdminLogado);
-        if(isAdminLogado) {
-            add(adminCheckBox, "gapy 10");
-        }
+
 
         JButton registerButton = new JButton("Registrar") {
             @Override
@@ -122,7 +117,7 @@ public class Registro extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de registro pelo painel de login
-                Login login = new Login(darkTheme);
+                Login login = new Login(darkTheme, idUsuario);
                 Container container = getParent();
                 container.removeAll();
                 container.add(login);
@@ -153,6 +148,14 @@ public class Registro extends JPanel {
                 "Dados de Registro",
                 JOptionPane.INFORMATION_MESSAGE);
         //FAZER LOGICA DE SALVAR INFORMAÇÕES
+        try {
+            UsuarioControle service = new UsuarioControle();
+            service.salvarRegistro(usuario, senha, dataNascimento, generosSelecionados, adminCheckBox.isSelected());
+            JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso!", "Registro Completo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
 

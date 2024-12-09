@@ -1,0 +1,52 @@
+[
+  {
+    "usuario": "lucas",
+    "senha": "daniel",
+    "dataNascimento": "01/12/2024",
+    "generosFavoritos": [
+      "zzzz"
+    ],
+    "administrador": true,
+    "id": 1
+  },
+  {
+    "usuario": "macaco",
+    "senha": "gorila",
+    "dataNascimento": "01/12/2024",
+    "generosFavoritos": [
+      ""
+    ],
+    "administrador": false,
+    "id": 2
+  },
+  {
+    "usuario": "casaasdsadsa",
+    "senha": "a",
+    "dataNascimento": "30/12/2020",
+    "generosFavoritos": [
+      ""
+    ],
+    "administrador": false,
+    "id": 7
+  },
+  {
+    "usuario": "lucas1",
+    "senha": "daniel",
+    "dataNascimento": "",
+    "generosFavoritos": [
+      ""
+    ],
+    "administrador": false,
+    "id": 8
+  },
+  {
+    "usuario": "a",
+    "senha": "a",
+    "dataNascimento": "01/09/2024",
+    "generosFavoritos": [
+      ""
+    ],
+    "administrador": true,
+    "id": 9
+  }
+]

@@ -4,12 +4,12 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Usuario;
 import com.gdb.visao.gerenciar.GerenciarGenero;
 import com.gdb.visao.gerenciar.GerenciarUsuarios;
 import com.gdb.visao.login_registro.Login;
 import com.gdb.visao.gerenciar.GerenciarConta;
-import com.gdb.visao.login_registro.Registro;
-import com.gdb.visao.login_registro.TestLoginRegistro;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,23 +39,26 @@ public class Menu extends JPanel {
     private JLabel desc3;
     private JLabel desc4;
     private JButton gerenciarConta;
-    private boolean logado = true;
-    private boolean admin = true;
-    private boolean selecionado;
-    private boolean darkTheme;
     private JButton gerenciarGenero;
     private JButton gerenciarUsuarios;
 
-    public boolean getlogado(){
-        return logado;
-    }
+    private Integer idUsuario;
+    private boolean admin = true;
+    private boolean selecionado;
+    private boolean darkTheme;
+    private UsuarioControle usuarioControle;
+    private Usuario usuario;
 
-    public void setlogado(boolean logado){
-        this.logado = logado;
-    }
 
-    public Menu(boolean darkTheme) {
+
+    public Menu(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
+        this.idUsuario = idUsuario;
+        this.usuarioControle = new UsuarioControle();
+        usuario = usuarioControle.buscarUsuarioPorId(idUsuario);
+        if(usuario != null){
+            this.admin = usuario.isAdministrador();
+        }
         this.init();
     }
 
@@ -124,10 +127,10 @@ public class Menu extends JPanel {
         this.database.setContentAreaFilled(false);
 
         // Adiciona componentes ao painel
-        if (logado) {
+        if (idUsuario > 0) {
           add(this.gerenciarConta);
         } else this.add(this.Login_Botao);
-        if (logado && admin){
+        if (idUsuario > 0 && admin){
             add(this.gerenciarUsuarios);
             add(this.gerenciarGenero);
         }
@@ -210,7 +213,7 @@ public class Menu extends JPanel {
         gerenciarGenero.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GerenciarGenero gerenciarGenero1 = new GerenciarGenero(darkTheme);
+                GerenciarGenero gerenciarGenero1 = new GerenciarGenero(darkTheme, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(gerenciarGenero1);
@@ -222,7 +225,7 @@ public class Menu extends JPanel {
         gerenciarUsuarios.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GerenciarUsuarios gerenciarUsuarios1 = new GerenciarUsuarios(darkTheme);
+                GerenciarUsuarios gerenciarUsuarios1 = new GerenciarUsuarios(darkTheme, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(gerenciarUsuarios1);
@@ -233,7 +236,7 @@ public class Menu extends JPanel {
 
         gerenciarConta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GerenciarConta conta = new GerenciarConta(false, darkTheme);
+                GerenciarConta conta = new GerenciarConta(false, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(conta);
@@ -246,7 +249,7 @@ public class Menu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel do menu pelo painel de login
-                Login login = new Login(darkTheme);
+                Login login = new Login(darkTheme, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(login);

@@ -16,7 +16,7 @@ public class TestLoginRegistro extends JFrame {
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
 
-        add(new Login(false));
+        add(new Login(false, 0));
     }
 
     public static void main(String[] args) {
