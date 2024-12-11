@@ -23,9 +23,12 @@ public class TestDesc extends JFrame {
     public TestDesc(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(1280, 720));
+        setResizable(false);
+        FlatSVGIcon iconFrame = new FlatSVGIcon("login/icon/logo.svg", 0.067F);
+        this.setIconImage(iconFrame.getImage());
         setTitle("Descrição - Game Database");
         setLocationRelativeTo(null);
-        add(new Desc());
+        add(new Desc(true, 0));
     };
 
     public static void main(String[] args) {
