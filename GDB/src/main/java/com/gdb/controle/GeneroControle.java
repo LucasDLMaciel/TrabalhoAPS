@@ -28,7 +28,7 @@ public class GeneroControle {
         // Verifica se o usuário já existe
         for (Genero registro : generos) {
             if (registro.getGenero().equalsIgnoreCase(genero)) {
-                throw new IllegalArgumentException("Genero já cadastrado.");
+                return;
             }
         }
 

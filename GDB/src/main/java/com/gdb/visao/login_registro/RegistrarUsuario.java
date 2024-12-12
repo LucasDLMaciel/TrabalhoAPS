@@ -14,17 +14,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Registro extends JPanel {
+public class RegistrarUsuario extends JPanel {
     private JTextField usuarioText;
     private JPasswordField senhaText;
     private JFormattedTextField dataNascimentoField;
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
+
     private boolean darkTheme;
     private Integer idUsuario = 0;
     private GeneroControle generoControle = new GeneroControle();
 
-    public Registro(boolean darkTheme, Integer idUsuario) {
+    public RegistrarUsuario(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
         init();

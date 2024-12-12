@@ -1,13 +1,26 @@
 [
   {
-    "usuario": "lucas",
-    "senha": "daniel",
-    "dataNascimento": "01/12/2024",
+    "usuario": "admin",
+    "senha": "admin",
+    "dataNascimento": "01/12/1000",
     "generosFavoritos": [
-      "zzzz"
+      "pspsps"
     ],
     "administrador": true,
-    "id": 1
+    "id": 1000
+  },
+  {
+    "usuario": "a",
+    "senha": "a",
+    "dataNascimento": "01/12/2000",
+    "generosFavoritos": [
+      "pspsps",
+      "sdaasbb",
+      "aaaabb",
+      "adasdas"
+    ],
+    "administrador": true,
+    "id": 1001
   },
   {
     "usuario": "macaco",
@@ -17,17 +30,7 @@
       ""
     ],
     "administrador": false,
-    "id": 2
-  },
-  {
-    "usuario": "casaasdsadsa",
-    "senha": "a",
-    "dataNascimento": "30/12/2020",
-    "generosFavoritos": [
-      ""
-    ],
-    "administrador": false,
-    "id": 7
+    "id": 1002
   },
   {
     "usuario": "lucas1",
@@ -37,16 +40,6 @@
       ""
     ],
     "administrador": false,
-    "id": 8
-  },
-  {
-    "usuario": "a",
-    "senha": "a",
-    "dataNascimento": "01/09/2024",
-    "generosFavoritos": [
-      ""
-    ],
-    "administrador": true,
-    "id": 9
+    "id": 1003
   }
 ]

@@ -15,9 +15,12 @@ import com.gdb.visao.Menu.Menu;
 public class Login extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario = 0;
+    UsuarioControle usuarioControle;
+
     public Login(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
+        this.usuarioControle = new UsuarioControle();
         init();
     }
 
@@ -66,8 +69,8 @@ public class Login extends JPanel {
                 String nome_de_usuario = usuarioText.getText();
                 String senha = new String(senhaText.getPassword());
 
-                UsuarioControle registroService = new UsuarioControle();
-                idUsuario = registroService.validarLogin(nome_de_usuario, senha);
+
+                idUsuario = usuarioControle.validarLogin(nome_de_usuario, senha);
 
                 if (idUsuario != 0) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -87,11 +90,13 @@ public class Login extends JPanel {
 
 
 
+        // Botão para voltar ao menu
+        JButton voltarButton = new JButton("Voltar");
+        add(voltarButton, "split 2, gapy 10 5");
 
-
-        //FAZER LOGICA DE BUSCAR USUARIO NOS DADOS
         loginButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
-        add(loginButton, "gapy 10 5");
+        add(loginButton, "");
+
 
         add(criarSeparador(), "gapy 5 10");
 
@@ -103,9 +108,7 @@ public class Login extends JPanel {
         add(criarConta, "gapx n push");
 
 
-        // Botão para voltar ao menu
-        JButton voltarButton = new JButton("Voltar");
-        add(voltarButton, "gapy 10 5");
+
 
         // ActionListener para voltar ao menu
         voltarButton.addActionListener(new ActionListener() {
@@ -127,7 +130,7 @@ public class Login extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Substitui o painel de login pelo painel de registro
-                Registro registro = new Registro(darkTheme, idUsuario);
+                RegistrarUsuario registro = new RegistrarUsuario(darkTheme, idUsuario);
                 Container container = getParent();
                 container.removeAll();
                 container.add(registro);

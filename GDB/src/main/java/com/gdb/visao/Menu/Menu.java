@@ -4,12 +4,13 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.gdb.controle.JogoControle;
 import com.gdb.controle.UsuarioControle;
 import com.gdb.modelo.Usuario;
 import com.gdb.visao.gerenciar.GerenciarGenero;
 import com.gdb.visao.gerenciar.GerenciarUsuarios;
 import com.gdb.visao.login_registro.Login;
-import com.gdb.visao.gerenciar.GerenciarConta;
+import com.gdb.visao.gerenciar.GerenciarUsuario;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,7 @@ public class Menu extends JPanel {
     private boolean selecionado;
     private boolean darkTheme;
     private UsuarioControle usuarioControle;
+    private JogoControle jogoControle;
     private Usuario usuario;
 
 
@@ -55,6 +57,7 @@ public class Menu extends JPanel {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
         this.usuarioControle = new UsuarioControle();
+        this.jogoControle = new JogoControle();
         usuario = usuarioControle.buscarUsuarioPorId(idUsuario);
         if(usuario != null){
             this.admin = usuario.isAdministrador();
@@ -236,7 +239,7 @@ public class Menu extends JPanel {
 
         gerenciarConta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GerenciarConta conta = new GerenciarConta(false, idUsuario);
+                GerenciarUsuario conta = new GerenciarUsuario(false, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(conta);

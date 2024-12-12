@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.gdb.controle.GeneroControle;
 import com.gdb.controle.UsuarioControle;
-import com.gdb.modelo.Genero;
 import com.gdb.modelo.Usuario;
 import com.gdb.visao.Menu.Menu;
 import com.gdb.visao.login_registro.Login;
@@ -23,12 +22,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciarConta extends JPanel {
+public class GerenciarUsuario extends JPanel {
     private JTextField usuarioText;
     private JPasswordField senhaText;
     private JFormattedTextField dataNascimentoField;
     private MultiplaEscolha generoBox;
     private JCheckBox adminCheckBox;
+
     private boolean darkTheme;
     private Integer idUsuario = 0;
 
@@ -36,7 +36,7 @@ public class GerenciarConta extends JPanel {
     private UsuarioControle usuarioControle; // Supondo que exista um controlador para manipular usuários
     private GeneroControle generoControle;
 
-    public GerenciarConta(boolean darkTheme, Integer idUsuario) {
+    public GerenciarUsuario(boolean darkTheme, Integer idUsuario) {
         this.idUsuario = idUsuario;  // Armazena o id do usuário logado
         this.darkTheme = darkTheme;
         usuarioControle = new UsuarioControle();  // Inicialize o controlador ou faça como necessário
@@ -112,7 +112,7 @@ public class GerenciarConta extends JPanel {
         }
 
         // Botão para salvar alterações
-        JButton salvarButton = new JButton("Salvar Alterações") {
+        JButton salvarButton = new JButton("Salvar") {
             @Override
             public boolean isDefaultButton() {
                 return true;
@@ -156,12 +156,9 @@ public class GerenciarConta extends JPanel {
             }
         });
 
-        salvarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
-        add(salvarButton, "gapy 10 5");
-
         // Botão Voltar
         JButton voltarButton = new JButton("Voltar");
-        add(voltarButton, "gapy 10 5");
+        add(voltarButton, "split 2, gapy 10 5");
 
         voltarButton.addActionListener(new ActionListener() {
             @Override
@@ -175,10 +172,17 @@ public class GerenciarConta extends JPanel {
             }
         });
 
+        salvarButton.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        add(salvarButton, "");
+
+        add(criarSeparador(), "gapy 5 5");
+
+
+
         // Botão Excluir Conta
-        JButton excluirConta = new JButton("Excluir Conta");
+        JButton excluirConta = criarBotaoSemBorda("Excluir Conta");
         excluirConta.setForeground(Color.RED);
-        add(excluirConta, "gapx n push");
+        add(excluirConta, "");
 
         excluirConta.addActionListener(new ActionListener() {
             @Override
