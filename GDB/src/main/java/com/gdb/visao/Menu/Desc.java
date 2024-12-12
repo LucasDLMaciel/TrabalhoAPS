@@ -8,16 +8,28 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class Desc extends JPanel {
-    public Desc() {
+    private boolean darkTheme;
+    private int idUsuario;
+    public Desc(boolean darkTheme, int idUsuario) {
+        this.idUsuario = idUsuario;
+        this.darkTheme = darkTheme;
         init();
     }
 
     private void init() {
-        JButton Voltar = new JButton("Voltar");
-        Voltar.putClientProperty(FlatClientProperties.STYLE, "");
-        Voltar.addMouseListener(new MouseAdapter() {
+        this.setLayout(null);
+        JButton voltar = new JButton("voltar");
+        voltar.setBounds(0, 0, 60, 30);
+        voltar.putClientProperty(FlatClientProperties.STYLE, "");
+        add(voltar);
+        voltar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                //logica de voltar pro menu
+                Menu menu = new Menu(darkTheme, idUsuario);
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
             }
         });
         JTextPane text = new JTextPane();

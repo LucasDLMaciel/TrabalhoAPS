@@ -204,6 +204,18 @@ public class Menu extends JPanel {
             }
         });
 
+        this.database.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Desc desc = new Desc(darkTheme, idUsuario);
+                Container container = getParent();
+                container.removeAll();
+                container.add(desc);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+
         this.Sair_Botao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (JOptionPane.showConfirmDialog(Menu.this, "Você tem certeza que quer sair da aplicação?", "Sair", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
