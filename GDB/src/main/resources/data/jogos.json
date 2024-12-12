@@ -1,0 +1,37 @@
+[
+  {
+    "titulo": "The Witcher 3",
+    "dataLancamento": "2015-05-19",
+    "descricao": "Aventura épica de Geralt de Rivia.",
+    "classificacaoEtaria": "18+",
+    "notas": [
+      {
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 9,
+        "notaHistoria": 10,
+        "notaJogabilidade": 9,
+        "comentario": "Jogo incrível, gráficos de tirar o fôlego.",
+        "id": 5
+      },
+      {
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 9,
+        "notaHistoria": 10,
+        "notaJogabilidade": 9,
+        "comentario": "Jogo incrível, gráficos de tirar o fôlego.",
+        "id": 6
+      }
+    ],
+    "generos": [
+      {
+        "genero": "teste",
+        "id": 0
+      },
+      {
+        "genero": "teste2",
+        "id": 0
+      }
+    ],
+    "id": 1
+  }
+]

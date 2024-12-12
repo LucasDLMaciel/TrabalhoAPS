@@ -38,23 +38,6 @@ public class GerenciarUsuarios extends JPanel {
         tituloLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(tituloLabel, "span, align center"); // Alinhamento centralizado com a opção "span"
 
-        JButton voltarButton = new JButton("Voltar");
-        add(voltarButton, "gap left push");
-
-        // ActionListener para voltar ao menu
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Substitui o painel de login pelo painel do menu
-                Menu menu = new Menu(darkTheme, idUsuario);
-                Container container = getParent();
-                container.removeAll();
-                container.add(menu);
-                container.revalidate();
-                container.repaint();
-            }
-        });
-
         String[] colunas = {"ID", "Usuário", "Senha", "Data de Nascimento", "Gêneros Favoritos", "Administrador"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
@@ -125,7 +108,26 @@ public class GerenciarUsuarios extends JPanel {
                 removerUsuario();
             }
         });
+
+        JButton voltarButton = new JButton("Voltar");
+        add(voltarButton, "gap left push");
+
+        // ActionListener para voltar ao menu
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Substitui o painel de login pelo painel do menu
+                Menu menu = new Menu(darkTheme, idUsuario);
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
+            }
+        });
     }
+
+
 
     private void adicionarUsuario() {
         AdicionarUsuario adicionarUsuario = new AdicionarUsuario(darkTheme, idUsuario);
@@ -163,7 +165,6 @@ public class GerenciarUsuarios extends JPanel {
     }
 
     private void editarUsuario() {
-        UsuarioControle usuarioControle = new UsuarioControle();
         List<Usuario> usuarios = new ArrayList<>();
 
         // Iterar pelas linhas da tabela para capturar os dados atualizados
