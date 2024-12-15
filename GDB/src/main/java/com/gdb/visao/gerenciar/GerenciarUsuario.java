@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.gdb.controle.GeneroControle;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
 import com.gdb.modelo.Usuario;
 import com.gdb.visao.Menu.Menu;
 import com.gdb.visao.login_registro.Login;
@@ -93,10 +94,10 @@ public class GerenciarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<String> generos = generoControle.getGeneros();
+        List<Genero> generos = generoControle.getGeneros();
 
         Usuario usuario1 = usuarioControle.buscarUsuarioPorId(idUsuario);  // Busca o usuário pelo ID
-        List<String> generosFav = usuario1.getGenerosFavoritos();
+        List<Genero> generosFav = usuario1.getGenerosFavoritos();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
         generoBox.putClientProperty(FlatClientProperties.STYLE,"");
@@ -144,7 +145,7 @@ public class GerenciarUsuario extends JPanel {
                 }
 
                 // Obter gêneros favoritos selecionados
-                List<String> generosFavoritos = generoBox.getSelecionados();
+                List<Genero> generosFavoritos = generoBox.getSelecionados();
 
                 // Verifica se o usuário é administrador
                 boolean isAdmin = adminCheckBox.isSelected();
@@ -182,7 +183,31 @@ public class GerenciarUsuario extends JPanel {
         // Botão Excluir Conta
         JButton excluirConta = criarBotaoSemBorda("Excluir Conta");
         excluirConta.setForeground(Color.RED);
-        add(excluirConta, "");
+        add(excluirConta, "split 2, gapx push n");
+
+        JButton sairButton = criarBotaoSemBorda("Sair da Conta");
+
+        add(sairButton, "gapx n push");
+
+        sairButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int resposta = JOptionPane.showConfirmDialog(null,
+                        "Tem certeza que deseja sair?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    // Redireciona para a tela de login após exclusão
+                    Menu menu = new Menu(darkTheme, 0);
+                    Container container = getParent();
+                    container.removeAll();
+                    container.add(menu);
+                    container.revalidate();
+                    container.repaint();
+                }
+            }
+        });
 
         excluirConta.addActionListener(new ActionListener() {
             @Override

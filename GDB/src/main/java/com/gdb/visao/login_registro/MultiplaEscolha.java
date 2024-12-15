@@ -1,5 +1,7 @@
 package com.gdb.visao.login_registro;
 
+import com.gdb.controle.GeneroControle;
+import com.gdb.modelo.Genero;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,9 +17,19 @@ public class MultiplaEscolha extends JPanel {
     private JPopupMenu popupMenu;
 
     // Construtor que recebe uma lista de strings para as opções e uma lista de gêneros favoritos para marcar
-    public MultiplaEscolha(List<String> options, List<String> generosFavoritos) {
+    public MultiplaEscolha(List<Genero> options, List<Genero> generosFavoritos) {
         // Definir layout para empilhar os componentes verticalmente
         setLayout(new MigLayout("wrap, al center center", "[fill,300]"));
+
+        List<String> generoList = new ArrayList<>();
+        List<String> generoFav = new ArrayList<>();
+        for(Genero registro : options){
+            generoList.add(registro.getGenero());
+        }
+
+        for(Genero registro : generosFavoritos){
+            generoFav.add(registro.getGenero());
+        }
 
         // Criar o botão que irá exibir o menu de múltipla escolha
         JButton showOptionsButton = new JButton("Escolher opções");
@@ -31,11 +43,11 @@ public class MultiplaEscolha extends JPanel {
         panel.setLayout(new MigLayout("wrap 1")); // Usar MigLayout para otimizar o layout
 
         // Criar as opções de múltipla escolha com JCheckBox
-        checkboxes = new JCheckBox[options.size()];
-        for (int i = 0; i < options.size(); i++) {
-            checkboxes[i] = new JCheckBox(options.get(i));
+        checkboxes = new JCheckBox[generoList.size()];
+        for (int i = 0; i < generoList.size(); i++) {
+            checkboxes[i] = new JCheckBox(generoList.get(i));
             // Apenas marcar as opções que estão na lista de gêneros favoritos
-            if (generosFavoritos.contains(options.get(i))) {
+            if (generoFav.contains(generoList.get(i))) {
                 checkboxes[i].setSelected(true);
             }
             panel.add(checkboxes[i]); // Adicionar os checkboxes ao painel
@@ -60,31 +72,40 @@ public class MultiplaEscolha extends JPanel {
         });
     }
 
-    private void mostrarSelecao() {
-        List<String> selecionados = getSelecionados();
-        StringBuilder selectedOptions = new StringBuilder("Opções selecionadas: ");
-
-        // Verificar quais opções estão selecionadas e adicionar ao StringBuilder
-        for (String option : selecionados) {
-            selectedOptions.append(option).append(" ");
-        }
-
-        // Exibir as opções selecionadas em uma caixa de diálogo
-        JOptionPane.showMessageDialog(this, selectedOptions.toString());
-    }
+//    private void mostrarSelecao() {
+//        List<String> selecionados = getSelecionados();
+//        StringBuilder selectedOptions = new StringBuilder("Opções selecionadas: ");
+//
+//        // Verificar quais opções estão selecionadas e adicionar ao StringBuilder
+//        for (String option : selecionados) {
+//            selectedOptions.append(option).append(" ");
+//        }
+//
+//        // Exibir as opções selecionadas em uma caixa de diálogo
+//        JOptionPane.showMessageDialog(this, selectedOptions.toString());
+//    }
 
     // Função que retorna as opções selecionadas
-    public List<String> getSelecionados() {
-        List<String> selecionados = new ArrayList<>();
+    public List<Genero> getSelecionados() {
+        String selecionado = null;
+        GeneroControle generoControle = new GeneroControle();
+        List<Genero> generos = generoControle.getGeneros();
+        List<Genero> generosFavoritos = new ArrayList<>();
 
         // Verificar quais opções estão selecionadas
         for (JCheckBox checkbox : checkboxes) {
             if (checkbox.isSelected()) {
-                selecionados.add(checkbox.getText());
+                selecionado = checkbox.getText();
+                for (Genero genero : generos) {
+                    if(genero.getGenero().equals(selecionado)){
+                        generosFavoritos.add(genero);
+                    }
+                }
+
             }
         }
 
-        return selecionados;
+        return generosFavoritos;
     }
 
     public void clearSelection() {

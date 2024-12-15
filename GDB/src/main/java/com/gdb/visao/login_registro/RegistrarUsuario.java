@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.gdb.controle.GeneroControle;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
@@ -76,9 +77,9 @@ public class RegistrarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<String> generos = generoControle.getGeneros();
+        List<Genero> generos = generoControle.getGeneros();
 
-        List<String> generosFav = new ArrayList<>();
+        List<Genero> generosFav = new ArrayList<>();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
         generoBox.putClientProperty(FlatClientProperties.STYLE,"");
@@ -132,23 +133,12 @@ public class RegistrarUsuario extends JPanel {
         String usuario = usuarioText.getText().trim();
         String senha = new String(senhaText.getPassword()).trim();
         String dataNascimento = dataNascimentoField.getText().trim();
-        List<String> generosSelecionados = generoBox.getSelecionados();
+        List<Genero> generosSelecionados = generoBox.getSelecionados();
         // Verifica se todos os campos obrigatórios estão preenchidos
         if (usuario.isEmpty() || senha.isEmpty() || dataNascimento.contains("-")) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        // Exibe as informações se todos os campos estão preenchidos
-        JOptionPane.showMessageDialog(this,
-                "Usuário: " + usuario + "\n" +
-                        "Senha: " + senha + "\n" +
-                        "Data de Nascimento: " + dataNascimento + "\n" +
-                        "Gêneros favoritos: " + generosSelecionados + "\n" +
-                        "Administrador: " + (adminCheckBox.isSelected() ? "Sim" : "Não"),
-                "Dados de Registro",
-                JOptionPane.INFORMATION_MESSAGE);
-        //FAZER LOGICA DE SALVAR INFORMAÇÕES
         try {
             UsuarioControle service = new UsuarioControle();
             service.salvarRegistro(usuario, senha, dataNascimento, generosSelecionados, adminCheckBox.isSelected());

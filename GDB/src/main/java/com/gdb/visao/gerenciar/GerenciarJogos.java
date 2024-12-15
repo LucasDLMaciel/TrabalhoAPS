@@ -1,6 +1,7 @@
 package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.gdb.controle.GeneroControle;
 import com.gdb.controle.JogoControle;
 import com.gdb.modelo.Genero;
 import com.gdb.modelo.Jogo;
@@ -11,23 +12,24 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GerenciarJogos extends JPanel {
     private JTable tabelaJogos;
     private DefaultTableModel modeloTabela;
 
     private boolean darkTheme;
-    private Integer idUsuario = 0;
+    private Integer idUsuario;
     private JogoControle jogoControle = new JogoControle();
 
     public GerenciarJogos(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
-        init(); // Inicializa a janela
-        listarJogos(); // Mostra os dados salvos de jogos na tela
+        init(); // inicializa a janela
+        listarJogos(); // Carrega os dados dos jogos na tabela
     }
 
     private void init() {
@@ -37,11 +39,11 @@ public class GerenciarJogos extends JPanel {
         tituloLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +15");
         add(tituloLabel, "span, align center");
 
-        String[] colunas = {"ID", "Título", "Descrição", "Faixa Etária", "Gêneros"};
+        String[] colunas = {"ID", "Título", "Descrição", "Classificação Etária", "Data de Lançamento", "Gêneros"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                return columnIndex == 0 ? Integer.class : String.class;
+                return String.class; // Todas as colunas são tratadas como String
             }
         };
 
@@ -49,6 +51,7 @@ public class GerenciarJogos extends JPanel {
         tabelaJogos.setRowHeight(30);
         tabelaJogos.getTableHeader().setReorderingAllowed(false);
 
+        // Centralizando o conteúdo das células de texto
         DefaultTableCellRenderer centralRenderer = new DefaultTableCellRenderer();
         centralRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < tabelaJogos.getColumnCount(); i++) {
@@ -58,11 +61,16 @@ public class GerenciarJogos extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tabelaJogos);
         add(scrollPane, "grow, wrap");
 
-        JButton botaoAdicionar = new JButton("Adicionar Jogo");
         JButton botaoEditar = new JButton("Salvar Alterações");
         JButton botaoRemover = new JButton("Remover Jogo");
+        JButton botaoAdicionar = new JButton("Adicionar Jogo") {
+            @Override
+            public boolean isDefaultButton() {
+                return true;
+            }
+        };
 
-        botaoRemover.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF;background:#CC0000");
+        botaoRemover.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF;" + "background:#CC0000");
         botaoAdicionar.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
 
         JPanel panelBotoes = new JPanel(new MigLayout("insets 0", "[grow][grow][grow]"));
@@ -71,56 +79,52 @@ public class GerenciarJogos extends JPanel {
         panelBotoes.add(botaoRemover, "grow");
         add(panelBotoes, "span, align center");
 
-        botaoAdicionar.addActionListener(e -> adicionarJogo());
-        botaoEditar.addActionListener(e -> editarJogos());
-        botaoRemover.addActionListener(e -> removerJogo());
+        botaoAdicionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                adicionarJogo();
+            }
+        });
+
+        botaoEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarJogo();
+            }
+        });
+
+        botaoRemover.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removerJogo();
+            }
+        });
 
         JButton voltarButton = new JButton("Voltar");
         add(voltarButton, "gap left push");
-        voltarButton.addActionListener(e -> voltarMenu());
+
+        // ActionListener para voltar ao menu
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Substitui o painel atual pelo painel do menu
+                Menu menu = new Menu(darkTheme, idUsuario);
+                Container container = getParent();
+                container.removeAll();
+                container.add(menu);
+                container.revalidate();
+                container.repaint();
+            }
+        });
     }
 
     private void adicionarJogo() {
-        String titulo = JOptionPane.showInputDialog(this, "Digite o título do jogo:");
-        String descricao = JOptionPane.showInputDialog(this, "Digite a descrição do jogo:");
-        String faixaEtaria = JOptionPane.showInputDialog(this, "Digite a faixa etária do jogo:");
-        String dataLancamento = JOptionPane.showInputDialog(this, "Digite a data de lançamento do jogo:");
-
-        // Selecionar gêneros
-        List<Genero> todosGeneros = jogoControle.carregarGeneros();
-        String generosSelecionados = JOptionPane.showInputDialog(this,
-                "Escolha os gêneros (IDs separados por vírgula):\n" +
-                        todosGeneros.stream()
-                                .map(g -> g.getId() + " - " + g.getGenero())
-                                .collect(Collectors.joining("\n")));
-
-        List<Genero> generos = new ArrayList<>();
-        if (generosSelecionados != null && !generosSelecionados.isBlank()) {
-            for (String idStr : generosSelecionados.split(",")) {
-                int id = Integer.parseInt(idStr.trim());
-                todosGeneros.stream()
-                        .filter(g -> g.getId() == id)
-                        .findFirst()
-                        .ifPresent(generos::add);
-            }
-        }
-
-        if (titulo != null && !titulo.isBlank()) {
-            Jogo novoJogo = new Jogo(titulo, dataLancamento, descricao, faixaEtaria, generos);
-            try {
-                jogoControle.salvarJogo(novoJogo);
-                modeloTabela.addRow(new Object[]{
-                        novoJogo.getId(),
-                        novoJogo.getTitulo(),
-                        novoJogo.getDescricao(),
-                        novoJogo.getClassificacaoEtaria(),
-                        generos.stream().map(Genero::getGenero).collect(Collectors.joining(", "))
-                });
-                JOptionPane.showMessageDialog(this, "Jogo adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        AdicionarJogo adicionarJogo = new AdicionarJogo(darkTheme, idUsuario);
+        Container container = getParent();
+        container.removeAll();
+        container.add(adicionarJogo);
+        container.revalidate();
+        container.repaint();
     }
 
     private void removerJogo() {
@@ -130,8 +134,9 @@ public class GerenciarJogos extends JPanel {
             return;
         }
 
-        int jogoId = (int) modeloTabela.getValueAt(selectedRow, 0);
+        int jogoId = Integer.parseInt(modeloTabela.getValueAt(selectedRow, 0).toString());
 
+        // Caixa de diálogo para confirmar a exclusão
         int resposta = JOptionPane.showConfirmDialog(this,
                 "Tem certeza que deseja excluir este jogo?",
                 "Confirmar Exclusão",
@@ -139,50 +144,59 @@ public class GerenciarJogos extends JPanel {
                 JOptionPane.WARNING_MESSAGE);
 
         if (resposta == JOptionPane.YES_OPTION) {
-            jogoControle.carregarJogos().removeIf(jogo -> jogo.getId() == jogoId);
+            jogoControle.excluirJogoPorId(jogoId);
             modeloTabela.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Jogo excluído com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Exclusão cancelada.", "Cancelado", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void editarJogos() {
+    private void editarJogo() {
         for (int i = 0; i < tabelaJogos.getRowCount(); i++) {
-            int id = (int) modeloTabela.getValueAt(i, 0);
-            String titulo = modeloTabela.getValueAt(i, 1).toString();
-            String descricao = modeloTabela.getValueAt(i, 2).toString();
-            String faixaEtaria = modeloTabela.getValueAt(i, 3).toString();
-            String[] generosStr = modeloTabela.getValueAt(i, 4).toString().split(", ");
+            Integer idJogo = Integer.parseInt(tabelaJogos.getValueAt(i, 0).toString());
+            String titulo = tabelaJogos.getValueAt(i, 1).toString();
+            String descricao = tabelaJogos.getValueAt(i, 2).toString();
+            String classificacaoEtaria = tabelaJogos.getValueAt(i, 3).toString();
+            String dataLancamento = tabelaJogos.getValueAt(i, 4).toString();
+            String generosString = tabelaJogos.getValueAt(i, 5).toString();
+            GeneroControle generoControle = new GeneroControle();
+            List<String> selecionado = List.of(generosString.split(";"));
+            List<Genero> generosAtualizados = new ArrayList<>();
+            List<Genero> generos = generoControle.getGeneros();
+            List<Genero> genFav = new ArrayList<>();
+            Jogo jogo = jogoControle.buscarJogoPorId(idJogo);
 
-            List<Genero> generos = jogoControle.carregarGeneros().stream()
-                    .filter(g -> List.of(generosStr).contains(g.getGenero()))
-                    .collect(Collectors.toList());
+            // Verificar quais opções estão selecionadas
+            for (String a : selecionado) {
+                for (Genero genero : generos) {
+                    if(genero.getGenero().equals(a)){
+                        genFav.add(genero);
+                    }
+                }
+            }
 
-            Jogo jogoEditado = new Jogo(id, titulo, descricao, faixaEtaria, generos);
-            jogoControle.salvarJogo(jogoEditado);
+            jogoControle.atualizarJogo(idJogo, titulo, descricao, classificacaoEtaria, dataLancamento, genFav, jogo.getNotas());
         }
-        JOptionPane.showMessageDialog(this, "Jogos editados com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Jogos editados com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarJogos() {
         List<Jogo> jogos = jogoControle.carregarJogos();
-
         for (Jogo jogo : jogos) {
+            List<String> generos = new ArrayList<>();
+            for (Genero genero : jogo.getGeneros()) {
+                generos.add(genero.getGenero());
+            }
+
             modeloTabela.addRow(new Object[]{
                     jogo.getId(),
                     jogo.getTitulo(),
                     jogo.getDescricao(),
                     jogo.getClassificacaoEtaria(),
-                    jogo.getGeneros().stream().map(Genero::getGenero).collect(Collectors.joining(", "))
+                    jogo.getDataLancamento(),
+                    String.join(";", generos)
             });
         }
-    }
-
-    private void voltarMenu() {
-        Menu menu = new Menu(darkTheme, idUsuario);
-        Container container = getParent();
-        container.removeAll();
-        container.add(menu);
-        container.revalidate();
-        container.repaint();
     }
 }

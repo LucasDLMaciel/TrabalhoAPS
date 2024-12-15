@@ -1,7 +1,9 @@
 package com.gdb.visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.gdb.controle.GeneroControle;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
 import com.gdb.modelo.Usuario;
 import com.gdb.visao.Menu.Menu;
 import net.miginfocom.swing.MigLayout;
@@ -165,10 +167,9 @@ public class GerenciarUsuarios extends JPanel {
     }
 
     private void editarUsuario() {
-        List<Usuario> usuarios = new ArrayList<>();
-
         // Iterar pelas linhas da tabela para capturar os dados atualizados
         for (int i = 0; i < tabelaUsuarios.getRowCount(); i++) {
+
             Integer idUsuario = Integer.parseInt(tabelaUsuarios.getValueAt(i, 0).toString());
             String usuario = tabelaUsuarios.getValueAt(i, 1).toString();
             String senha = tabelaUsuarios.getValueAt(i, 2).toString();
@@ -176,24 +177,47 @@ public class GerenciarUsuarios extends JPanel {
             String generosFavoritos = tabelaUsuarios.getValueAt(i, 4).toString();
             boolean isAdmin = Boolean.parseBoolean(tabelaUsuarios.getValueAt(i, 5).toString());
 
+            List<String> selecionado = Arrays.asList(generosFavoritos.split(";"));
+            GeneroControle generoControle = new GeneroControle();
+            List<Genero> generos = generoControle.getGeneros();
+            List<Genero> genFav = new ArrayList<>();
+
+            // Verificar quais opções estão selecionadas
+            for (String a : selecionado) {
+                    for (Genero genero : generos) {
+                        if(genero.getGenero().equals(a)){
+                            genFav.add(genero);
+                        }
+                    }
+            }
+
             // Adicionar o usuário atualizado na lista
-            usuarioControle.atualizarUsuario(idUsuario, usuario, senha, dataNascimento, Arrays.asList(generosFavoritos.split(", ")), isAdmin);
+            usuarioControle.atualizarUsuario(idUsuario, usuario, senha, dataNascimento, genFav, isAdmin);
         }
         JOptionPane.showMessageDialog(this, "Usuários editados com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarUsuarios() {
         List<Usuario> usuarios = usuarioControle.lerRegistros();
+        List<Genero> generos;
+        List<String> generoList = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
+            generos = usuario.getGenerosFavoritos();
+
+            for(Genero registro : generos){
+                generoList.add(registro.getGenero());
+            }
+
             modeloTabela.addRow(new Object[]{
                     usuario.getId(),
                     usuario.getUsuario(),
                     usuario.getSenha(),
                     usuario.getDataNascimento(),
-                    String.join(", ", usuario.getGenerosFavoritos()),
+                    String.join(";", generoList),
                     usuario.isAdministrador()
             });
+            generoList = new ArrayList<>();
         }
     }
 }

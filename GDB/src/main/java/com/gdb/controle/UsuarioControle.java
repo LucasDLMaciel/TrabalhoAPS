@@ -1,5 +1,8 @@
 package com.gdb.controle;
 
+import com.gdb.modelo.Genero;
+import com.gdb.modelo.Jogo;
+import com.gdb.modelo.Nota;
 import com.gdb.modelo.Usuario;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
@@ -7,29 +10,32 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class UsuarioControle {
     private static final String FILE_PATH = "src/main/resources/data/usuarios.json";
     private final Gson gson;
+    JogoControle jogoControle = new JogoControle();
 
     public UsuarioControle() {
         // Configura o Gson para salvar o JSON formatado
         gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    public void salvarRegistro(String usuario, String senha, String dataNascimento, List<String> generos, boolean isAdmin) {
+    public void salvarRegistro(String usuario, String senha, String dataNascimento, List<Genero> generos, boolean isAdmin) {
         List<Usuario> registros = lerRegistros();
-
+        int proximoId = 1000;
         // Verifica se o usuário já existe
-        for (Usuario registro : registros) {
-            if (registro.getUsuario().equalsIgnoreCase(usuario)) {
-                throw new IllegalArgumentException("Usuário já cadastrado.");
+        if(registros != null) {
+            for (Usuario registro : registros) {
+                if (registro.getUsuario().equalsIgnoreCase(usuario)) {
+                    throw new IllegalArgumentException("Usuário já cadastrado.");
+                }
             }
+            // Calcula o próximo ID
+            proximoId = calcularProximoId(registros);
         }
-
-        // Calcula o próximo ID
-        int proximoId = calcularProximoId(registros);
 
         // Cria um novo registro com o ID gerado
         Usuario novoRegistro = new Usuario(proximoId, usuario, senha, dataNascimento, generos, isAdmin);
@@ -47,7 +53,7 @@ public class UsuarioControle {
         return registros.stream()
                 .mapToInt(Usuario::getId) // Extrai os IDs
                 .max()                    // Encontra o maior ID
-                .orElse(0) + 1;           // Incrementa o maior ID (ou retorna 1 se a lista estiver vazia)
+                .orElse(1000) + 1;           // Incrementa o maior ID (ou retorna 1 se a lista estiver vazia)
     }
 
     public List<Usuario> lerRegistros() {
@@ -82,6 +88,8 @@ public class UsuarioControle {
     public Usuario buscarUsuarioPorId(int id) {
         // Exemplo de busca em uma lista simulada
         List<Usuario> usuarios = lerRegistros();
+        if(usuarios == null)
+            return null;
 
         for (Usuario usuario : usuarios) {
             if (usuario.getId() == id) {
@@ -91,7 +99,7 @@ public class UsuarioControle {
         return null; // Retorna null se não encontrar
     }
 
-    public void atualizarUsuario(int id, String usuario, String senha, String dataNascimento, List<String> generos, boolean isAdmin) {
+    public void atualizarUsuario(int id, String usuario, String senha, String dataNascimento, List<Genero> generos, boolean isAdmin) {
         // Lê os registros do arquivo
         List<Usuario> registros = lerRegistros();
 
@@ -120,8 +128,50 @@ public class UsuarioControle {
     }
 
     public void excluirUsuarioPorId(int id) {
-        // Lê os registros do arquivo
+        // Lê os registros dos usuários e jogos
         List<Usuario> registros = lerRegistros();
+        List<Jogo> jogos = jogoControle.carregarJogos();
+
+        // Encontra o usuário a ser excluído
+        Usuario usuarioExcluido = null;
+        for (Usuario usuario : registros) {
+            if (usuario.getId() == id) {
+                usuarioExcluido = usuario;
+                break;
+            }
+        }
+
+        // Se o usuário não for encontrado, lança uma exceção
+        if (usuarioExcluido == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+
+        // Remover as notas associadas ao usuário nos jogos
+        for (Jogo jogo : jogos) {
+            // Verifica as notas do jogo
+            List<Nota> notas = jogo.getNotas(); // Supondo que cada jogo tem uma lista de notas
+            Iterator<Nota> iterator = notas.iterator();
+
+            while (iterator.hasNext()) {
+                Nota nota = iterator.next();
+                // Se a nota pertence ao usuário que está sendo excluído
+                if (nota.getIdUsuario().equals(id)) {
+                    // Remove a nota associada ao usuário
+                    iterator.remove();
+                }
+            }
+
+            // Atualiza os jogos após remoção das notas
+            jogoControle.atualizarJogo(
+                    jogo.getId(),
+                    jogo.getTitulo(),
+                    jogo.getDescricao(),
+                    jogo.getClassificacaoEtaria(),
+                    jogo.getDataLancamento(),
+                    jogo.getGeneros(),
+                    jogo.getNotas() // Lista de notas já atualizada
+            );
+        }
 
         // Filtra a lista para remover o usuário com o ID fornecido
         boolean usuarioRemovido = registros.removeIf(usuario -> usuario.getId() == id);
@@ -138,6 +188,8 @@ public class UsuarioControle {
             throw new RuntimeException("Erro ao salvar registros após a exclusão: " + e.getMessage());
         }
     }
+
+
 
     public boolean isUsuarioExistente(String usuario, Integer idUsuario) {
         List<Usuario> registros = lerRegistros();
