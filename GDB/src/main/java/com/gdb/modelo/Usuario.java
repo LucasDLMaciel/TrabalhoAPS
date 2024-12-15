@@ -6,16 +6,28 @@ public class Usuario extends Entidade {
     private String usuario;
     private String senha;
     private String dataNascimento;
-    private List<String> generosFavoritos;
+    private List<Genero> generosFavoritos;
     private boolean administrador;
 
-    public Usuario(Integer id, String usuario, String senha, String dataNascimento, List<String> generosFavoritos, boolean administrador) {
+    public Usuario(Integer id, String usuario, String senha, String dataNascimento, List<Genero> generosFavoritos, boolean administrador) {
         setId(id);
         this.usuario = usuario;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
         this.generosFavoritos = generosFavoritos;
         this.administrador = administrador;
+    }
+
+    public void adicionarGenero(Genero genero) {
+        generosFavoritos.add(genero);
+    }
+
+    public void removerGenero(Integer id) {
+        for(Genero genero : generosFavoritos) {
+            if(genero.getId() == id) {
+                generosFavoritos.remove(genero);
+            }
+        }
     }
 
     // Getters e Setters
@@ -43,11 +55,11 @@ public class Usuario extends Entidade {
         this.dataNascimento = dataNascimento;
     }
 
-    public List<String> getGenerosFavoritos() {
+    public List<Genero> getGenerosFavoritos() {
         return generosFavoritos;
     }
 
-    public void setGenerosFavoritos(List<String> generosFavoritos) {
+    public void setGenerosFavoritos(List<Genero> generosFavoritos) {
         this.generosFavoritos = generosFavoritos;
     }
 

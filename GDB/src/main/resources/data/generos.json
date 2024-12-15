@@ -1,18 +1,30 @@
 [
   {
-    "genero": "pspsps",
-    "id": 1
+    "genero": "Aventura",
+    "id": 2002
   },
   {
-    "genero": "sdaasbb",
-    "id": 2
+    "genero": "Souls-like",
+    "id": 2003
   },
   {
-    "genero": "aaaabb",
-    "id": 3
+    "genero": "Terror",
+    "id": 2004
   },
   {
-    "genero": "adasdas",
-    "id": 4
+    "genero": "Puzzle",
+    "id": 2005
+  },
+  {
+    "genero": "Roguelike",
+    "id": 2006
+  },
+  {
+    "genero": "FPS",
+    "id": 2007
+  },
+  {
+    "genero": "Battle Royale",
+    "id": 2008
   }
 ]

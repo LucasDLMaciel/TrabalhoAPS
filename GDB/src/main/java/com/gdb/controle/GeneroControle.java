@@ -1,6 +1,7 @@
 package com.gdb.controle;
 
 import com.gdb.modelo.Genero;
+import com.gdb.modelo.Jogo;
 import com.gdb.modelo.Usuario;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,6 +17,7 @@ public class GeneroControle {
     private static final String FILE_PATH = "src/main/resources/data/generos.json";
     private final Gson gson;
     private UsuarioControle usuarioControle = new UsuarioControle();
+    private JogoControle jogoControle = new JogoControle();
 
     public GeneroControle() {
         // Configura o Gson para salvar o JSON formatado
@@ -51,7 +53,7 @@ public class GeneroControle {
         return registros.stream()
                 .mapToInt(Genero::getId) // Extrai os IDs
                 .max()                    // Encontra o maior ID
-                .orElse(0) + 1;           // Incrementa o maior ID (ou retorna 1 se a lista estiver vazia)
+                .orElse(2000) + 1;           // Incrementa o maior ID (ou retorna 1 se a lista estiver vazia)
     }
 
     public List<Genero> lerRegistros() {
@@ -71,13 +73,13 @@ public class GeneroControle {
         }
     }
 
-    public List<String> getGeneros(){
+    public List<Genero> getGeneros(){
         List<Genero> generos = lerRegistros();
-        List<String> generoList = new ArrayList<>();
-        for(Genero registro : generos){
-            generoList.add(registro.getGenero());
-        }
-        return generoList;
+//        List<String> generoList = new ArrayList<>();
+//        for(Genero registro : generos){
+//            generoList.add(registro.getGenero());
+//        }
+        return generos;
     }
 
     public Genero buscarGeneroPorId(int id) {
@@ -92,27 +94,30 @@ public class GeneroControle {
         return null; // Retorna null se não encontrar
     }
 
-    public void atualizarGenero(int id, String novoGenero) {
+    public void atualizarGenero(Integer id, String novoGenero) {
         // Lê os registros do arquivo
         List<Genero> registros = lerRegistros();
         List<Usuario> usuarios = usuarioControle.lerRegistros();
+        List<Jogo> jogos = jogoControle.carregarJogos();
+        List<Genero> generosUsuario;
+        List<Genero> generosJogos;
+        boolean atualizado = true;
 
         // Busca o gênero a ser editado
         Genero generoEditado = buscarGeneroPorId(id);
         if (generoEditado == null) {
-            throw new IllegalArgumentException("Gênero não encontrado.");
+            atualizado = false;
         }
+        generoEditado.setGenero(novoGenero);
 
         // Atualiza os gêneros favoritos dos usuários
         for (Usuario usuario : usuarios) {
-            boolean atualizado = false;
-
-            // Usando um iterador para evitar problemas ao modificar a lista
-            List<String> favoritos = usuario.getGenerosFavoritos();
-            for (int i = 0; i < favoritos.size(); i++) {
-                if (favoritos.get(i).equals(generoEditado.getGenero())) {
-                    favoritos.set(i, novoGenero); // Atualiza o gênero
+            generosUsuario = usuario.getGenerosFavoritos();
+            for (Genero generoExistente : generosUsuario) {
+                if (generoExistente.getId().equals(id)) {
+                    generoExistente.setGenero(novoGenero);
                     atualizado = true;
+                    break;
                 }
             }
 
@@ -123,8 +128,32 @@ public class GeneroControle {
                         usuario.getUsuario(),
                         usuario.getSenha(),
                         usuario.getDataNascimento(),
-                        favoritos,
+                        generosUsuario,
                         usuario.isAdministrador()
+                );
+            }
+        }
+
+        for (Jogo jogo : jogos) {
+            generosJogos = jogo.getGeneros();
+            for (Genero generoExistente : generosJogos) {
+                if (generoExistente.getId().equals(id)) {
+                    generoExistente.setGenero(novoGenero);
+                    atualizado = true;
+                    break;
+                }
+            }
+
+            // Persistir alterações apenas se o usuário teve seu gênero atualizado
+            if (atualizado) {
+                jogoControle.atualizarJogo(
+                        jogo.getId(),
+                        jogo.getTitulo(),
+                        jogo.getDescricao(),
+                        jogo.getClassificacaoEtaria(),
+                        jogo.getDataLancamento(),
+                        generosJogos,
+                        jogo.getNotas()
                 );
             }
         }
@@ -157,6 +186,7 @@ public class GeneroControle {
         // Lê os gêneros do arquivo
         List<Genero> generos = lerRegistros();
         List<Usuario> usuarios = usuarioControle.lerRegistros();
+        List<Jogo> jogos = jogoControle.carregarJogos();
 
         // Busca o gênero a ser apagado
         Genero generoApagado = buscarGeneroPorId(id);
@@ -166,11 +196,11 @@ public class GeneroControle {
 
         // Atualiza os usuários para remover o gênero apagado
         for (Usuario usuario : usuarios) {
-            Iterator<String> iterator = usuario.getGenerosFavoritos().iterator();
+            Iterator<Genero> iterator = usuario.getGenerosFavoritos().iterator();
             while (iterator.hasNext()) {
-                String generosS = iterator.next();
-                if (generosS.equals(generoApagado.getGenero())) {
-                    iterator.remove(); // Remova o gênero diretamente
+                Genero generoS = iterator.next();
+                if (generoS.getId() == id) { // Compara pelo ID, para garantir que estamos removendo o gênero correto
+                    iterator.remove(); // Remove o gênero diretamente
                 }
             }
             // Atualiza o usuário após a modificação
@@ -184,8 +214,29 @@ public class GeneroControle {
             );
         }
 
-        // Remove o gênero da lista principal
-        boolean generoRemovido = generos.removeIf(genero -> genero.getId().equals(id));
+        // Atualiza os jogos para remover o gênero apagado
+        for (Jogo jogo : jogos) {
+            Iterator<Genero> iterator = jogo.getGeneros().iterator();
+            while (iterator.hasNext()) {
+                Genero generoS = iterator.next();
+                if (generoS.getId() == id) { // Compara pelo ID, para garantir que estamos removendo o gênero correto
+                    iterator.remove(); // Remove o gênero diretamente
+                }
+            }
+            // Atualiza o jogo após a modificação
+            jogoControle.atualizarJogo(
+                    jogo.getId(),
+                    jogo.getTitulo(),
+                    jogo.getDescricao(),
+                    jogo.getClassificacaoEtaria(),
+                    jogo.getDataLancamento(),
+                    jogo.getGeneros(),
+                    jogo.getNotas()
+            );
+        }
+
+        // Remove o gênero da lista principal de gêneros
+        boolean generoRemovido = generos.removeIf(genero -> genero.getId() == id);
 
         // Se nenhum gênero foi removido, lança uma exceção
         if (!generoRemovido) {
@@ -199,6 +250,7 @@ public class GeneroControle {
             throw new RuntimeException("Erro ao salvar gêneros após a exclusão: " + e.getMessage());
         }
     }
+
 
 
     public boolean isGeneroExistente(String genero) {

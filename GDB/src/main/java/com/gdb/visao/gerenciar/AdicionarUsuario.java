@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.gdb.controle.GeneroControle;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
 import com.gdb.visao.login_registro.MultiplaEscolha;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
@@ -69,8 +70,9 @@ public class AdicionarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<String> generos = generoControle.getGeneros();
-        List<String> generosFav = new ArrayList<>();
+        List<Genero> generos = generoControle.getGeneros();
+
+        List<Genero> generosFav = new ArrayList<>();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
         add(generoBox, "gapx 23 23, width 300, align center");
@@ -102,7 +104,7 @@ public class AdicionarUsuario extends JPanel {
         String usuario = usuarioText.getText().trim();
         String senha = new String(senhaText.getPassword()).trim();
         String dataNascimento = dataNascimentoField.getText().trim();
-        List<String> generosSelecionados = generoBox.getSelecionados();
+        List<Genero> generosSelecionados = generoBox.getSelecionados();
 
         boolean isAdmin = adminCheckBox.isSelected();
 

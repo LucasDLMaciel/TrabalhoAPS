@@ -6,11 +6,11 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.gdb.controle.JogoControle;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.modelo.Genero;
+import com.gdb.modelo.Jogo;
 import com.gdb.modelo.Usuario;
-import com.gdb.visao.gerenciar.GerenciarGenero;
-import com.gdb.visao.gerenciar.GerenciarUsuarios;
+import com.gdb.visao.gerenciar.*;
 import com.gdb.visao.login_registro.Login;
-import com.gdb.visao.gerenciar.GerenciarUsuario;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +21,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 
 public class Menu extends JPanel {
@@ -31,17 +34,14 @@ public class Menu extends JPanel {
     private JButton recomendadosButton;
     JButton toggleThemeButton;
     private JButton database;
-    private JButton jogo1;
-    private JButton jogo2;
-    private JButton jogo3;
-    private JButton jogo4;
-    private JLabel desc1;
-    private JLabel desc2;
-    private JLabel desc3;
-    private JLabel desc4;
     private JButton gerenciarConta;
     private JButton gerenciarGenero;
     private JButton gerenciarUsuarios;
+    private JButton gerenciarJogos;
+    private JButton gerenciarNotas;
+    // Defina os objetos adicionais necessários
+    private JPanel jogosPanel;  // Painel para os botões de jogos
+    private JScrollPane jogosScrollPane;  // Para permitir rolagem caso haja muitos jogos;
 
     private Integer idUsuario;
     private boolean admin = true;
@@ -76,49 +76,84 @@ public class Menu extends JPanel {
 
         // Atualiza o tema para todos os componentes
         SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
+        this.jogosScrollPane.setBorder(null);
+        this.jogosScrollPane.getVerticalScrollBar().setUnitIncrement(30);
+        this.jogosScrollPane.getVerticalScrollBar().setBlockIncrement(30);
     }
 
     private void init() {
         this.setPreferredSize(new Dimension(1280, 720));
+        this.setLayout(null);  // Layout nulo para controle manual de posição dos componentes
+
+        // Inicializar os componentes do menu
+        this.jogosPanel = new JPanel();
+
+        // Layout GridBagLayout
+        this.jogosPanel.setLayout(new GridBagLayout());
+
+        // Definindo o JScrollPane
+        this.jogosScrollPane = new JScrollPane(this.jogosPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.jogosScrollPane.setBounds(70, 150, 1125, 500);  // Define a posição e o tamanho do painel de rolagem
+        this.jogosScrollPane.setBorder(null);
+        this.jogosScrollPane.getVerticalScrollBar().setUnitIncrement(30);
+        this.jogosScrollPane.getVerticalScrollBar().setBlockIncrement(30);
+        add(this.jogosScrollPane);
+
+        // Adicionar um botão para cada jogo
+        adicionarBotoesJogos();
+
+        this.setPreferredSize(new Dimension(1280, 720));
+
+        // Adicionar um botão para cada jogo
+        adicionarBotoesJogos();
+        this.setPreferredSize(new Dimension(1280, 720));
         this.selecionado = true;
-        this.gerenciarConta = new JButton(new FlatSVGIcon("login/icon/usuario.svg", 0.035f));
+        this.gerenciarConta = new JButton(new FlatSVGIcon("login/icon/usuario.svg", 0.035f)){
+            @Override
+            public boolean isDefaultButton(){
+                return true;
+            }
+        };
         this.gerenciarUsuarios = new JButton();
         this.gerenciarGenero = new JButton();
+        this.gerenciarJogos = new JButton();
+        this.gerenciarNotas = new JButton();
         this.database = new JButton(new FlatSVGIcon("Menu/database.svg", 0.067F));
         gerenciarGenero.setText("Gerenciar gêneros");
         gerenciarUsuarios.setText("Gerenciar usuarios");
+        gerenciarJogos.setText("Gerenciar jogos");
+        gerenciarNotas.setText("Gerenciar notas");
         gerenciarConta.setText("Conta");
-        this.desc1 = new JLabel("Descrição jogo 1");
-        this.desc2 = new JLabel("Descrição jogo 2");
-        this.desc3 = new JLabel("Descrição jogo 3");
-        this.desc4 = new JLabel("Descrição jogo 4");
-        this.jogo1 = new JButton("jogo1");
-        this.jogo2 = new JButton("jogo2");
-        this.jogo3 = new JButton("jogo3");
-        this.jogo4 = new JButton("jogo4");
         this.Buscar = new JTextField();
         this.Sair_Botao = new JButton("Sair");
         this.setLayout(null);  // Define layout como null para posicionamento absoluto
-        this.Login_Botao = new JButton("Login");
+        this.Login_Botao = new JButton("Login"){
+            @Override
+            public boolean isDefaultButton(){
+                return true;
+            }
+        };
         this.todosButton = new JButton("Todos");
         this.recomendadosButton = new JButton("Recomendados");
         this.toggleThemeButton = new JButton(new FlatSVGIcon("Menu/luaSol.svg", 1f));
 
         this.atulizarPosObjetos();
-
-        // Configuração de botões e descrições
-        this.jogo1.setBackground(Color.red);
-        this.jogo2.setBackground(Color.blue);
-        this.jogo3.setBackground(Color.green);
-        this.jogo4.setBackground(Color.black);
-        this.desc1.setForeground(Color.black);
-        this.desc2.setForeground(Color.black);
-        this.desc3.setForeground(Color.black);
-        this.desc4.setForeground(Color.black);
+        Login_Botao.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         gerenciarUsuarios.setBackground(new Color(109, 1, 235));
+        gerenciarUsuarios.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        gerenciarGenero.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        gerenciarJogos.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        gerenciarNotas.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
+        Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
+        this.gerenciarConta.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, null);
+        gerenciarConta.putClientProperty(FlatClientProperties.STYLE, "foreground:#FFFFFF");
         gerenciarGenero.setBackground(new Color(109, 1, 235));
+        gerenciarJogos.setBackground(new Color(109, 1, 235));
+        gerenciarNotas.setBackground(new Color(109, 1, 235));
         gerenciarUsuarios.setFocusable(false);
         gerenciarGenero.setFocusable(false);
+        gerenciarJogos.setFocusable(false);
+        gerenciarNotas.setFocusable(false);
         todosButton.setFocusable(true);
         Sair_Botao.setFocusable(false);
         Login_Botao.setFocusable(false);
@@ -136,30 +171,21 @@ public class Menu extends JPanel {
         if (idUsuario > 0 && admin){
             add(this.gerenciarUsuarios);
             add(this.gerenciarGenero);
+            add(this.gerenciarJogos);
+            add(this.gerenciarNotas);
         }
         this.add(this.Buscar);
         this.add(this.Sair_Botao);
-        this.add(this.todosButton);
-        this.add(this.recomendadosButton);
+        if(idUsuario > 0){
+            this.add(this.recomendadosButton);
+            this.add(this.todosButton);
+        }
         this.add(this.toggleThemeButton);
         this.add(this.database);
-        this.add(this.jogo1);
-        this.add(this.jogo2);
-        this.add(this.jogo3);
-        this.add(this.jogo4);
-        this.add(this.desc1);
-        this.add(this.desc2);
-        this.add(this.desc3);
-        this.add(this.desc4);
 
         toggleThemeButton.addActionListener(e -> toggleTheme());
 
 
-        gerenciarUsuarios.putClientProperty(FlatClientProperties.STYLE, "");
-        gerenciarGenero.putClientProperty(FlatClientProperties.STYLE, "");
-        Buscar.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, new FlatSVGIcon("Menu/icon-buscar.svg", 0.009f));
-        this.gerenciarConta.putClientProperty(FlatClientProperties.TEXT_FIELD_LEADING_ICON, null);
-        gerenciarConta.putClientProperty(FlatClientProperties.STYLE, "");
         // Configurações dos botões
         this.Sair_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         this.Login_Botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -168,6 +194,8 @@ public class Menu extends JPanel {
         this.gerenciarConta.setCursor(new Cursor(Cursor.HAND_CURSOR));
         gerenciarUsuarios.setCursor(new Cursor(Cursor.HAND_CURSOR));
         gerenciarGenero.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gerenciarJogos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        gerenciarNotas.setCursor(new Cursor(Cursor.HAND_CURSOR));
         database.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         this.addComponentListener(new ComponentAdapter() {
@@ -225,6 +253,20 @@ public class Menu extends JPanel {
             }
         });
 
+        this.Buscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String textoFiltro = Buscar.getText();
+                JogoControle jogoControle = new JogoControle(); // Instância do JogoControle
+
+                // Filtra os jogos com base no texto digitado
+                List<Jogo> jogosFiltrados = jogoControle.filtrarJogos(textoFiltro);
+
+                adicionarBotoesJogosBuscados(jogosFiltrados);
+            }
+
+        });
+
         gerenciarGenero.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -249,9 +291,33 @@ public class Menu extends JPanel {
             }
         });
 
+        gerenciarJogos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GerenciarJogos gerenciarJogos1 = new GerenciarJogos(darkTheme, idUsuario);
+                Container container = Menu.this.getParent();
+                container.removeAll();
+                container.add(gerenciarJogos1);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
+        gerenciarNotas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GerenciarNotas gerenciarNotas1 = new GerenciarNotas(darkTheme, idUsuario);
+                Container container = Menu.this.getParent();
+                container.removeAll();
+                container.add(gerenciarNotas1);
+                container.revalidate();
+                container.repaint();
+            }
+        });
+
         gerenciarConta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GerenciarUsuario conta = new GerenciarUsuario(false, idUsuario);
+                GerenciarUsuario conta = new GerenciarUsuario(darkTheme, idUsuario);
                 Container container = Menu.this.getParent();
                 container.removeAll();
                 container.add(conta);
@@ -283,11 +349,8 @@ public class Menu extends JPanel {
                 recomendadosButton.setBackground(corRecomendado);
                 todosButton.setBackground(new Color(149, 149, 149));
                 Menu.this.selecionado = true;
-                Menu.this.jogo1.setVisible(true);
-                Menu.this.jogo4.setVisible(true);
-                Menu.this.desc1.setVisible(true);
-                Menu.this.desc4.setVisible(true);
                 Menu.this.atulizarPosObjetos();
+                adicionarBotoesJogos();
             }
         });
 
@@ -295,22 +358,7 @@ public class Menu extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 todosButton.setBackground(corTodos);
                 recomendadosButton.setBackground(new Color(149, 149, 149));
-                Menu.this.jogo1.setVisible(false);
-                Menu.this.jogo4.setVisible(false);
-                Menu.this.desc1.setVisible(false);
-                Menu.this.desc4.setVisible(false);
-                Menu.this.jogo3.setBounds(Menu.this.jogo2.getX(), Menu.this.jogo2.getY(), Menu.this.jogo2.getWidth(), Menu.this.jogo2.getHeight());
-                Menu.this.desc3.setBounds(Menu.this.desc2.getX(), Menu.this.desc2.getY(), Menu.this.desc2.getWidth(), Menu.this.desc2.getHeight());
-                Menu.this.jogo2.setBounds(Menu.this.jogo1.getX(), Menu.this.jogo1.getY(), Menu.this.jogo1.getWidth(), Menu.this.jogo1.getHeight());
-                Menu.this.desc2.setBounds(Menu.this.desc1.getX(), Menu.this.desc1.getY(), Menu.this.desc1.getWidth(), Menu.this.desc1.getHeight());
-                Menu.this.jogo2.setBounds(Menu.this.jogo1.getX(), Menu.this.jogo1.getY(), 200, 200);
-                Menu.this.desc2.setBounds(Menu.this.jogo2.getX(), Menu.this.desc1.getY(), 100, 50);
-                Menu.this.jogo3.setBounds(Menu.this.jogo2.getX() + Menu.this.jogo2.getWidth() + 150, Menu.this.jogo1.getY(), 200, 200);
-                Menu.this.desc3.setBounds(Menu.this.jogo3.getX(), Menu.this.desc1.getY(), 100, 50);
-                Menu.this.jogo2.setVisible(true);
-                Menu.this.jogo3.setVisible(true);
-                Menu.this.desc2.setVisible(true);
-                Menu.this.desc3.setVisible(true);
+                adicionarBotoesJogosRecomendados();
             }
         });
     }
@@ -326,16 +374,180 @@ public class Menu extends JPanel {
         this.todosButton.setBounds(this.Buscar.getX(), this.Buscar.getHeight(), 70, 30);
         gerenciarUsuarios.setBounds(recomendadosButton.getWidth()+recomendadosButton.getX(), 0, 140, 30);
         gerenciarGenero.setBounds(gerenciarUsuarios.getWidth()+gerenciarUsuarios.getX(), 0, 140, 30);
-        this.jogo1.setSize(200, 200);
-        this.jogo1.setBounds(100, 300, 200, 200);
-        this.desc1.setBounds(this.jogo1.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
-        this.jogo4.setBounds(this.getWidth() - 300, this.jogo1.getY(), 200, 200);
-        this.desc4.setBounds(this.jogo4.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
-        this.jogo2.setBounds(this.jogo1.getX() + this.jogo1.getWidth()+90, this.jogo1.getY(), 200, 200);
-        this.desc2.setBounds(this.jogo2.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
-        this.jogo3.setBounds(this.jogo4.getX() - this.jogo4.getWidth()-90, this.jogo1.getY(), 200, 200);
-        this.desc3.setBounds(this.jogo3.getX(), this.jogo1.getY() + this.jogo1.getHeight(), 100, 50);
+        gerenciarJogos.setBounds(gerenciarGenero.getWidth()+gerenciarGenero.getX(), 0, 140, 30);
+        gerenciarNotas.setBounds(gerenciarJogos.getWidth()+gerenciarJogos.getX(), 0, 140, 30);
         this.recomendadosButton.setBounds(this.todosButton.getX() + this.todosButton.getWidth(), this.todosButton.getY(), this.todosButton.getWidth() + 60, 30);
         this.Buscar.setSize(this.todosButton.getWidth() + this.recomendadosButton.getWidth(), this.Buscar.getHeight());
     }
+
+    private void adicionarBotoesJogos() {
+        // Obtenha os jogos do sistema
+        List<Jogo> jogos = jogoControle.carregarJogos();  // Assume que há um método em JogoControle para buscar todos os jogos
+
+        // Limpar o painel de jogos antes de adicionar os botões
+        this.jogosPanel.removeAll();
+
+        // Inicializar um GridBagConstraints
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;  // Inicia na primeira coluna
+        gbc.gridy = 0;  // Inicia na primeira linha
+        gbc.insets = new Insets(2, 2, 2, 2);  // Espaçamento entre os botões
+
+        // Adicionar um botão para cada jogo
+        for (Jogo jogo : jogos) {
+            JButton jogoButton = new JButton(jogo.getTitulo());
+            jogoButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            // Alterar o tamanho do botão
+            jogoButton.setPreferredSize(new Dimension(217, 217)); // Largura: 217, Altura: 217
+
+            jogoButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Ação ao clicar no botão do jogo, exemplo: abrir detalhes do jogo
+                    exibirDetalhesJogo(jogo);
+                }
+            });
+
+            // Adiciona o botão ao painel de jogos com a configuração do GridBagLayout
+            this.jogosPanel.add(jogoButton, gbc);
+
+            // Mover para a próxima coluna
+            gbc.gridx++;
+
+            // Se a coluna ultrapassar um limite (por exemplo, 5 colunas), vamos para a próxima linha
+            if (gbc.gridx > 4) {  // Define que há 5 colunas
+                gbc.gridx = 0;   // Volta para a primeira coluna
+                gbc.gridy++;     // Muda para a próxima linha
+            }
+        }
+
+        // Revalidar e repintar o painel após a adição dos botões
+        this.jogosPanel.revalidate();
+        this.jogosPanel.repaint();
+    }
+
+    private void adicionarBotoesJogosBuscados(List<Jogo> jogos) {
+
+        // Limpar o painel de jogos antes de adicionar os botões
+        this.jogosPanel.removeAll();
+
+        // Inicializar um GridBagConstraints
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;  // Inicia na primeira coluna
+        gbc.gridy = 0;  // Inicia na primeira linha
+        gbc.insets = new Insets(2, 2, 2, 2);  // Espaçamento entre os botões
+
+        // Adicionar um botão para cada jogo
+        for (Jogo jogo : jogos) {
+            JButton jogoButton = new JButton(jogo.getTitulo());
+            jogoButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            // Alterar o tamanho do botão
+            jogoButton.setPreferredSize(new Dimension(217, 217)); // Largura: 217, Altura: 217
+
+            jogoButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Ação ao clicar no botão do jogo, exemplo: abrir detalhes do jogo
+                    exibirDetalhesJogo(jogo);
+                }
+            });
+
+            // Adiciona o botão ao painel de jogos com a configuração do GridBagLayout
+            this.jogosPanel.add(jogoButton, gbc);
+
+            // Mover para a próxima coluna
+            gbc.gridx++;
+
+            // Se a coluna ultrapassar um limite (por exemplo, 5 colunas), vamos para a próxima linha
+            if (gbc.gridx > 4) {  // Define que há 5 colunas
+                gbc.gridx = 0;   // Volta para a primeira coluna
+                gbc.gridy++;     // Muda para a próxima linha
+            }
+        }
+
+        // Revalidar e repintar o painel após a adição dos botões
+        this.jogosPanel.revalidate();
+        this.jogosPanel.repaint();
+    }
+
+    private void adicionarBotoesJogosRecomendados() {
+        // Obtenha os jogos do sistema
+        List<Jogo> jogos = jogoControle.carregarJogos(); // Assume que há um método para buscar todos os jogos
+        List<Jogo> jogosRecomendados = new ArrayList<>();
+
+        // Obter gêneros favoritos do usuário logado (caso esteja logado)
+        if (idUsuario > 0) {
+            List<String> generosFavoritos = new ArrayList<>(); // Método fictício
+            List<Genero> generos = usuarioControle.buscarUsuarioPorId(idUsuario).getGenerosFavoritos();
+            for(Genero genero : generos){
+                generosFavoritos.add(genero.getGenero());
+            }
+            if (generosFavoritos != null && !generosFavoritos.isEmpty()) {
+                // Filtrar jogos pelos gêneros favoritos
+                jogosRecomendados = jogos.stream()
+                        .filter(jogo -> jogo.getGeneros().stream()
+                                .anyMatch(genero -> generosFavoritos.contains(genero.getGenero())))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        // Limpar o painel de jogos antes de adicionar os botões
+        this.jogosPanel.removeAll();
+
+        // Inicializar um GridBagConstraints
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; // Inicia na primeira coluna
+        gbc.gridy = 0; // Inicia na primeira linha
+        gbc.insets = new Insets(2, 2, 2, 2); // Espaçamento entre os botões
+
+        // Determinar a lista de jogos a exibir (se o usuário está logado, exibe jogos recomendados; caso contrário, todos os jogos)
+        List<Jogo> jogosParaExibir = jogosRecomendados.isEmpty() ? jogos : jogosRecomendados;
+
+        // Adicionar um botão para cada jogo na lista a exibir
+        for (Jogo jogo : jogosParaExibir) {
+            JButton jogoButton = new JButton(jogo.getTitulo());
+            jogoButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            // Alterar o tamanho do botão
+            jogoButton.setPreferredSize(new Dimension(217, 217));
+
+            jogoButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Ação ao clicar no botão do jogo, exemplo: abrir detalhes do jogo
+                    exibirDetalhesJogo(jogo);
+                }
+            });
+
+            // Adiciona o botão ao painel de jogos com a configuração do GridBagLayout
+            this.jogosPanel.add(jogoButton, gbc);
+
+            // Mover para a próxima coluna
+            gbc.gridx++;
+
+            // Se a coluna ultrapassar um limite (por exemplo, 5 colunas), vamos para a próxima linha
+            if (gbc.gridx > 4) { // Define que há 5 colunas
+                gbc.gridx = 0;   // Volta para a primeira coluna
+                gbc.gridy++;     // Muda para a próxima linha
+            }
+        }
+
+        // Revalidar e repintar o painel após a adição dos botões
+        this.jogosPanel.revalidate();
+        this.jogosPanel.repaint();
+    }
+
+    public void exibirDetalhesJogo(Jogo jogo) {
+        // Abre o painel para adicionar uma nova nota
+        DetalhesJogoPanel detalhesJogoPanel = new DetalhesJogoPanel(jogo, idUsuario, darkTheme);
+        Container container = getParent();
+        container.removeAll();
+        container.add(detalhesJogoPanel);
+        container.revalidate();
+        container.repaint();
+    }
+
+
 }

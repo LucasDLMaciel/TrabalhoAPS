@@ -2,44 +2,69 @@
   {
     "usuario": "admin",
     "senha": "admin",
-    "dataNascimento": "01/12/1000",
+    "dataNascimento": "01/01/2025",
     "generosFavoritos": [
-      "pspsps"
-    ],
-    "administrador": true,
-    "id": 1000
-  },
-  {
-    "usuario": "a",
-    "senha": "a",
-    "dataNascimento": "01/12/2000",
-    "generosFavoritos": [
-      "pspsps",
-      "sdaasbb",
-      "aaaabb",
-      "adasdas"
+      {
+        "genero": "Aventura",
+        "id": 2002
+      }
     ],
     "administrador": true,
     "id": 1001
   },
   {
-    "usuario": "macaco",
-    "senha": "gorila",
-    "dataNascimento": "01/12/2024",
+    "usuario": "Carrocho",
+    "senha": "banana",
+    "dataNascimento": "22/05/2005",
     "generosFavoritos": [
-      ""
+      {
+        "genero": "Souls-like",
+        "id": 2003
+      },
+      {
+        "genero": "Terror",
+        "id": 2004
+      },
+      {
+        "genero": "Puzzle",
+        "id": 2005
+      },
+      {
+        "genero": "Roguelike",
+        "id": 2006
+      },
+      {
+        "genero": "FPS",
+        "id": 2007
+      }
     ],
     "administrador": false,
     "id": 1002
   },
   {
-    "usuario": "lucas1",
-    "senha": "daniel",
-    "dataNascimento": "",
+    "usuario": "Hanibas",
+    "senha": "chicco",
+    "dataNascimento": "05/08/2005",
     "generosFavoritos": [
-      ""
+      {
+        "genero": "Puzzle",
+        "id": 2005
+      }
     ],
     "administrador": false,
     "id": 1003
+  },
+  {
+    "usuario": "DavyJones",
+    "senha": "123",
+    "dataNascimento": "01/01/2025",
+    "generosFavoritos": [
+      {
+        "genero": "Terror",
+        "id": 2004
+      }
+    ],
+    "administrador": false,
+    "id": 1004
   }
 ]
