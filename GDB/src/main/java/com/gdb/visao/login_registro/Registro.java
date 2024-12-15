@@ -2,6 +2,7 @@ package com.gdb.visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.modelo.Usuario;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
@@ -9,8 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import com.gdb.controle.RegistroUsuario;
 
 public class Registro extends JPanel {
     private JTextField usuarioText;
@@ -101,12 +106,13 @@ public class Registro extends JPanel {
         registerButton.putClientProperty(FlatClientProperties.STYLE,"foreground:#FFFFFF");
         add(registerButton, "gapy 10 5");
 
-        // FAZER LOGICA PRA SALVAR USUARIO
+        //LOGICA PARA FAZER SALVAR USUARIO INSERIDO
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registrarUsuario();
+                registrarOsDadosInseridosPeloUsuario();
             }
+
         });
 
         add(criarSeparador(), "gapy 5 10");
@@ -132,16 +138,27 @@ public class Registro extends JPanel {
         });
     }
 
-    private void registrarUsuario() {
+    private void registrarOsDadosInseridosPeloUsuario() {
         String usuario = usuarioText.getText().trim();
         String senha = new String(senhaText.getPassword()).trim();
-        String dataNascimento = dataNascimentoField.getText().trim();
+        String dataNascimentoString = dataNascimentoField.getText();
+        LocalDate dataNascimento = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // define a regra que deve ser seguida
+
+        try {
+            dataNascimento = LocalDate.parse(dataNascimentoString, formatter); // converte de string pra LocalDate
+        } catch (DateTimeParseException ex) {
+            JOptionPane.showMessageDialog(null, "Formato de data inválido. Use dd/MM/yyyy.");
+            return; // Interrompe a execução se houver erro
+        }
         List<String> generosSelecionados = generoBox.getSelecionados();
         // Verifica se todos os campos obrigatórios estão preenchidos
-        if (usuario.isEmpty() || senha.isEmpty() || dataNascimento.contains("-")) {
+        if (usuario.isEmpty() || senha.isEmpty() || dataNascimentoString.contains("-")) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
+
 
         // Exibe as informações se todos os campos estão preenchidos
         JOptionPane.showMessageDialog(this,
@@ -152,7 +169,11 @@ public class Registro extends JPanel {
                         "Administrador: " + (adminCheckBox.isSelected() ? "Sim" : "Não"),
                 "Dados de Registro",
                 JOptionPane.INFORMATION_MESSAGE);
-        //FAZER LOGICA DE SALVAR INFORMAÇÕES
+
+        //Instancia o usuario inserido
+        Usuario user = Usuario.cadastrarUsuario(usuario,senha,false,dataNascimento);
+        // Salva o usuario no arquivo csv:
+        RegistroUsuario.salvarUsuario(user);
     }
 
 

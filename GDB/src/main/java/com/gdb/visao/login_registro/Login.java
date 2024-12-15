@@ -2,6 +2,7 @@ package com.gdb.visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.gdb.modelo.Usuario;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.gdb.visao.Menu.Menu;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.controle.LoginUsuario;
 
 
 public class Login extends JPanel {
@@ -71,12 +73,13 @@ public class Login extends JPanel {
                 // Pega a senha do campo de senha (converte para String)
                 String senha = new String(campoSenha.getPassword()); // campoSenha é o JPasswordField onde o usuário digita a senha
 
-                boolean loginValido = UsuarioControle.validarLogin(nome_de_usuario, senha);
+                Usuario loginValido = LoginUsuario.realizarLogin(nome_de_usuario, senha);
 
-                if (loginValido) {
+                if (loginValido != null) {
                     // Se o login for válido, realizar a ação de login (por exemplo, abrir um novo painel)
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                     // Aqui você pode redirecionar para outra tela ou painel
+//                    LoginUsuario.loginRealizado
                 } else {
                     // Se o login falhar, exibir mensagem de erro
                     JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos.", "Erro", JOptionPane.ERROR_MESSAGE);

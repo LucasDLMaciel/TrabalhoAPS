@@ -1,5 +1,7 @@
 package com.gdb.modelo;
 
+import com.gdb.controle.UsuarioControle;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +14,12 @@ public final class Usuario extends Entidade {
     private Boolean administradorFlag;
     private LocalDate dataNascimento;
 
+    private boolean logado;
+
     /**
      * Construtor de uma instância que não existe no arquivo CSV.
      */
-    private Usuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
+    public Usuario(String usuario, String senha, Boolean administradorFlag, LocalDate dataNascimento) {
         super();
         this.setUsuario(usuario);
         this.setSenha(senha);
@@ -66,6 +70,12 @@ public final class Usuario extends Entidade {
         return this.dataNascimento;
     }
 
+    private void setLogado(boolean logado){ this.logado = logado; }
+
+    public void setLogin(boolean login){ setLogado(true); }
+
+    public boolean getLogado(){ return this.logado;}
+
     /**
      * Cria um novo usuário.
      */
@@ -73,7 +83,7 @@ public final class Usuario extends Entidade {
         List<Usuario> usuarios = Global.getUsuarios();
         // Verifica se o usuário já existe na lista de usuários
         // TODO ENTENDER COMO SE CONECTA COM O FRONT E TRATAR CORRETAMENTE
-        if (Usuario.usuarioExiste(usuarios, usuario)) {
+        if (UsuarioControle.usuarioExiste(usuarios, usuario)) {
             System.out.println("Erro! O usuário já existe!");
             System.exit(1);
         }
@@ -83,6 +93,7 @@ public final class Usuario extends Entidade {
         usuarios.add(usuarioInstancia);
         return usuarioInstancia;
     }
+
 
     /**
      * Instancia os usuários que já existem no arquivo CSV.
@@ -124,14 +135,7 @@ public final class Usuario extends Entidade {
      * @param usuarioString O usuário que será verificado.
      * @return Um Boolean que indica se o valor existe na lista ou não.
      */
-    private static Boolean usuarioExiste(List<Usuario> usuarios, String usuarioString) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getUsuario().equals(usuarioString)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * Realiza o login do usuário.
@@ -161,22 +165,7 @@ public final class Usuario extends Entidade {
     }
 
     // TODO FAZER O UPDATE DO USUÁRIO (CASO O MATHEUS PEÇA)
-    public static Usuario fromCSV(String csvLine) {
-        String[] values = csvLine.split(",");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dataNascimento = LocalDate.parse(values[3], formatter);
-        return new Usuario(values[0], values[1], Boolean.parseBoolean(values[2]), dataNascimento);
-    }
 
-    public String toCSV() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return String.join(",",
-                usuario,
-                senha,
-                administradorFlag.toString(),
-                dataNascimento.format(formatter)
-        );
-    }
 
     // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }

@@ -10,7 +10,7 @@ import java.awt.*;
 public class TestGerenciarConta extends JFrame {
 
     public TestGerenciarConta() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);

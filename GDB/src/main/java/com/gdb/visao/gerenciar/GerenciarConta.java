@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import com.gdb.modelo.Usuario;
 import com.gdb.controle.UsuarioControle;
+import com.gdb.controle.RegistroUsuario;
 
 
 import javax.swing.*;
@@ -142,10 +143,15 @@ public class GerenciarConta extends JPanel {
                 Usuario novoUsuario = Usuario.cadastrarUsuario(usuario, senha, isAdmin, dataNascimento);
 
                 // Salva o usuário no arquivo CSV
-                UsuarioControle.salvarUsuario(novoUsuario);
+                if(RegistroUsuario.salvarUsuario(novoUsuario) == 1){// Exibe uma mensagem de sucesso
+                    JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuário não Cadastrado. Esse nome já existe!!!");
+                }
 
-                // Exibe uma mensagem de sucesso
-                JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
+
+
+
 
                 // Limpa os campos após o cadastro
                 usuarioText.setText("");
