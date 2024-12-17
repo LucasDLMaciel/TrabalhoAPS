@@ -1,10 +1,15 @@
 package visao.login_registro;
 
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/visao/login_registro/MultiplaEscolha.java
 =======
 import controle.GeneroControle;
 import modelo.Genero;
 >>>>>>> e528347 (finalizar):src/main/java/visao/login_registro/MultiplaEscolha.java
+=======
+import controle.GeneroControle;
+import modelo.Genero;
+>>>>>>> e528347 (finalizar)
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/modelo/Usuario.java
 package com.gdb.modelo;
 
@@ -182,6 +183,8 @@ public final class Usuario extends Entidade {
     // AO DELETAR UMA ENTRADA NO BANCO, OS IDs DEVEM SER ATUALIZADOS EM ORDEM CRESCENTE
 }
 =======
+=======
+>>>>>>> e528347 (finalizar)
 package modelo;
 
 import java.util.List;
@@ -255,4 +258,7 @@ public class Usuario extends Entidade {
         this.administrador = administrador;
     }
 }
+<<<<<<< HEAD
 >>>>>>> e528347 (finalizar):src/main/java/modelo/Usuario.java
+=======
+>>>>>>> e528347 (finalizar)

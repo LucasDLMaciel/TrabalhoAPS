@@ -1,0 +1,30 @@
+[
+  {
+    "genero": "Aventura",
+    "id": 2002
+  },
+  {
+    "genero": "Souls-like",
+    "id": 2003
+  },
+  {
+    "genero": "Terror",
+    "id": 2004
+  },
+  {
+    "genero": "Puzzle",
+    "id": 2005
+  },
+  {
+    "genero": "Roguelike",
+    "id": 2006
+  },
+  {
+    "genero": "FPS",
+    "id": 2007
+  },
+  {
+    "genero": "Battle Royale",
+    "id": 2008
+  }
+]

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/modelo/Entidade.java
 package com.gdb.modelo;
 
@@ -37,6 +38,8 @@ public abstract class Entidade {
     protected abstract Integer descobrirNovoId();
 
 =======
+=======
+>>>>>>> e528347 (finalizar)
 package modelo;
 
 public abstract class Entidade {
@@ -76,5 +79,8 @@ public abstract class Entidade {
         return this.getId() + 1;
     }
 
+<<<<<<< HEAD
 >>>>>>> e528347 (finalizar):src/main/java/modelo/Entidade.java
+=======
+>>>>>>> e528347 (finalizar)
 }

@@ -2,11 +2,14 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+<<<<<<< HEAD
 <<<<<<<< HEAD:src/main/java/visao/gerenciar/GerenciarConta.java
 import com.gdb.visao.Menu.Menu;
 import com.gdb.visao.login_registro.Login;
 import com.gdb.visao.login_registro.MultiplaEscolha;
 ========
+=======
+>>>>>>> e528347 (finalizar)
 import controle.GeneroControle;
 import controle.UsuarioControle;
 import modelo.Genero;
@@ -14,7 +17,10 @@ import modelo.Usuario;
 import visao.Menu.Menu;
 import visao.login_registro.Login;
 import visao.login_registro.MultiplaEscolha;
+<<<<<<< HEAD
 >>>>>>>> e528347 (finalizar):src/main/java/visao/gerenciar/GerenciarUsuario.java
+=======
+>>>>>>> e528347 (finalizar)
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 import java.time.LocalDate;

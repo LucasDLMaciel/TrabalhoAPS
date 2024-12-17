@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/visao/Menu/Menu.java
 package com.gdb.visao.Menu;
 
@@ -323,6 +324,8 @@ public class Menu extends JPanel {
     }
 }
 =======
+=======
+>>>>>>> e528347 (finalizar)
 package visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
@@ -876,4 +879,7 @@ public class Menu extends JPanel {
 
 
 }
+<<<<<<< HEAD
 >>>>>>> e528347 (finalizar):src/main/java/visao/Menu/Menu.java
+=======
+>>>>>>> e528347 (finalizar)

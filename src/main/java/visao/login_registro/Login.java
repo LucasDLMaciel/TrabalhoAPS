@@ -2,22 +2,30 @@ package visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/visao/login_registro/Login.java
 =======
 import controle.UsuarioControle;
 >>>>>>> e528347 (finalizar):src/main/java/visao/login_registro/Login.java
+=======
+import controle.UsuarioControle;
+>>>>>>> e528347 (finalizar)
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+<<<<<<< HEAD
 <<<<<<< HEAD:GDB/src/main/java/com/gdb/visao/login_registro/Login.java
 import com.gdb.visao.Menu.Menu;
 import com.gdb.controle.UsuarioControle;
 =======
 import visao.Menu.Menu;
 >>>>>>> e528347 (finalizar):src/main/java/visao/login_registro/Login.java
+=======
+import visao.Menu.Menu;
+>>>>>>> e528347 (finalizar)
 
 
 public class Login extends JPanel {

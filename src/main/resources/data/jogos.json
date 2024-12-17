@@ -1,0 +1,240 @@
+[
+  {
+    "titulo": "Elden Ring Nightreign",
+    "descricao": "Elden Ring: Nightreign é uma experiência com foco no cooperativo para 3 jogadores, buscando muita inspiração nos gêneros roguelike e Battle Royale, sendo um tipo de jogo bem diferente do que os fãs estão acostumados.",
+    "classificacaoEtaria": "+16",
+    "dataLancamento": "30/09/2025",
+    "generos": [
+      {
+        "genero": "Aventura",
+        "id": 2002
+      },
+      {
+        "genero": "Souls-like",
+        "id": 2003
+      },
+      {
+        "genero": "Roguelike",
+        "id": 2006
+      }
+    ],
+    "notas": [
+      {
+        "idUsuario": 1002,
+        "notaTrilhaSonora": 7,
+        "notaGraficos": 9,
+        "notaHistoria": 5,
+        "notaJogabilidade": 7,
+        "comentario": "Poderia melhorar, mas está muito bom!\nÓtimo jogo para passar o tempo com a família!",
+        "id": 1
+      },
+      {
+        "idUsuario": 1003,
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 10,
+        "notaHistoria": 10,
+        "notaJogabilidade": 10,
+        "comentario": "Sou um pai de 45 anos, provavelmente uma das pessoas mais velhas a jogar este jogo. Sou pai solteiro do meu filho, que agora tem 14 anos. Meu filho ganhou este jogo de Natal em 2021 do seu tio, então instalamos no computador dele e ele começou a jogar. No final da semana, ele já tinha 24 horas neste jogo. Isso foi horrível para mim, pois já era difícil encontrar maneiras de passar tempo com meu filho, já que ele sempre está com os amigos ou apenas assistindo ao YouTube. Então decidi criar uma conta Steam e comprar este jogo para ver se eu poderia talvez jogar ao lado dele. Carreguei no jogo, escolhi meu personagem e mundo e comecei a jogar, mas fiquei preso no que você deveria fazer. Pedi ajuda ao meu filho e ele hospedou um jogo para eu entrar. Adorei, pois foi o melhor momento que passei com meu filho desde que minha esposa morreu. Este jogo me aproximou novamente do meu filho e agora realmente passamos tempo juntos fora de casa também. Este jogo me lembrou que há diversão a ser encontrada em tudo, e trouxe para mim e para meu filho muitas lembranças felizes.",
+        "id": 6
+      },
+      {
+        "idUsuario": 1004,
+        "notaTrilhaSonora": 0,
+        "notaGraficos": 0,
+        "notaHistoria": 0,
+        "notaJogabilidade": 0,
+        "comentario": "ONDAS CELEBRAIS!",
+        "id": 11
+      }
+    ],
+    "id": 3001
+  },
+  {
+    "titulo": "Hollow Knight",
+    "descricao": "\"Hollow Knight\" é um jogo de ação e aventura 2D desenvolvido pela Team Cherry, ambientado no mundo subterrâneo de Hallownest. O jogador controla um cavaleiro solitário enquanto explora cavernas, cidades em ruínas e outros ambientes misteriosos, enfrentando criaturas desafiadoras e descobrindo segredos do antigo reino.",
+    "classificacaoEtaria": "+12",
+    "dataLancamento": "24/02/2017",
+    "generos": [
+      {
+        "genero": "Aventura",
+        "id": 2002
+      },
+      {
+        "genero": "Souls-like",
+        "id": 2003
+      }
+    ],
+    "notas": [
+      {
+        "idUsuario": 1002,
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 10,
+        "notaHistoria": 10,
+        "notaJogabilidade": 10,
+        "comentario": "bom",
+        "id": 2
+      },
+      {
+        "idUsuario": 1003,
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 10,
+        "notaHistoria": 10,
+        "notaJogabilidade": 10,
+        "comentario": "---{ Graphics }---\n☑ You forget what reality is\n☐ Beautiful\n☐ Good\n☐ Decent\n☐ Bad\n☐ Don‘t look too long at it\n☐ MS-DOS\n\n---{ Gameplay }---\n☑ Very good\n☐ Good\n☐ It\u0027s just gameplay\n☐ Mehh\n☐ Watch paint dry instead\n☐ Just don\u0027t\n\n---{ Audio }---\n☑ Eargasm\n☐ Very good\n☐ Good\n☐ Not too bad\n☐ Bad\n☐ I\u0027m now deaf\n\n---{ Audience }---\n☐ Kids\n☐ Teens\n☑ Adults\n☐ Grandma\n\n---{ PC Requirements }---\n☑ Check if you can run paint\n☐ Potato\n☐ Decent\n☐ Fast\n☐ Rich boi\n☐ Ask NASA if they have a spare computer\n\n---{ Game Size }---\n☑ Floppy Disk\n☐ Old Fashioned\n☐ Workable\n☐ Big\n☐ Will eat 10% of your 1TB hard drive\n☐ You will want an entire hard drive to hold it\n☐ You will need to invest in a black hole to hold all the data\n\n---{ Difficulty }---\n☑ Just press \u0027W\u0027\n☐ Easy\n☐ Easy to learn / Hard to master\n☐ Significant brain usage\n☐ Difficult\n☐ Dark Souls\n\n---{ Grind }---\n☐ Nothing to grind\n☐ Only if u care about leaderboards/ranks\n☐ Isn\u0027t necessary to progress\n☐ Average grind level\n☐ Too much grind\n☑ You\u0027ll need a second life for grinding\n\n---{ Story }---\n☑ No Story\n☐ Some lore\n☐ Average\n☐ Good\n☐ Lovely\n☐ It\u0027ll replace your life\n\n---{ Game Time }---\n☑ Long enough for a cup of coffee\n☐ Short\n☐ Average\n☐ Long\n☐ To infinity and beyond\n\n---{ Price }---\n☑ It\u0027s free!\n☐ Worth the price\n☐ If it\u0027s on sale\n☐ If u have some spare money left\n☐ Not recommended\n☐ You could also just burn your money\n\n---{ Bugs }---\n☑ Never heard of\n☐ Minor bugs\n☐ Can get annoying\n☐ ARK: Survival Evolved\n☐ The game itself is a big terrarium for bugs\n\n---{ ? / 10 }---\n☐ 1\n☐ 2\n☐ 3\n☐ 4\n☐ 5\n☐ 6\n☐ 7\n☐ 8\n☐ 9\n☑ 10",
+        "id": 7
+      }
+    ],
+    "id": 3002
+  },
+  {
+    "titulo": "Gris",
+    "descricao": "A história segue Gris, uma jovem perdida em um mundo desbotado, onde ela busca superar a dor de uma perda pessoal, enfrentando desafios emocionais enquanto desbloqueia novas habilidades que a ajudam a explorar um universo cada vez mais colorido. O jogo é uma jornada sensorial, com belíssima arte e uma trilha sonora envolvente, onde a narrativa é contada principalmente por meio de imagens e cores.",
+    "classificacaoEtaria": "+10",
+    "dataLancamento": "13/12/2018",
+    "generos": [
+      {
+        "genero": "Aventura",
+        "id": 2002
+      },
+      {
+        "genero": "Puzzle",
+        "id": 2005
+      }
+    ],
+    "notas": [
+      {
+        "idUsuario": 1002,
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 10,
+        "notaHistoria": 10,
+        "notaJogabilidade": 10,
+        "comentario": "Limdo",
+        "id": 3
+      },
+      {
+        "idUsuario": 1003,
+        "notaTrilhaSonora": 5,
+        "notaGraficos": 5,
+        "notaHistoria": 5,
+        "notaJogabilidade": 5,
+        "comentario": "Nunca joguei mais pog",
+        "id": 10
+      }
+    ],
+    "id": 3003
+  },
+  {
+    "titulo": "Fortnite",
+    "descricao": "O jogo mistura ação de combate com construção de estruturas, onde os jogadores competem para ser o último sobrevivente.",
+    "classificacaoEtaria": "+13",
+    "dataLancamento": "12/06/2017",
+    "generos": [
+      {
+        "genero": "Aventura",
+        "id": 2002
+      },
+      {
+        "genero": "Souls-like",
+        "id": 2003
+      },
+      {
+        "genero": "Terror",
+        "id": 2004
+      },
+      {
+        "genero": "Puzzle",
+        "id": 2005
+      },
+      {
+        "genero": "Roguelike",
+        "id": 2006
+      },
+      {
+        "genero": "FPS",
+        "id": 2007
+      },
+      {
+        "genero": "Battle Royale",
+        "id": 2008
+      }
+    ],
+    "notas": [
+      {
+        "idUsuario": 1002,
+        "notaTrilhaSonora": 0,
+        "notaGraficos": 0,
+        "notaHistoria": 0,
+        "notaJogabilidade": 0,
+        "comentario": "aaaaaa",
+        "id": 4
+      },
+      {
+        "idUsuario": 1003,
+        "notaTrilhaSonora": 10,
+        "notaGraficos": 10,
+        "notaHistoria": 10,
+        "notaJogabilidade": 10,
+        "comentario": "(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙⊙)(⌐⊙_⊙)",
+        "id": 8
+      }
+    ],
+    "id": 3004
+  },
+  {
+    "titulo": "Mineirinho Ultra Adventures(GOTY)",
+    "descricao": "Mineirinho Ultra Adventures, também conhecido como Miner Ultra Adventures em inglês, é um advergame independente de plataforma desenvolvido pelo programador Dennis Ferreira, do estúdio Manic Mind Game Lab, e publicado pela Old School Blender Addicted. O jogo foi lançado no software de distribuição digital Steam para Microsoft Windows em 27 de janeiro de 2017,[1][2] e apresentou repercussão negativa.\n\nNo início de 2019, Mineirinho Ultra Adventures e seus DLCs foram removidos da Steam, porém meses depois teve um relançamento anunciado sob o título Mineirinho Director\u0027s Cut, pelo selo Sinned Games.[3]\n\nJogabilidade e enredo\nMineirinho Ultra Adventures é um jogo de plataforma 3D.[4] O jogador controla Mineirinho, o protagonista titular do jogo e mascote do \"complexo gastronômico\" Dom Zelittu\u0027s—cujo dono é amigo de Dennis—, localizado na cidade de Itaguaí, no Rio de Janeiro.[5] Ele ataca arremessando um chapéu, ou usando power-ups (que são as comidas do restaurante) encontrados nos cinco estágios para matar os inimigos.[6][7]\n\nNa versão director\u0027s cut e em uma versão de Mineirinho Ultra Adventures apresentada em uma conferência em 2011, uma cutscene de introdução mostra que alienígenas (denominados \"Comilões do Espaço\") vieram para a Terra e levaram o restaurante Dom Zelittu\u0027s, e Mineirinho tem que resgatá-lo derrotando os extraterrestres.[6] Na versão final, não há nenhuma cutscene.[7] Após derrotar o chefe final do jogo, a mensagem \"Você conseguiu! Agora todos podem comer no melhor restaurante do mundo!\" aparece em caixa alta na tela.[7]\n\nDesenvolvimento\nMineirinho Ultra Adventures foi desenvolvido integralmente pelo programador Dennis Ferreira, durante quatro meses, utilizando os programas Blender 2.49b e GIMP, para edição de imagens. Dennis também reutilizou modelos (entre eles, árvores e plataformas) do jogo livre Yo Frankie!, e as vozes foram dubladas por sua irmã mais nova.[6] O jogo é inspirado em outros jogos de plataforma, tais como Super Mario 64, Gex, Crash Bandicoot e Conker\u0027s Bad Fur Day.[4]\n\nSegundo Dennis, o jogo foi concebido como um projeto final de uma pós-graduação,[8] bem como um advergame para Dom Zelittu\u0027s.[6][8]",
+    "classificacaoEtaria": "+60",
+    "dataLancamento": "27/01/2017",
+    "generos": [
+      {
+        "genero": "Aventura",
+        "id": 2002
+      },
+      {
+        "genero": "Souls-like",
+        "id": 2003
+      },
+      {
+        "genero": "Terror",
+        "id": 2004
+      },
+      {
+        "genero": "Puzzle",
+        "id": 2005
+      },
+      {
+        "genero": "Roguelike",
+        "id": 2006
+      },
+      {
+        "genero": "FPS",
+        "id": 2007
+      },
+      {
+        "genero": "Battle Royale",
+        "id": 2008
+      }
+    ],
+    "notas": [
+      {
+        "idUsuario": 1002,
+        "notaTrilhaSonora": 9,
+        "notaGraficos": 9,
+        "notaHistoria": 9,
+        "notaJogabilidade": 9,
+        "comentario": "JO GAO",
+        "id": 5
+      },
+      {
+        "idUsuario": 1003,
+        "notaTrilhaSonora": 1,
+        "notaGraficos": 1,
+        "notaHistoria": 1,
+        "notaJogabilidade": 1,
+        "comentario": "bao demais sô (sou sulista)",
+        "id": 9
+      }
+    ],
+    "id": 3005
+  }
+]

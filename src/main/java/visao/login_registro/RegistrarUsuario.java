@@ -2,12 +2,18 @@ package visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+<<<<<<< HEAD
 <<<<<<<< HEAD:src/main/java/visao/login_registro/Registro.java
 ========
 import controle.GeneroControle;
 import controle.UsuarioControle;
 import modelo.Genero;
 >>>>>>>> e528347 (finalizar):src/main/java/visao/login_registro/RegistrarUsuario.java
+=======
+import controle.GeneroControle;
+import controle.UsuarioControle;
+import modelo.Genero;
+>>>>>>> e528347 (finalizar)
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
 
