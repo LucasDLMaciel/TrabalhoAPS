@@ -9,25 +9,12 @@ public class Usuario extends Entidade {
     private List<Genero> generosFavoritos;
     private boolean administrador;
 
-    public Usuario(Integer id, String usuario, String senha, String dataNascimento, List<Genero> generosFavoritos, boolean administrador) {
-        setId(id);
+    public Usuario(String usuario, String senha, String dataNascimento, List<Genero> generosFavoritos, boolean administrador) {
         this.usuario = usuario;
         this.senha = senha;
         this.dataNascimento = dataNascimento;
         this.generosFavoritos = generosFavoritos;
         this.administrador = administrador;
-    }
-
-    public void adicionarGenero(Genero genero) {
-        generosFavoritos.add(genero);
-    }
-
-    public void removerGenero(Integer id) {
-        for(Genero genero : generosFavoritos) {
-            if(genero.getId() == id) {
-                generosFavoritos.remove(genero);
-            }
-        }
     }
 
     // Getters e Setters

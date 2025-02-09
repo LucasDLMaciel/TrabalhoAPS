@@ -79,10 +79,6 @@ public class Jogo extends Entidade {
         return media;
     }
 
-    public void adicionarNota(Nota nota) {
-        notas.add(nota);
-    }
-
     public List<Genero> getGeneros() {
         return generos;
     }

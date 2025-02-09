@@ -4,8 +4,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import controle.JogoControle;
-import controle.UsuarioControle;
+import controle.Controle;
 import modelo.Genero;
 import modelo.Jogo;
 import modelo.Usuario;
@@ -47,8 +46,7 @@ public class Menu extends JPanel {
     private boolean admin = true;
     private boolean selecionado;
     private boolean darkTheme;
-    private UsuarioControle usuarioControle;
-    private JogoControle jogoControle;
+    private Controle controle;
     private Usuario usuario;
 
 
@@ -56,9 +54,8 @@ public class Menu extends JPanel {
     public Menu(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
-        this.usuarioControle = new UsuarioControle();
-        this.jogoControle = new JogoControle();
-        usuario = usuarioControle.buscarUsuarioPorId(idUsuario);
+        this.controle = new Controle();
+        usuario = controle.daoUsuario.buscarPorId(idUsuario);
         if(usuario != null){
             this.admin = usuario.isAdministrador();
         }
@@ -118,7 +115,9 @@ public class Menu extends JPanel {
         this.gerenciarGenero = new JButton();
         this.gerenciarJogos = new JButton();
         this.gerenciarNotas = new JButton();
-        this.database = new JButton(new FlatSVGIcon("Menu/database.svg", 0.067F));
+
+        this.database = new JButton(new FlatSVGIcon("Menu/logo.svg", 0.5F));
+
         gerenciarGenero.setText("Gerenciar gêneros");
         gerenciarUsuarios.setText("Gerenciar usuarios");
         gerenciarJogos.setText("Gerenciar jogos");
@@ -257,10 +256,9 @@ public class Menu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String textoFiltro = Buscar.getText();
-                JogoControle jogoControle = new JogoControle(); // Instância do JogoControle
 
                 // Filtra os jogos com base no texto digitado
-                List<Jogo> jogosFiltrados = jogoControle.filtrarJogos(textoFiltro);
+                List<Jogo> jogosFiltrados = controle.daoJogo.filtrarJogos(textoFiltro);
 
                 adicionarBotoesJogosBuscados(jogosFiltrados);
             }
@@ -382,7 +380,7 @@ public class Menu extends JPanel {
 
     private void adicionarBotoesJogos() {
         // Obtenha os jogos do sistema
-        List<Jogo> jogos = jogoControle.carregarJogos();  // Assume que há um método em JogoControle para buscar todos os jogos
+        List<Jogo> jogos = controle.daoJogo.getJogos();  // Assume que há um método em JogoControle para buscar todos os jogos
 
         // Limpar o painel de jogos antes de adicionar os botões
         this.jogosPanel.removeAll();
@@ -474,13 +472,13 @@ public class Menu extends JPanel {
 
     private void adicionarBotoesJogosRecomendados() {
         // Obtenha os jogos do sistema
-        List<Jogo> jogos = jogoControle.carregarJogos(); // Assume que há um método para buscar todos os jogos
+        List<Jogo> jogos = controle.daoJogo.getJogos();
         List<Jogo> jogosRecomendados = new ArrayList<>();
 
         // Obter gêneros favoritos do usuário logado (caso esteja logado)
         if (idUsuario > 0) {
             List<String> generosFavoritos = new ArrayList<>(); // Método fictício
-            List<Genero> generos = usuarioControle.buscarUsuarioPorId(idUsuario).getGenerosFavoritos();
+            List<Genero> generos = controle.daoUsuario.buscarPorId(idUsuario).getGenerosFavoritos();
             for(Genero genero : generos){
                 generosFavoritos.add(genero.getGenero());
             }

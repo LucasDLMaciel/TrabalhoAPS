@@ -2,7 +2,7 @@ package visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.UsuarioControle;
+import controle.Controle;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,12 +15,12 @@ import visao.Menu.Menu;
 public class Login extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario = 0;
-    UsuarioControle usuarioControle;
+    Controle controle;
 
     public Login(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
-        this.usuarioControle = new UsuarioControle();
+        this.controle = new Controle();
         init();
     }
 
@@ -70,7 +70,7 @@ public class Login extends JPanel {
                 String senha = new String(senhaText.getPassword());
 
 
-                idUsuario = usuarioControle.validarLogin(nome_de_usuario, senha);
+                idUsuario = controle.daoUsuario.validarLogin(nome_de_usuario, senha);
 
                 if (idUsuario != 0) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);

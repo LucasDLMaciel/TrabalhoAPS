@@ -2,7 +2,7 @@ package visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.JogoControle;
+import controle.Controle;
 import modelo.Jogo;
 import modelo.Nota;
 import visao.gerenciar.GerenciarNotas;
@@ -10,6 +10,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class EditarNotaTela extends JPanel {
     private JSpinner notaTrilhaSonoraSpinner;
@@ -23,7 +24,7 @@ public class EditarNotaTela extends JPanel {
     private Jogo jogo;
     private Nota notaExistente;
 
-    private JogoControle jogoControle = new JogoControle();
+    private Controle controle = new Controle();
 
     public EditarNotaTela(boolean darkTheme, Integer idUsuario, Jogo jogo, Nota nota) {
         this.darkTheme = darkTheme;
@@ -117,17 +118,21 @@ public class EditarNotaTela extends JPanel {
         String comentario = comentarioArea.getText().trim();
 
         try {
-            // Chama o método editarNota no controlador
-            jogoControle.editarNota(
-                    jogo.getId(),                      // ID do jogo
-                    notaExistente.getId(),             // ID da nota
-                    trilhaSonora,                      // Nova nota para trilha sonora
-                    graficos,                          // Nova nota para gráficos
-                    historia,                          // Nova nota para história
-                    jogabilidade,                      // Nova nota para jogabilidade
-                    comentario                         // Novo comentário
-            );
-
+            if (jogo != null) {
+                List<Nota> notas = jogo.getNotas();
+                for (Nota nota : notas) {
+                    if (nota.getId().equals(notaExistente.getId())) {
+                        nota.setNotaTrilhaSonora(trilhaSonora);
+                        nota.setNotaGraficos(graficos);
+                        nota.setNotaHistoria(historia);
+                        nota.setNotaJogabilidade(jogabilidade);
+                        nota.setComentario(comentario);
+                        break;
+                    }
+                }
+                jogo.setNotas(notas);
+                controle.daoJogo.atualizar(jogo);
+            }
             JOptionPane.showMessageDialog(this, "Nota editada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
             // Atualiza a tela de detalhes do jogo
@@ -139,7 +144,7 @@ public class EditarNotaTela extends JPanel {
 
 
     private void voltar() {
-        jogo = jogoControle.buscarJogoPorId(jogo.getId());
+        jogo = controle.daoJogo.buscarPorId(jogo.getId());
         DetalhesJogoPanel detalhesJogoPanel = new DetalhesJogoPanel(jogo, idUsuario, darkTheme);
         Container container = getParent();
         container.removeAll();

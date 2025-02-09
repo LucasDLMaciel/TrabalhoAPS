@@ -1,6 +1,6 @@
 package visao.login_registro;
 
-import controle.GeneroControle;
+import controle.Controle;
 import modelo.Genero;
 import net.miginfocom.swing.MigLayout;
 
@@ -88,8 +88,8 @@ public class MultiplaEscolha extends JPanel {
     // Função que retorna as opções selecionadas
     public List<Genero> getSelecionados() {
         String selecionado = null;
-        GeneroControle generoControle = new GeneroControle();
-        List<Genero> generos = generoControle.getGeneros();
+        Controle controle = new Controle();
+        List<Genero> generos = controle.daoGenero.getGeneros();
         List<Genero> generosFavoritos = new ArrayList<>();
 
         // Verificar quais opções estão selecionadas

@@ -2,8 +2,7 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.GeneroControle;
-import controle.JogoControle;
+import controle.Controle;
 import modelo.Genero;
 import modelo.Jogo;
 import modelo.Nota;
@@ -25,7 +24,7 @@ public class AdicionarJogo extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario;
 
-    private GeneroControle generoControle = new GeneroControle();
+    private Controle controle = new Controle();
 
     public AdicionarJogo(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -76,7 +75,7 @@ public class AdicionarJogo extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = generoControle.getGeneros();
+        List<Genero> generos = controle.daoGenero.getGeneros();
         List<Genero> generosSelecionados = new ArrayList<>();
         generoBox = new MultiplaEscolha(generos, generosSelecionados);
         add(generoBox, "gapx 23 23, width 300, align center");
@@ -123,9 +122,10 @@ public class AdicionarJogo extends JPanel {
         }
 
         try {
-            JogoControle service = new JogoControle();
+            Controle controle = new Controle();
             List<Nota> notas = new ArrayList<>();
-            service.salvarJogo(nomeJogo, descricao, classificacaoEtaria, dataLancamento, generosSelecionados, notas);
+            Jogo jogo = new Jogo(nomeJogo, dataLancamento, descricao, classificacaoEtaria, notas, generosSelecionados);
+            controle.salvar("jogo",jogo);
             JOptionPane.showMessageDialog(this, "Jogo adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

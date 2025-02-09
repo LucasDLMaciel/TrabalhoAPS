@@ -2,9 +2,9 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.GeneroControle;
-import controle.UsuarioControle;
+import controle.Controle;
 import modelo.Genero;
+import modelo.Usuario;
 import visao.login_registro.MultiplaEscolha;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.component.date.DatePicker;
@@ -23,7 +23,7 @@ public class AdicionarUsuario extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario;
 
-    private GeneroControle generoControle = new GeneroControle();
+    private Controle controle = new Controle();
 
     public AdicionarUsuario(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -70,7 +70,7 @@ public class AdicionarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = generoControle.getGeneros();
+        List<Genero> generos = controle.daoGenero.getGeneros();
 
         List<Genero> generosFav = new ArrayList<>();
 
@@ -101,22 +101,21 @@ public class AdicionarUsuario extends JPanel {
     }
 
     private void adicionarUsuario() {
-        String usuario = usuarioText.getText().trim();
+        String nome = usuarioText.getText().trim();
         String senha = new String(senhaText.getPassword()).trim();
         String dataNascimento = dataNascimentoField.getText().trim();
         List<Genero> generosSelecionados = generoBox.getSelecionados();
 
         boolean isAdmin = adminCheckBox.isSelected();
 
-        if (usuario.isEmpty() || senha.isEmpty() || dataNascimento.isEmpty()) {
+        if (nome.isEmpty() || senha.isEmpty() || dataNascimento.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos obrigatórios.", "Erro", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            UsuarioControle service = new UsuarioControle();
-
-            service.salvarRegistro(usuario, senha, dataNascimento, generosSelecionados, isAdmin);
+            Usuario usuario = new Usuario(nome, senha, dataNascimento, generosSelecionados, isAdmin);
+            controle.salvar("usuario", usuario);
             JOptionPane.showMessageDialog(this, "Usuário adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

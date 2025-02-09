@@ -1,8 +1,8 @@
 package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import controle.GeneroControle;
-import controle.JogoControle;
+import controle.Controle;
+import controle.Controle;
 import modelo.Genero;
 import modelo.Jogo;
 import visao.Menu.Menu;
@@ -23,7 +23,7 @@ public class GerenciarJogos extends JPanel {
 
     private boolean darkTheme;
     private Integer idUsuario;
-    private JogoControle jogoControle = new JogoControle();
+    private Controle controle = new Controle();
 
     public GerenciarJogos(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -134,7 +134,7 @@ public class GerenciarJogos extends JPanel {
             return;
         }
 
-        int jogoId = Integer.parseInt(modeloTabela.getValueAt(selectedRow, 0).toString());
+        Integer jogoId = Integer.parseInt(modeloTabela.getValueAt(selectedRow, 0).toString());
 
         // Caixa de diálogo para confirmar a exclusão
         int resposta = JOptionPane.showConfirmDialog(this,
@@ -144,7 +144,7 @@ public class GerenciarJogos extends JPanel {
                 JOptionPane.WARNING_MESSAGE);
 
         if (resposta == JOptionPane.YES_OPTION) {
-            jogoControle.excluirJogoPorId(jogoId);
+            controle.deletar("jogo",jogoId);
             modeloTabela.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Jogo excluído com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -160,12 +160,12 @@ public class GerenciarJogos extends JPanel {
             String classificacaoEtaria = tabelaJogos.getValueAt(i, 3).toString();
             String dataLancamento = tabelaJogos.getValueAt(i, 4).toString();
             String generosString = tabelaJogos.getValueAt(i, 5).toString();
-            GeneroControle generoControle = new GeneroControle();
+            Controle controle = new Controle();
             List<String> selecionado = List.of(generosString.split(";"));
             List<Genero> generosAtualizados = new ArrayList<>();
-            List<Genero> generos = generoControle.getGeneros();
+            List<Genero> generos = controle.daoGenero.getGeneros();
             List<Genero> genFav = new ArrayList<>();
-            Jogo jogo = jogoControle.buscarJogoPorId(idJogo);
+            Jogo jogo = controle.daoJogo.buscarPorId(idJogo);
 
             // Verificar quais opções estão selecionadas
             for (String a : selecionado) {
@@ -176,13 +176,19 @@ public class GerenciarJogos extends JPanel {
                 }
             }
 
-            jogoControle.atualizarJogo(idJogo, titulo, descricao, classificacaoEtaria, dataLancamento, genFav, jogo.getNotas());
+            jogo.setTitulo(titulo);
+            jogo.setDescricao(descricao);
+            jogo.setClassificacaoEtaria(classificacaoEtaria);
+            jogo.setDataLancamento(dataLancamento);
+            jogo.setGeneros(genFav);
+
+            controle.atualizar("jogo",jogo);
         }
         JOptionPane.showMessageDialog(this, "Jogos editados com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarJogos() {
-        List<Jogo> jogos = jogoControle.carregarJogos();
+        List<Jogo> jogos = controle.daoJogo.getJogos();
         for (Jogo jogo : jogos) {
             List<String> generos = new ArrayList<>();
             for (Genero genero : jogo.getGeneros()) {

@@ -5,8 +5,8 @@
     "dataNascimento": "01/01/2025",
     "generosFavoritos": [
       {
-        "genero": "Aventura",
-        "id": 2002
+        "genero": "Souls-like",
+        "id": 2003
       }
     ],
     "administrador": true,

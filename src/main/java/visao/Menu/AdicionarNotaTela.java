@@ -2,7 +2,7 @@ package visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.JogoControle;
+import controle.Controle;
 import modelo.Jogo;
 import modelo.Nota;
 import visao.gerenciar.GerenciarNotas;
@@ -24,7 +24,7 @@ public class AdicionarNotaTela extends JPanel {
     private Integer idUsuario;
     Jogo jogo;
 
-    private JogoControle jogoControle = new JogoControle();
+    private Controle controle = new Controle();
 
     public AdicionarNotaTela(boolean darkTheme, Integer idUsuario, Jogo jogo) {
         this.darkTheme = darkTheme;
@@ -96,7 +96,7 @@ public class AdicionarNotaTela extends JPanel {
     }
 
     private void carregarJogos() {
-        List<Jogo> jogos = jogoControle.carregarJogos();
+        List<Jogo> jogos = controle.daoJogo.getJogos();
         for (Jogo jogo : jogos) {
             jogoComboBox.addItem(jogo.getTitulo());
         }
@@ -131,14 +131,15 @@ public class AdicionarNotaTela extends JPanel {
         String comentario = comentarioArea.getText().trim();
 
         try {
-            Jogo jogo = jogoControle.buscarJogoPorTitulo(jogoTitulo);
+            Jogo jogo = controle.daoJogo.buscarJogoPorTitulo(jogoTitulo);
             if (jogo == null) {
                 JOptionPane.showMessageDialog(this, "Jogo não encontrado.", "Erro", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             Nota novaNota = new Nota(idUsuario, trilhaSonora, graficos, historia, jogabilidade, comentario);
-            jogoControle.salvarNota(jogo.getId(), novaNota);
+            jogo.getNotas().add(novaNota);
+            controle.atualizar("jogo", jogo);
 
             JOptionPane.showMessageDialog(this, "Nota adicionada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {
@@ -147,7 +148,7 @@ public class AdicionarNotaTela extends JPanel {
     }
 
     private void voltar() {
-        jogo = jogoControle.buscarJogoPorId(jogo.getId());
+        jogo = controle.daoJogo.buscarPorId(jogo.getId());
         DetalhesJogoPanel detalhesJogoPanel = new DetalhesJogoPanel(jogo, idUsuario, darkTheme);
         Container container = getParent();
         container.removeAll();

@@ -1,7 +1,7 @@
 package visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import controle.UsuarioControle;
+import controle.Controle;
 import modelo.Jogo;
 import modelo.Nota;
 import net.miginfocom.swing.MigLayout;
@@ -166,10 +166,10 @@ public class DetalhesJogoPanel extends JPanel {
 
     private JPanel criarBlocoNotaUsuario(Nota nota) {
         JPanel blocoNota = new JPanel(new MigLayout("wrap, insets 10", "[grow,fill]"));
-        UsuarioControle usuarioControle = new UsuarioControle();
+        Controle controle = new Controle();
         blocoNota.setBorder(new RoundedBorder(10, Color.LIGHT_GRAY));
 
-        JLabel usuarioLabel = new JLabel("Usuário: " + usuarioControle.buscarUsuarioPorId(nota.getIdUsuario()).getUsuario());
+        JLabel usuarioLabel = new JLabel("Usuário: " + controle.daoUsuario.buscarPorId(nota.getIdUsuario()).getUsuario());
         usuarioLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         blocoNota.add(usuarioLabel);
 

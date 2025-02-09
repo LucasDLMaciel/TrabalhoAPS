@@ -2,8 +2,7 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.GeneroControle;
-import controle.UsuarioControle;
+import controle.Controle;
 import modelo.Genero;
 import modelo.Usuario;
 import visao.Menu.Menu;
@@ -34,14 +33,12 @@ public class GerenciarUsuario extends JPanel {
     private Integer idUsuario = 0;
 
     // Adicione um controlador de usuário para buscar e atualizar dados do usuário
-    private UsuarioControle usuarioControle; // Supondo que exista um controlador para manipular usuários
-    private GeneroControle generoControle;
+    private Controle controle; // Supondo que exista um controlador para manipular usuários
 
     public GerenciarUsuario(boolean darkTheme, Integer idUsuario) {
         this.idUsuario = idUsuario;  // Armazena o id do usuário logado
         this.darkTheme = darkTheme;
-        usuarioControle = new UsuarioControle();  // Inicialize o controlador ou faça como necessário
-        generoControle = new GeneroControle();
+        controle = new Controle();  // Inicialize o controlador ou faça como necessário
         init();  // Inicializa os componentes da tela
     }
 
@@ -94,9 +91,9 @@ public class GerenciarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = generoControle.getGeneros();
+        List<Genero> generos = controle.daoGenero.getGeneros();
 
-        Usuario usuario1 = usuarioControle.buscarUsuarioPorId(idUsuario);  // Busca o usuário pelo ID
+        Usuario usuario1 = controle.daoUsuario.buscarPorId(idUsuario);  // Busca o usuário pelo ID
         List<Genero> generosFav = usuario1.getGenerosFavoritos();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
@@ -151,8 +148,9 @@ public class GerenciarUsuario extends JPanel {
                 boolean isAdmin = adminCheckBox.isSelected();
 
                 // Atualizar usuário no banco de dados
-                usuarioControle.atualizarUsuario(idUsuario, usuario, senha, dataNascimentoString, generosFavoritos, isAdmin);
-
+                Usuario usuarioAux = new Usuario(usuario, senha, dataNascimentoString, generosFavoritos, isAdmin);
+                usuarioAux.setId(idUsuario);
+                controle.atualizar("usuario", usuarioAux);
                 JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
             }
         });
@@ -218,7 +216,7 @@ public class GerenciarUsuario extends JPanel {
                         JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (resposta == JOptionPane.YES_OPTION) {
-                    usuarioControle.excluirUsuarioPorId(idUsuario);
+                    controle.deletar("usuario", idUsuario);
                     JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
                     // Redireciona para a tela de login após exclusão
                     Login login = new Login(darkTheme, 0);

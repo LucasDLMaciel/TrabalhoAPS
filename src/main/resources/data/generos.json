@@ -26,5 +26,13 @@
   {
     "genero": "Battle Royale",
     "id": 2008
+  },
+  {
+    "genero": "RPG",
+    "id": 2009
+  },
+  {
+    "genero": "Luta",
+    "id": 2010
   }
 ]

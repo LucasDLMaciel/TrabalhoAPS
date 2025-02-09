@@ -1,8 +1,7 @@
 package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import controle.GeneroControle;
-import controle.UsuarioControle;
+import controle.Controle;
 import modelo.Genero;
 import modelo.Usuario;
 import visao.Menu.Menu;
@@ -24,7 +23,7 @@ public class GerenciarUsuarios extends JPanel {
 
     private boolean darkTheme;
     private Integer idUsuario = 0;
-    private UsuarioControle usuarioControle = new UsuarioControle();
+    private Controle controle = new Controle();
 
     public GerenciarUsuarios(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -147,7 +146,7 @@ public class GerenciarUsuarios extends JPanel {
             return;
         }
 
-        int userId = (int) modeloTabela.getValueAt(selectedRow, 0);
+        Integer userId = (Integer) modeloTabela.getValueAt(selectedRow, 0);
 
         // Caixa de diálogo para confirmar a exclusão
         int resposta = JOptionPane.showConfirmDialog(this,
@@ -158,7 +157,7 @@ public class GerenciarUsuarios extends JPanel {
 
         // Verifica se a resposta foi "Sim"
         if (resposta == JOptionPane.YES_OPTION) {
-            usuarioControle.excluirUsuarioPorId(userId);
+            controle.deletar("usuario", userId);
             modeloTabela.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -178,8 +177,8 @@ public class GerenciarUsuarios extends JPanel {
             boolean isAdmin = Boolean.parseBoolean(tabelaUsuarios.getValueAt(i, 5).toString());
 
             List<String> selecionado = Arrays.asList(generosFavoritos.split(";"));
-            GeneroControle generoControle = new GeneroControle();
-            List<Genero> generos = generoControle.getGeneros();
+
+            List<Genero> generos = controle.daoGenero.getGeneros();
             List<Genero> genFav = new ArrayList<>();
 
             // Verificar quais opções estão selecionadas
@@ -192,13 +191,15 @@ public class GerenciarUsuarios extends JPanel {
             }
 
             // Adicionar o usuário atualizado na lista
-            usuarioControle.atualizarUsuario(idUsuario, usuario, senha, dataNascimento, genFav, isAdmin);
+            Usuario usuarioAux = new Usuario(usuario, senha, dataNascimento, genFav, isAdmin);
+            usuarioAux.setId(idUsuario);
+            controle.atualizar("usuario", usuarioAux);
         }
         JOptionPane.showMessageDialog(this, "Usuários editados com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarUsuarios() {
-        List<Usuario> usuarios = usuarioControle.lerRegistros();
+        List<Usuario> usuarios = controle.daoUsuario.getUsuarios();
         List<Genero> generos;
         List<String> generoList = new ArrayList<>();
 
