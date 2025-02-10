@@ -2,7 +2,7 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.Controle;
+import controle.ControleJogo;
 import modelo.Jogo;
 import modelo.Nota;
 import net.miginfocom.swing.MigLayout;
@@ -22,7 +22,7 @@ public class AdicionarNota extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario;
 
-    private Controle controle = new Controle();
+    private ControleJogo controleJogo = new ControleJogo();
 
     public AdicionarNota(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -95,7 +95,7 @@ public class AdicionarNota extends JPanel {
     }
 
     private void carregarJogos() {
-        List<Jogo> jogos = controle.daoJogo.getJogos();
+        List<Jogo> jogos = controleJogo.getEntidades();
         for (Jogo jogo : jogos) {
             jogoComboBox.addItem(jogo.getTitulo());
         }
@@ -130,7 +130,7 @@ public class AdicionarNota extends JPanel {
         String comentario = comentarioArea.getText().trim();
 
         try {
-            Jogo jogo = controle.daoJogo.buscarJogoPorTitulo(jogoTitulo);
+            Jogo jogo = (Jogo) controleJogo.buscarPorTitulo(jogoTitulo);
             if (jogo == null) {
                 JOptionPane.showMessageDialog(this, "Jogo não encontrado.", "Erro", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -138,7 +138,7 @@ public class AdicionarNota extends JPanel {
 
             Nota novaNota = new Nota(idUsuario, trilhaSonora, graficos, historia, jogabilidade, comentario);
             jogo.getNotas().add(novaNota);
-            controle.atualizar("jogo", jogo);
+            controleJogo.atualizar(jogo);
 
             JOptionPane.showMessageDialog(this, "Nota adicionada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {

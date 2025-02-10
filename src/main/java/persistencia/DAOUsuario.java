@@ -26,7 +26,7 @@ public class DAOUsuario extends DAO {
         return instance;
     }
 
-    public List<Usuario> getUsuarios() {
+    public List<Usuario> getEntidades() {
         return this.usuarios;
     }
 
@@ -48,7 +48,7 @@ public class DAOUsuario extends DAO {
     }
 
     @Override
-    public Usuario buscarPorId(Integer id) {
+    public Entidade buscarPorId(Integer id) {
         if (usuarios == null)
             return null;
 
@@ -60,7 +60,8 @@ public class DAOUsuario extends DAO {
         return null;
     }
 
-    public void salvarUsuario(Usuario usuario) {
+    public void salvar(Entidade entidade) {
+        Usuario usuario = (Usuario) entidade;
         int proximoId = 1000;
         if(usuario != null) {
             for (Usuario registro : usuarios) {
@@ -68,7 +69,7 @@ public class DAOUsuario extends DAO {
                     throw new IllegalArgumentException("Usuário já cadastrado.");
                 }
             }
-            proximoId = calcularProximoId(usuarios);
+            proximoId = calcularProximoId();
             usuario.setId(proximoId);
         }
 
@@ -81,14 +82,16 @@ public class DAOUsuario extends DAO {
         }
     }
 
-    public int calcularProximoId(List<Usuario> registros) {
-        return registros.stream()
+    @Override
+    public int calcularProximoId() {
+        return usuarios.stream()
                 .mapToInt(Usuario::getId)
                 .max()
                 .orElse(1000) + 1;
     }
 
-    public void atualizar(Usuario usuario) {
+    public void atualizar(Entidade entidade) {
+        Usuario usuario = (Usuario) entidade;
         for (Usuario usuarioExistente : usuarios) {
             if (Objects.equals(usuarioExistente.getId(), usuario.getId())) {
                 usuarioExistente.setUsuario(usuario.getUsuario());
@@ -113,7 +116,7 @@ public class DAOUsuario extends DAO {
     public void deletar(Integer id) {
 
         daoJogo.lerRegistro();
-        List<Jogo> jogos = daoJogo.getJogos();
+        List<Jogo> jogos = daoJogo.getEntidades();
 
         Usuario usuarioExcluido = null;
         for (Usuario usuario : usuarios) {

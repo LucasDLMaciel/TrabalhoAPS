@@ -1,7 +1,8 @@
 package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import controle.Controle;
+import controle.ControleGenero;
+import controle.ControleUsuario;
 import modelo.Genero;
 import modelo.Usuario;
 import visao.Menu.Menu;
@@ -23,7 +24,7 @@ public class GerenciarUsuarios extends JPanel {
 
     private boolean darkTheme;
     private Integer idUsuario = 0;
-    private Controle controle = new Controle();
+    private ControleUsuario controleUsuario = new ControleUsuario();
 
     public GerenciarUsuarios(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -157,7 +158,7 @@ public class GerenciarUsuarios extends JPanel {
 
         // Verifica se a resposta foi "Sim"
         if (resposta == JOptionPane.YES_OPTION) {
-            controle.deletar("usuario", userId);
+            controleUsuario.deletar(userId);
             modeloTabela.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Usuário excluído com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -178,7 +179,9 @@ public class GerenciarUsuarios extends JPanel {
 
             List<String> selecionado = Arrays.asList(generosFavoritos.split(";"));
 
-            List<Genero> generos = controle.daoGenero.getGeneros();
+            ControleGenero controleGenero = new ControleGenero();
+
+            List<Genero> generos = controleGenero.getEntidades();
             List<Genero> genFav = new ArrayList<>();
 
             // Verificar quais opções estão selecionadas
@@ -193,13 +196,13 @@ public class GerenciarUsuarios extends JPanel {
             // Adicionar o usuário atualizado na lista
             Usuario usuarioAux = new Usuario(usuario, senha, dataNascimento, genFav, isAdmin);
             usuarioAux.setId(idUsuario);
-            controle.atualizar("usuario", usuarioAux);
+            controleUsuario.atualizar(usuarioAux);
         }
         JOptionPane.showMessageDialog(this, "Usuários editados com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarUsuarios() {
-        List<Usuario> usuarios = controle.daoUsuario.getUsuarios();
+        List<Usuario> usuarios = controleUsuario.getEntidades();
         List<Genero> generos;
         List<String> generoList = new ArrayList<>();
 

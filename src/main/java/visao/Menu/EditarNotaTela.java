@@ -2,7 +2,7 @@ package visao.Menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.Controle;
+import controle.ControleJogo;
 import modelo.Jogo;
 import modelo.Nota;
 import visao.gerenciar.GerenciarNotas;
@@ -24,7 +24,7 @@ public class EditarNotaTela extends JPanel {
     private Jogo jogo;
     private Nota notaExistente;
 
-    private Controle controle = new Controle();
+    private ControleJogo controleJogo = new ControleJogo();
 
     public EditarNotaTela(boolean darkTheme, Integer idUsuario, Jogo jogo, Nota nota) {
         this.darkTheme = darkTheme;
@@ -131,7 +131,7 @@ public class EditarNotaTela extends JPanel {
                     }
                 }
                 jogo.setNotas(notas);
-                controle.daoJogo.atualizar(jogo);
+                controleJogo.atualizar(jogo);
             }
             JOptionPane.showMessageDialog(this, "Nota editada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
@@ -144,7 +144,7 @@ public class EditarNotaTela extends JPanel {
 
 
     private void voltar() {
-        jogo = controle.daoJogo.buscarPorId(jogo.getId());
+        jogo = (Jogo) controleJogo.buscarPorId(jogo.getId());
         DetalhesJogoPanel detalhesJogoPanel = new DetalhesJogoPanel(jogo, idUsuario, darkTheme);
         Container container = getParent();
         container.removeAll();

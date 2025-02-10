@@ -11,7 +11,6 @@ import javax.swing.UIManager;
 public class Main extends JFrame {
     public Main() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setSize(new Dimension(1280, 720));
         setLocationRelativeTo(null);
         setResizable(false);

@@ -2,7 +2,8 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.Controle;
+import controle.ControleUsuario;
+import controle.ControleGenero;
 import modelo.Genero;
 import modelo.Usuario;
 import visao.Menu.Menu;
@@ -32,14 +33,15 @@ public class GerenciarUsuario extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario = 0;
 
-    // Adicione um controlador de usuário para buscar e atualizar dados do usuário
-    private Controle controle; // Supondo que exista um controlador para manipular usuários
+    private ControleUsuario controleUsuario;
+    private ControleGenero controleGenero;
 
     public GerenciarUsuario(boolean darkTheme, Integer idUsuario) {
-        this.idUsuario = idUsuario;  // Armazena o id do usuário logado
+        this.idUsuario = idUsuario;
         this.darkTheme = darkTheme;
-        controle = new Controle();  // Inicialize o controlador ou faça como necessário
-        init();  // Inicializa os componentes da tela
+        controleUsuario = new ControleUsuario();
+        controleGenero = new ControleGenero();
+        init();
     }
 
     private void init() {
@@ -91,9 +93,9 @@ public class GerenciarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = controle.daoGenero.getGeneros();
+        List<Genero> generos = controleGenero.getEntidades();
 
-        Usuario usuario1 = controle.daoUsuario.buscarPorId(idUsuario);  // Busca o usuário pelo ID
+        Usuario usuario1 = (Usuario) controleUsuario.buscarPorId(idUsuario);
         List<Genero> generosFav = usuario1.getGenerosFavoritos();
 
         generoBox = new MultiplaEscolha(generos, generosFav);
@@ -103,10 +105,10 @@ public class GerenciarUsuario extends JPanel {
         adminCheckBox.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
 
         if (usuario1 != null) {
-            usuarioText.setText(usuario1.getUsuario());  // Preenche o campo de usuário
-            senhaText.setText(usuario1.getSenha());  // Preenche o campo de senha
-            dataNascimentoField.setText(usuario1.getDataNascimento().toString());  // Preenche a data de nascimento
-            adminCheckBox.setSelected(usuario1.isAdministrador());  // Marca ou desmarca o checkbox de administrador
+            usuarioText.setText(usuario1.getUsuario());
+            senhaText.setText(usuario1.getSenha());
+            dataNascimentoField.setText(usuario1.getDataNascimento().toString());
+            adminCheckBox.setSelected(usuario1.isAdministrador());
         }
 
         // Botão para salvar alterações
@@ -120,10 +122,9 @@ public class GerenciarUsuario extends JPanel {
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Validar se os campos estão preenchidos
                 if (usuarioText.getText().isEmpty() || senhaText.getPassword().length == 0 || dataNascimentoField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.");
-                    return; // Interrompe a execução se algum campo estiver vazio
+                    return;
                 }
 
                 String usuario = usuarioText.getText();
@@ -150,7 +151,7 @@ public class GerenciarUsuario extends JPanel {
                 // Atualizar usuário no banco de dados
                 Usuario usuarioAux = new Usuario(usuario, senha, dataNascimentoString, generosFavoritos, isAdmin);
                 usuarioAux.setId(idUsuario);
-                controle.atualizar("usuario", usuarioAux);
+                controleUsuario.atualizar(usuarioAux);
                 JOptionPane.showMessageDialog(null, "Usuário salvo com sucesso!");
             }
         });
@@ -216,7 +217,7 @@ public class GerenciarUsuario extends JPanel {
                         JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
                 if (resposta == JOptionPane.YES_OPTION) {
-                    controle.deletar("usuario", idUsuario);
+                    controleUsuario.deletar(idUsuario);
                     JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
                     // Redireciona para a tela de login após exclusão
                     Login login = new Login(darkTheme, 0);

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import modelo.Jogo;
 import modelo.Nota;
+import modelo.Entidade;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -28,6 +29,7 @@ public class DAOJogo extends DAO {
         return instance;
     }
 
+    @Override
     public void lerRegistro() {
         File file = new File(ARQUIVO_JOGOS);
 
@@ -43,6 +45,7 @@ public class DAOJogo extends DAO {
         }
     }
 
+    @Override
     public Jogo buscarPorId(Integer id) {
         if(jogos == null)
             return null;
@@ -67,19 +70,21 @@ public class DAOJogo extends DAO {
         return null; // Retorna null se não encontrar
     }
 
-    public void salvarJogo(Jogo jogo) {
+    @Override
+    public void salvar(Entidade entidade) {
+        Jogo jogo = (Jogo) entidade;
         for (Jogo existente : jogos) {
             if (existente.getTitulo().trim().equalsIgnoreCase(jogo.getTitulo().trim())) {
                 throw new IllegalArgumentException("Já existe um jogo com o título: " + jogo.getTitulo());
             }
         }
-        int proximoId = calcularProximoIdJogo(jogos);
+        int proximoId = calcularProximoId();
         jogo.setId(proximoId);
         System.out.println("ID atribuído ao jogo: " + proximoId);
         jogos.add(jogo);
 
         for(Nota nota : jogo.getNotas()) {
-            proximoId = calcularProximoIdNota(jogos);
+            proximoId = calcularProximoIdNota();
             nota.setId(proximoId);
         }
 
@@ -105,8 +110,9 @@ public class DAOJogo extends DAO {
         }
     }
 
-    public void atualizar(Jogo jogo) {
+    public void atualizar(Entidade entidade) {
         Integer proximoId;
+        Jogo jogo = (Jogo) entidade;
         for (Jogo jogoExistente : jogos) {
             if (Objects.equals(jogoExistente.getId(), jogo.getId())) {
                 jogoExistente.setTitulo(jogo.getTitulo());
@@ -117,7 +123,7 @@ public class DAOJogo extends DAO {
                 jogoExistente.setNotas(jogo.getNotas());
 
                 for(Nota nota : jogo.getNotas()) {
-                    proximoId = calcularProximoIdNota(jogos);
+                    proximoId = calcularProximoIdNota();
                     nota.setId(proximoId);
                 }
 
@@ -134,7 +140,8 @@ public class DAOJogo extends DAO {
         throw new IllegalArgumentException("Jogo não encontrado.");
     }
 
-    public int calcularProximoIdJogo(List<Jogo> jogos) {
+    @Override
+    public int calcularProximoId() {
         return jogos.stream()
                 .mapToInt(Jogo::getId)
                 .max()
@@ -142,9 +149,9 @@ public class DAOJogo extends DAO {
     }
 
 
-    public int calcularProximoIdNota(List<Jogo> jogos) {
+    private int calcularProximoIdNota() {
         int maiorIdNota = 0;
-        for (Jogo jogo : jogos) {
+        for (Jogo jogo : this.jogos) {
             for (Nota nota : jogo.getNotas()) {
                 maiorIdNota = Math.max(maiorIdNota, nota.getId());
             }
@@ -152,7 +159,7 @@ public class DAOJogo extends DAO {
         return maiorIdNota + 1;
     }
 
-    public List<Jogo> getJogos() {
+    public List<Jogo> getEntidades() {
         return this.jogos;
     }
 

@@ -1,5 +1,6 @@
 package persistencia;
 
+import modelo.Entidade;
 import modelo.Genero;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +23,7 @@ public class DAOGenero extends DAO{
     private List<Genero> generos;
     private final Gson gson;
 
-    public DAOGenero() {
+    private DAOGenero() {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -34,7 +35,7 @@ public class DAOGenero extends DAO{
     }
 
     @Override
-    public Genero buscarPorId(Integer id) {
+    public Entidade buscarPorId(Integer id) {
         for (Genero genero : generos) {
             if (Objects.equals(genero.getId(), id)) {
                 return genero;
@@ -43,18 +44,21 @@ public class DAOGenero extends DAO{
         return null; // Retorna null se não encontrar
     }
 
-    public List<Genero> getGeneros() {
+    public List<Genero> getEntidades() {
         return generos;
     }
 
-    private int calcularProximoId(List<Genero> registros) {
-        return registros.stream()
+    @Override
+    public int calcularProximoId() {
+        return this.generos.stream()
                 .mapToInt(Genero::getId) // Extrai os IDs
                 .max()                    // Encontra o maior ID
                 .orElse(2000) + 1;           // Incrementa o maior ID (ou retorna 1 se a lista estiver vazia)
     }
 
-    public void salvarGenero(Genero genero) {
+    @Override
+    public void salvar(Entidade entidade) {
+        Genero genero = (Genero) entidade;
         for (Genero registro : generos) {
             if (registro.getGenero().equalsIgnoreCase(genero.getGenero())) {
                 return;
@@ -62,7 +66,7 @@ public class DAOGenero extends DAO{
         }
 
         // Calcula o próximo ID
-        int proximoId = calcularProximoId(generos);
+        int proximoId = calcularProximoId();
 
         // Cria um novo registro com o ID gerado
         Genero novoRegistro = new Genero(proximoId, genero.getGenero());
@@ -91,14 +95,16 @@ public class DAOGenero extends DAO{
         }
     }
 
-    public void atualizar(Genero genero) {
+    @Override
+    public void atualizar(Entidade entidade) {
+        Genero genero = (Genero) entidade;
         // Lê os registros do arquivo
         List<Genero> generosUsuario;
         List<Genero> generosJogos;
         boolean atualizado = true;
 
         // Busca o gênero a ser editado
-        Genero generoEditado = buscarPorId(genero.getId());
+        Genero generoEditado = (Genero) buscarPorId(genero.getId());
         if (generoEditado == null) {
             atualizado = false;
         }
@@ -106,7 +112,7 @@ public class DAOGenero extends DAO{
         generoEditado.setGenero(genero.getGenero());
 
         // Atualiza os gêneros favoritos dos usuários
-        for (Usuario usuario : daoUsuario.getUsuarios()) {
+        for (Usuario usuario : daoUsuario.getEntidades()) {
             generosUsuario = usuario.getGenerosFavoritos();
             for (Genero generoExistente : generosUsuario) {
                 if (generoExistente.getId().equals(genero.getId())) {
@@ -122,7 +128,7 @@ public class DAOGenero extends DAO{
             }
         }
 
-        for (Jogo jogo : daoJogo.getJogos()) {
+        for (Jogo jogo : daoJogo.getEntidades()) {
             generosJogos = jogo.getGeneros();
             for (Genero generoExistente : generosJogos) {
                 if (generoExistente.getId().equals(genero.getId())) {
@@ -161,6 +167,7 @@ public class DAOGenero extends DAO{
         }
     }
 
+    @Override
     public void deletar(Integer id) {
         // Busca o gênero a ser apagado
         Genero generoApagado = (Genero) buscarPorId(id);
@@ -169,7 +176,7 @@ public class DAOGenero extends DAO{
         }
 
         // Atualiza os usuários para remover o gênero apagado
-        for (Usuario usuario : daoUsuario.getUsuarios()) {
+        for (Usuario usuario : daoUsuario.getEntidades()) {
             Iterator<Genero> iterator = usuario.getGenerosFavoritos().iterator();
             while (iterator.hasNext()) {
                 Genero generoS = iterator.next();
@@ -181,7 +188,7 @@ public class DAOGenero extends DAO{
             daoUsuario.atualizar(usuario);
         }
         // Atualiza os jogos para remover o gênero apagado
-        for (Jogo jogo : daoJogo.getJogos()) {
+        for (Jogo jogo : daoJogo.getEntidades()) {
             Iterator<Genero> iterator = jogo.getGeneros().iterator();
             while (iterator.hasNext()) {
                 Genero generoS = iterator.next();

@@ -1,18 +1,22 @@
 package controle;
 
+import modelo.Entidade;
 import modelo.Genero;
 import persistencia.DAOGenero;
 
-public class StrategyGenero implements Strategy<Genero>{
+import java.util.List;
+
+public class StrategyGenero implements Strategy{
     private DAOGenero daoGenero;
 
-    public StrategyGenero(DAOGenero daoGenero) {
-        this.daoGenero = daoGenero;
+    public StrategyGenero() {
+        this.daoGenero = DAOGenero.getInstance();
+        daoGenero.lerRegistro();
     }
 
     @Override
-    public void salvar(Genero genero) {
-        daoGenero.salvarGenero(genero);
+    public void salvar(Entidade entidade) {
+        daoGenero.salvar(entidade);
     }
 
     @Override
@@ -21,8 +25,18 @@ public class StrategyGenero implements Strategy<Genero>{
     }
 
     @Override
-    public void atualizar(Genero genero) {
-        daoGenero.atualizar(genero);
+    public void atualizar(Entidade entidade) {
+        daoGenero.atualizar(entidade);
+    }
+
+    @Override
+    public Entidade buscarPorId(Integer id) {
+        return daoGenero.buscarPorId(id);
+    }
+
+    @Override
+    public List<Genero> getEntidades(){
+        return daoGenero.getEntidades();
     }
 
 }

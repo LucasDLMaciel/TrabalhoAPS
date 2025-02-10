@@ -2,7 +2,7 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import modelo.Genero;
-import controle.Controle;
+import controle.ControleGenero;
 import visao.Menu.Menu;
 import net.miginfocom.swing.MigLayout;
 
@@ -19,12 +19,12 @@ public class GerenciarGenero extends JPanel {
     private DefaultTableModel modeloTabela;
     private boolean darkTheme;
     private Integer idUsuario = 0;
-    private Controle controle;
+    private ControleGenero controleGenero;
 
     public GerenciarGenero(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
-        this.controle = new Controle(); // Inicializa o controle de gêneros
+        this.controleGenero = new ControleGenero(); // Inicializa o controle de gêneros
         init();
     }
 
@@ -122,7 +122,7 @@ public class GerenciarGenero extends JPanel {
 
 
     private void carregarGeneros() {
-        List<Genero> generos = controle.daoGenero.getGeneros();
+        List<Genero> generos = controleGenero.getEntidades();
         modeloTabela.setRowCount(0); // Limpa a tabela antes de adicionar os novos dados
         for (Genero genero : generos) {
             modeloTabela.addRow(new Object[]{genero.getId(), genero.getGenero()});
@@ -134,7 +134,7 @@ public class GerenciarGenero extends JPanel {
         Genero genero = new Genero(0, nome);
         if (nome != null && !nome.trim().isEmpty()) {
             try {
-                controle.salvar("genero", genero);
+                controleGenero.salvar(genero);
                 carregarGeneros(); // Recarrega a tabela após adicionar o gênero
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -162,7 +162,7 @@ public class GerenciarGenero extends JPanel {
                 // Atualiza o gênero no controle
 
                 Genero genero = new Genero(idGenero, novoGenero);
-                controle.atualizar("genero", genero);
+                controleGenero.atualizar(genero);
             }
 
             JOptionPane.showMessageDialog(this, "Todas as alterações foram salvas com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -184,7 +184,7 @@ public class GerenciarGenero extends JPanel {
         int idGenero = (int) modeloTabela.getValueAt(linhaSelecionada, 0);
         int confirmacao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja remover este gênero?", "Confirmar Remoção", JOptionPane.YES_NO_OPTION);
         if (confirmacao == JOptionPane.YES_OPTION) {
-            controle.deletar("genero", idGenero);
+            controleGenero.deletar(idGenero);
             carregarGeneros(); // Recarrega a tabela após excluir o gênero
         }
     }

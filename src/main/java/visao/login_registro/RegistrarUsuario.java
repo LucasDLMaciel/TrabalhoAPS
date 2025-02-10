@@ -2,7 +2,8 @@ package visao.login_registro;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.Controle;
+import controle.ControleUsuario;
+import controle.ControleGenero;
 import modelo.Genero;
 import modelo.Usuario;
 import net.miginfocom.swing.MigLayout;
@@ -24,7 +25,8 @@ public class RegistrarUsuario extends JPanel {
 
     private boolean darkTheme;
     private Integer idUsuario = 0;
-    private Controle controle = new Controle();
+    private ControleGenero controleGenero = new ControleGenero();
+    private ControleUsuario controleUsuario = new ControleUsuario();
 
     public RegistrarUsuario(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -77,7 +79,7 @@ public class RegistrarUsuario extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE,"font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = controle.daoGenero.getGeneros();
+        List<Genero> generos = controleGenero.getEntidades();
 
         List<Genero> generosFav = new ArrayList<>();
 
@@ -141,7 +143,7 @@ public class RegistrarUsuario extends JPanel {
         }
         try {
             Usuario usuarioAux = new Usuario(usuario, senha, dataNascimento, generosSelecionados, adminCheckBox.isSelected());
-            controle.salvar("usuario", usuarioAux);
+            controleUsuario.salvar(usuarioAux);
             JOptionPane.showMessageDialog(this, "Usuário registrado com sucesso!", "Registro Completo", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

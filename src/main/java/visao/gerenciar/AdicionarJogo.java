@@ -2,7 +2,8 @@ package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import controle.Controle;
+import controle.ControleGenero;
+import controle.ControleJogo;
 import modelo.Genero;
 import modelo.Jogo;
 import modelo.Nota;
@@ -24,7 +25,8 @@ public class AdicionarJogo extends JPanel {
     private boolean darkTheme;
     private Integer idUsuario;
 
-    private Controle controle = new Controle();
+    private ControleJogo controleJogo = new ControleJogo();
+    private ControleGenero controleGenero = new ControleGenero();
 
     public AdicionarJogo(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -75,7 +77,7 @@ public class AdicionarJogo extends JPanel {
         generoLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         add(generoLabel, "gapy 10 2");
 
-        List<Genero> generos = controle.daoGenero.getGeneros();
+        List<Genero> generos = controleGenero.getEntidades();
         List<Genero> generosSelecionados = new ArrayList<>();
         generoBox = new MultiplaEscolha(generos, generosSelecionados);
         add(generoBox, "gapx 23 23, width 300, align center");
@@ -122,10 +124,9 @@ public class AdicionarJogo extends JPanel {
         }
 
         try {
-            Controle controle = new Controle();
             List<Nota> notas = new ArrayList<>();
             Jogo jogo = new Jogo(nomeJogo, dataLancamento, descricao, classificacaoEtaria, notas, generosSelecionados);
-            controle.salvar("jogo",jogo);
+            controleJogo.salvar(jogo);
             JOptionPane.showMessageDialog(this, "Jogo adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

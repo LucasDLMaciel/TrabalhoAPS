@@ -1,7 +1,8 @@
 package visao.gerenciar;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import controle.Controle;
+import controle.ControleJogo;
+import controle.ControleUsuario;
 import modelo.Jogo;
 import modelo.Nota;
 import modelo.Usuario;
@@ -23,7 +24,7 @@ public class GerenciarNotas extends JPanel {
 
     private boolean darkTheme;
     private Integer idUsuario;
-    private Controle controle = new Controle();
+    private ControleJogo controleJogo = new ControleJogo();
 
     public GerenciarNotas(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
@@ -115,13 +116,13 @@ public class GerenciarNotas extends JPanel {
                 JOptionPane.WARNING_MESSAGE);
 
         if (resposta == JOptionPane.YES_OPTION) {
-            Jogo jogo = controle.daoJogo.buscarJogoPorTitulo(jogoTitulo);
+            Jogo jogo = (Jogo) controleJogo.buscarPorTitulo(jogoTitulo);
             if (jogo != null) {
                 List<Nota> notas = jogo.getNotas();
                 notas.removeIf(nota -> nota.getId().equals(notaId));
                 jogo.setNotas(notas);
 
-                controle.daoJogo.atualizar(jogo);
+                controleJogo.atualizar(jogo);
 
                 modeloTabela.removeRow(selectedRow);
                 JOptionPane.showMessageDialog(this, "Nota removida com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -139,7 +140,7 @@ public class GerenciarNotas extends JPanel {
             Integer jogabilidade = Integer.parseInt(tabelaNotas.getValueAt(i, 6).toString());
             String comentario = tabelaNotas.getValueAt(i, 7).toString();
 
-            Jogo jogo = controle.daoJogo.buscarJogoPorTitulo(jogoTitulo);
+            Jogo jogo = (Jogo) controleJogo.buscarPorTitulo(jogoTitulo);
             if (jogo != null) {
                 List<Nota> notas = jogo.getNotas();
                 for (Nota nota : notas) {
@@ -153,19 +154,19 @@ public class GerenciarNotas extends JPanel {
                     }
                 }
                 jogo.setNotas(notas);
-                controle.atualizar("jogo", jogo);
+                controleJogo.atualizar(jogo);
             }
         }
         JOptionPane.showMessageDialog(this, "Notas editadas com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void listarNotas() {
-        List<Jogo> jogos = controle.daoJogo.getJogos();
-        Controle controle = new Controle();
+        List<Jogo> jogos = controleJogo.getEntidades();
+        ControleUsuario controleUsuario = new ControleUsuario();
         for (Jogo jogo : jogos) {
             for (Nota nota : jogo.getNotas()) {
                 // Obtendo o nome do usuário baseado no idUsuario
-                Usuario usuario = controle.daoUsuario.buscarPorId(nota.getIdUsuario());
+                Usuario usuario = (Usuario) controleUsuario.buscarPorId(nota.getIdUsuario());
                 String nomeUsuario = (usuario != null) ? usuario.getUsuario() : "Desconhecido";
 
                 modeloTabela.addRow(new Object[]{

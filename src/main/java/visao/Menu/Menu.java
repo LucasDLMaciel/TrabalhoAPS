@@ -4,7 +4,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import controle.Controle;
+import controle.ControleJogo;
+import controle.ControleUsuario;
 import modelo.Genero;
 import modelo.Jogo;
 import modelo.Usuario;
@@ -46,7 +47,8 @@ public class Menu extends JPanel {
     private boolean admin = true;
     private boolean selecionado;
     private boolean darkTheme;
-    private Controle controle;
+    private ControleJogo controleJogo;
+    private ControleUsuario controleUsuario;
     private Usuario usuario;
 
 
@@ -54,8 +56,9 @@ public class Menu extends JPanel {
     public Menu(boolean darkTheme, Integer idUsuario) {
         this.darkTheme = darkTheme;
         this.idUsuario = idUsuario;
-        this.controle = new Controle();
-        usuario = controle.daoUsuario.buscarPorId(idUsuario);
+        this.controleJogo = new ControleJogo();
+        this.controleUsuario = new ControleUsuario();
+        usuario = (Usuario) controleUsuario.buscarPorId(idUsuario);
         if(usuario != null){
             this.admin = usuario.isAdministrador();
         }
@@ -258,7 +261,9 @@ public class Menu extends JPanel {
                 String textoFiltro = Buscar.getText();
 
                 // Filtra os jogos com base no texto digitado
-                List<Jogo> jogosFiltrados = controle.daoJogo.filtrarJogos(textoFiltro);
+                List<Jogo> jogosFiltrados = controleJogo.getEntidades();
+
+                jogosFiltrados.stream().filter(jogo -> jogo.getTitulo().toLowerCase().contains(textoFiltro.toLowerCase())).collect(Collectors.toList());
 
                 adicionarBotoesJogosBuscados(jogosFiltrados);
             }
@@ -380,7 +385,7 @@ public class Menu extends JPanel {
 
     private void adicionarBotoesJogos() {
         // Obtenha os jogos do sistema
-        List<Jogo> jogos = controle.daoJogo.getJogos();  // Assume que há um método em JogoControle para buscar todos os jogos
+        List<Jogo> jogos = controleJogo.getEntidades();  // Assume que há um método em JogoControle para buscar todos os jogos
 
         // Limpar o painel de jogos antes de adicionar os botões
         this.jogosPanel.removeAll();
@@ -472,13 +477,13 @@ public class Menu extends JPanel {
 
     private void adicionarBotoesJogosRecomendados() {
         // Obtenha os jogos do sistema
-        List<Jogo> jogos = controle.daoJogo.getJogos();
+        List<Jogo> jogos = controleJogo.getEntidades();
         List<Jogo> jogosRecomendados = new ArrayList<>();
 
         // Obter gêneros favoritos do usuário logado (caso esteja logado)
         if (idUsuario > 0) {
             List<String> generosFavoritos = new ArrayList<>(); // Método fictício
-            List<Genero> generos = controle.daoUsuario.buscarPorId(idUsuario).getGenerosFavoritos();
+            List<Genero> generos = ((Usuario)controleUsuario.buscarPorId(idUsuario)).getGenerosFavoritos();
             for(Genero genero : generos){
                 generosFavoritos.add(genero.getGenero());
             }
