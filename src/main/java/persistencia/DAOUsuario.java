@@ -19,6 +19,10 @@ public class DAOUsuario extends DAO {
     private List<Usuario> usuarios;
     private final DAOJogo daoJogo = DAOJogo.getInstance();
 
+    private DAOUsuario() {
+        super();
+    }
+
     public static DAOUsuario getInstance() {
         if (instance == null) {
             instance = new DAOUsuario();

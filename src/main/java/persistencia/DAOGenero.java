@@ -23,12 +23,18 @@ public class DAOGenero extends DAO{
     private List<Genero> generos;
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+
+    private DAOGenero(){
+        super();
+    }
+
     public static DAOGenero getInstance() {
         if (instance == null) {
             instance = new DAOGenero();
         }
         return instance;
     }
+
 
     @Override
     public Entidade buscarPorId(Integer id) {

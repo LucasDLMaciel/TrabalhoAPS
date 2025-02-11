@@ -20,6 +20,10 @@ public class DAOJogo extends DAO {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private List<Jogo> jogos;
 
+    private DAOJogo() {
+        super();
+    }
+
     public static DAOJogo getInstance() {
         if (instance == null) {
             instance = new DAOJogo();
