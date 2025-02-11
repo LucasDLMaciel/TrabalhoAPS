@@ -34,5 +34,9 @@
   {
     "genero": "Luta",
     "id": 2010
+  },
+  {
+    "genero": "Metroidvania",
+    "id": 2011
   }
 ]

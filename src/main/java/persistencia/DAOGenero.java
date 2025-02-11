@@ -18,14 +18,10 @@ import java.util.Objects;
 public class DAOGenero extends DAO{
     private static final String FILE_PATH = "src/main/resources/data/generos.json";
     private static DAOGenero instance;
-    private static DAOJogo daoJogo = DAOJogo.getInstance();
-    private static DAOUsuario daoUsuario = DAOUsuario.getInstance();
+    private DAOJogo daoJogo = DAOJogo.getInstance();
+    private DAOUsuario daoUsuario = DAOUsuario.getInstance();
     private List<Genero> generos;
-    private final Gson gson;
-
-    private DAOGenero() {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
-    }
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static DAOGenero getInstance() {
         if (instance == null) {

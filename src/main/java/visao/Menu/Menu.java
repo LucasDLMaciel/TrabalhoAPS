@@ -230,6 +230,7 @@ public class Menu extends JPanel {
             public void focusLost(FocusEvent e) {
                 if (Menu.this.Buscar.getText().isEmpty()) {
                     Menu.this.Buscar.setText("Buscar");
+                    adicionarBotoesJogos();
                 }
             }
         });
@@ -258,16 +259,21 @@ public class Menu extends JPanel {
         this.Buscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String textoFiltro = Buscar.getText();
+                String textoFiltro = Buscar.getText().toLowerCase(); // Converte o texto para minúsculas
+                List<Jogo> jogosFiltrados;
 
-                // Filtra os jogos com base no texto digitado
-                List<Jogo> jogosFiltrados = controleJogo.getEntidades();
-
-                jogosFiltrados.stream().filter(jogo -> jogo.getTitulo().toLowerCase().contains(textoFiltro.toLowerCase())).collect(Collectors.toList());
-
+                if (textoFiltro == null || textoFiltro.isEmpty()) {
+                    // Se não houver filtro, exibe todos os jogos
+                    jogosFiltrados = controleJogo.getEntidades();
+                } else {
+                    // Filtra os jogos cujo título contém o texto digitado
+                    jogosFiltrados = controleJogo.getEntidades().stream()
+                            .filter(jogo -> jogo.getTitulo().toLowerCase().contains(textoFiltro))
+                            .collect(Collectors.toList());
+                }
+                // Atualiza a interface com os jogos filtrados
                 adicionarBotoesJogosBuscados(jogosFiltrados);
             }
-
         });
 
         gerenciarGenero.addActionListener(new ActionListener() {

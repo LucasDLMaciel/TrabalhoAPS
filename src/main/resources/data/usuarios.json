@@ -7,6 +7,10 @@
       {
         "genero": "Souls-like",
         "id": 2003
+      },
+      {
+        "genero": "Metroidvania",
+        "id": 2011
       }
     ],
     "administrador": true,

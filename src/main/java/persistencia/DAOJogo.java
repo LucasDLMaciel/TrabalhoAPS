@@ -20,8 +20,6 @@ public class DAOJogo extends DAO {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private List<Jogo> jogos;
 
-    private DAOJogo() {}
-
     public static DAOJogo getInstance() {
         if (instance == null) {
             instance = new DAOJogo();
@@ -84,9 +82,12 @@ public class DAOJogo extends DAO {
         jogos.add(jogo);
 
         for(Nota nota : jogo.getNotas()) {
-            proximoId = calcularProximoIdNota();
-            nota.setId(proximoId);
+            if (nota.getId() == 0){
+                proximoId = calcularProximoIdNota();
+                nota.setId(proximoId);
+            }
         }
+
 
         try (Writer writer = new FileWriter(ARQUIVO_JOGOS)) {
             gson.toJson(jogos, writer);
@@ -123,8 +124,10 @@ public class DAOJogo extends DAO {
                 jogoExistente.setNotas(jogo.getNotas());
 
                 for(Nota nota : jogo.getNotas()) {
-                    proximoId = calcularProximoIdNota();
-                    nota.setId(proximoId);
+                    if (nota.getId() == 0){
+                        proximoId = calcularProximoIdNota();
+                        nota.setId(proximoId);
+                    }
                 }
 
 
